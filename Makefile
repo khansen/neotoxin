@@ -1,5 +1,10 @@
 AFLAGS = --debug -I. $(DEFINES)
 
+# Units are built from these directories; their objects go to $(BUILD_DIR).
+SRCDIRS = common sound engine game screens area
+
+BUILD_DIR = build
+
 LFLAGS = 
 
 XASM = xasm $(AFLAGS)
@@ -14,15 +19,67 @@ TOOLS = tools/nga2asm tools/xm2muz tools/comp
 
 SCRIPTS = script/introscript.bin script/npc6script.bin
 
-OBJS = vste.o ngsl.o huff.o titlescreen.o gameinfo.o selectgame.o \
-entername.o musicplayer.o screendata.o ruins.o plant.o base.o building.o \
-boss0.o boss1.o boss2.o sequencer.o envelope.o effect.o rnmedata.o songs.o \
-sfxdata.o bgcollision.o objcollision.o movement.o scroller.o nametable.o \
-attribtable.o renderer.o obj.o anim.o mmc3.o palette.o fade.o gbObj.o \
-gbAction.o player.o gbLoop.o main.o warp.o savegame.o statusscreen.o \
-flags.o ppu.o timer.o joypad.o clearram.o math.o maincycle.o area2d.o demomode.o \
-gameover.o levelup.o enemy.o nmi.o irq.o gamedata.o areahdrs.o \
-dmcdata.o vectors.o
+OBJS = $(addprefix $(BUILD_DIR)/, \
+    vste.o \
+    ngsl.o \
+    huff.o \
+    titlescreen.o \
+    gameinfo.o \
+    selectgame.o \
+    entername.o \
+    musicplayer.o \
+    screendata.o \
+    ruins.o \
+    plant.o \
+    base.o \
+    building.o \
+    boss0.o \
+    boss1.o \
+    boss2.o \
+    sequencer.o \
+    envelope.o \
+    effect.o \
+    rnmedata.o \
+    songs.o \
+    sfxdata.o \
+    bgcollision.o \
+    objcollision.o \
+    movement.o \
+    scroller.o \
+    nametable.o \
+    attribtable.o \
+    renderer.o \
+    obj.o \
+    anim.o \
+    mmc3.o \
+    palette.o \
+    fade.o \
+    gbObj.o \
+    gbAction.o \
+    player.o \
+    gbLoop.o \
+    main.o \
+    warp.o \
+    savegame.o \
+    statusscreen.o \
+    flags.o \
+    ppu.o \
+    timer.o \
+    joypad.o \
+    clearram.o \
+    math.o \
+    maincycle.o \
+    area2d.o \
+    demomode.o \
+    gameover.o \
+    levelup.o \
+    enemy.o \
+    nmi.o \
+    irq.o \
+    gamedata.o \
+    areahdrs.o \
+    dmcdata.o \
+    vectors.o)
 
 HEADERFILE = ines.hdr
 
@@ -30,7 +87,7 @@ SCRIPTFILE = link.s
 
 BINFILE = neotoxin.nes
 
-HEADERS = $(wildcard *.h) $(wildcard area/*/*.h)
+HEADERS = $(wildcard *.h $(addsuffix /*.h,$(SRCDIRS)) chr/*.h area/*/*.h)
 
 CHRFILES = $(wildcard chr/*.chr)
 
@@ -61,8 +118,13 @@ all: $(TOOLS) $(BINFILE)
 $(BINFILE): $(OBJS) $(HEADERFILE) $(SCRIPTFILE) $(CHRFILES)
 	$(XLNK) $(SCRIPTFILE) -o $@
 
-%.o: %.asm
+vpath %.asm . $(SRCDIRS)
+
+$(BUILD_DIR)/%.o: %.asm | $(BUILD_DIR)
 	$(XASM) $< -o $@
+
+$(BUILD_DIR):
+	mkdir -p $@
 
 # xasm cannot emit dependency files, and a full build takes under a second,
 # so every unit depends on every shared header.
@@ -71,33 +133,33 @@ $(OBJS): $(HEADERS)
 # Additional inputs pulled in via .incsrc, .include, .incbin and .charmap.
 # Generated files are listed by name, not only through $(wildcard), so that
 # make can recreate one that is missing.
-ngsl.o: $(SCRIPTS) huff/strings.inc
-huff.o: huff/huffpuff.tab
-songs.o: $(wildcard music/*.inc) $(GEN_MUSIC)
-vste.o: font.tbl
-screendata.o: font.tbl $(wildcard data/*.dat) $(GEN_DATS) data/title.pal
-gamedata.o: data/demo.dat
-dmcdata.o: $(wildcard sound/*)
+$(BUILD_DIR)/ngsl.o: $(SCRIPTS) huff/strings.inc
+$(BUILD_DIR)/huff.o: huff/huffpuff.tab
+$(BUILD_DIR)/songs.o: $(wildcard music/*.inc) $(GEN_MUSIC)
+$(BUILD_DIR)/vste.o: font.tbl
+$(BUILD_DIR)/screendata.o: font.tbl $(wildcard data/*.dat) $(GEN_DATS) data/title.pal
+$(BUILD_DIR)/gamedata.o: data/demo.dat
+$(BUILD_DIR)/dmcdata.o: $(wildcard sound/samples/*)
 
-ruins.o: area/ruins/rnMain.asm $(wildcard area/ruins/*.inc)
+$(BUILD_DIR)/ruins.o: area/ruins/rnMain.asm $(wildcard area/ruins/*.inc) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-plant.o: area/plant/plMain.asm $(wildcard area/plant/*.inc) $(PLANT_GEN_SECTS)
+$(BUILD_DIR)/plant.o: area/plant/plMain.asm $(wildcard area/plant/*.inc) $(PLANT_GEN_SECTS) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-base.o: area/base/bsMain.asm $(wildcard area/base/*.inc) $(BASE_GEN_SECTS)
+$(BUILD_DIR)/base.o: area/base/bsMain.asm $(wildcard area/base/*.inc) $(BASE_GEN_SECTS) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-building.o: area/building/bdMain.asm $(wildcard area/building/*.inc)
+$(BUILD_DIR)/building.o: area/building/bdMain.asm $(wildcard area/building/*.inc) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-boss0.o: area/boss0/b0Main.asm $(wildcard area/boss0/*.inc)
+$(BUILD_DIR)/boss0.o: area/boss0/b0Main.asm $(wildcard area/boss0/*.inc) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-boss1.o: area/boss1/b1Main.asm $(wildcard area/boss1/*.inc)
+$(BUILD_DIR)/boss1.o: area/boss1/b1Main.asm $(wildcard area/boss1/*.inc) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-boss2.o: area/boss2/b2Main.asm $(wildcard area/boss2/*.inc)
+$(BUILD_DIR)/boss2.o: area/boss2/b2Main.asm $(wildcard area/boss2/*.inc) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
 script/%.bin: script/%.asm script/script.h
@@ -137,4 +199,5 @@ test: $(BINFILE)
 .PHONY: all clean test
 
 clean:
-	rm -f $(BINFILE) $(OBJS) $(SCRIPTS) $(TOOLS)
+	rm -f $(BINFILE) $(SCRIPTS) $(TOOLS)
+	rm -rf $(BUILD_DIR)

@@ -1,11 +1,11 @@
 .include "game.h"
-.include "mmc3.h"
-.include "nes.h"
-.include "clearram.h"
+.include "common/mmc3.h"
+.include "common/nes.h"
+.include "common/clearram.h"
 .include "main.h"
-.include "maincycle.h"
-.include "ppu.h"
-.include "timer.h"
+.include "game/maincycle.h"
+.include "common/ppu.h"
+.include "common/timer.h"
 
 .codeseg
 
