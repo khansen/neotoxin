@@ -2,8 +2,13 @@
 .include "game/flags.h"
 .include "game/gamedata.h"
 
+.dataseg
+
+StatusFlags     .byte[STATUS_FLAG_BYTES]
+
 .codeseg
 
+.public StatusFlags
 .public SetStatusFlag
 .public ResetStatusFlag
 .public GetStatusFlag

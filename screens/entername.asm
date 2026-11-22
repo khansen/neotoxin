@@ -50,8 +50,8 @@
     jsr     LoadCHR
 ;
     jsr     SetSavePtr
-    ldx     #9
-    ldy     #58
+    ldx     #NAME_LENGTH-1
+    ldy     #save_slot::Name+NAME_LENGTH-1
   - lda     [pData],y
     sta     NameStr,x
     dey
@@ -110,7 +110,7 @@
 ; erase last letter
     ldy     NamePos
     bne     +
-    ldy     #10
+    ldy     #NAME_LENGTH
   + dey
     sty     NamePos
     lda     #0
@@ -120,7 +120,7 @@
 
     @@NameFinished:
 ; check that the name is valid (contains 1+ non-zero characters)
-    ldy     #9
+    ldy     #NAME_LENGTH-1
     lda     #0
   - ora     NameStr,y
     dey
@@ -151,7 +151,7 @@
     sta     NameStr,y
     jsr     ShowName
     ldy     NamePos
-    cpy     #9
+    cpy     #NAME_LENGTH-1
     bne     +
     ldy     #255
   + iny
@@ -287,7 +287,7 @@ FlashTable:
     lda     #$EB
     sta     PPUString,x
     inx
-    lda     #10
+    lda     #NAME_LENGTH
     sta     PPUString,x
     inx
     ldy     #0
@@ -295,7 +295,7 @@ FlashTable:
     sta     PPUString,x
     inx
     iny
-    cpy     #10
+    cpy     #NAME_LENGTH
     bne     -
     jmp     EndPPUString
 .endp
@@ -305,8 +305,8 @@ FlashTable:
 
 .proc PerformNameChange
     jsr     SetSavePtr
-    ldx     #9
-    ldy     #58
+    ldx     #NAME_LENGTH-1
+    ldy     #save_slot::Name+NAME_LENGTH-1
   - lda     NameStr,x
     sta     [pData],y
     dey
@@ -340,13 +340,13 @@ FlashTable:
 ; Out: A = 0
 
 .proc InitGameState
-    ldx     #16
+    ldx     #sizeof(save_stats)-1
   - lda     InitialSaveGame,x
     sta     Health,x
     dex
     bpl     -
     lda     #0
-    ldx     #31
+    ldx     #STATUS_FLAG_BYTES-1
   - sta     StatusFlags,x
     dex
     bpl     -

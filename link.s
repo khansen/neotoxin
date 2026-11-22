@@ -6,7 +6,9 @@
 #   7-15: $00
 # RAM the linker may assign to .dataseg variables. Only ranges that no
 # hard-coded RAM (game.h, engine headers) uses are listed; end is exclusive.
+ram{start=$67,end=$97}      # zero page
 ram{start=$C0,end=$D4}      # zero page
+ram{start=$0180,end=$01A0}
 ram{start=$0700,end=$0800}
 copy{file=ines.hdr}
 # Bank 0

@@ -92,39 +92,12 @@ ObjMapOfs               EQU     $63
 LetterCol               EQU     $64
 LetterRow               EQU     $65
 NamePos                 EQU     $66
-NameStr                 EQU     $67 ; 10 bytes
 
-; current game status
+; current game status (Health, Level, CurrentArea, ..., NameStr, StatusFlags)
+.include "game/savedata.h"
 
-Health                  EQU     $72
-HealthFrac              EQU     $73
-Level                   EQU     $74
-MaxHealth               EQU     $75
-Defense                 EQU     $76
-Experience              EQU     $77
-ExpFrac                 EQU     $79
-Hours                   EQU     $7A
-Minutes                 EQU     $7B
-Seconds                 EQU     $7C
-ClockTicks              EQU     $7D
-CurrentArea             EQU     $7E
-CurrentSection          EQU     $7F
-CurrentWarp             EQU     $80
-WarpType                EQU     $81
-ProjectileType          EQU     $82
-
-; 2D area header
-
-ah_AreaBank             EQU     $84
-ah_pMaps                EQU     $85
-ah_pMacroPtrTable       EQU     $87
-ah_pMacroAttribTable    EQU     $89
-ah_pMacroStateTable     EQU     $8B
-ah_pAreaPalette         EQU     $8D
-ah_AreaCHR              EQU     $8F
-ah_pObjConstructors     EQU     $91
-ah_pActionPtrTable      EQU     $93
-ah_pLoopPtrTable        EQU     $95
+; 2D area header (ah_AreaBank, ah_pMaps, ...)
+.include "area/areahdrs.h"
 
 ; current section
 MapWidth                EQU     $97
@@ -142,7 +115,6 @@ pData                   EQU     $FE
 
 PPUString               EQU     $0100
 RAMPalette              EQU     $0160
-StatusFlags             EQU     $0180
 
 
 mrTitleInit             EQU     0

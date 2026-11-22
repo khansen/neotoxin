@@ -29,7 +29,7 @@
     sta     pData
     lda     #0
     rol
-    ora     #$60
+    ora     #>SAVE_SLOTS    ; 64 (sizeof(save_slot)) bytes per slot
     sta     pData+1
     rts
 .endp

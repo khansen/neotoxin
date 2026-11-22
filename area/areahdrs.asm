@@ -9,10 +9,15 @@
 .include "area/areahdrs.h"
 .include "game.h"
 
+.dataseg zeropage
+
+AreaHdr         .area_header
+
 .codeseg
 
 .public AreaHdrTable
 .public Load2DAreaHdr
+.public AreaHdr
 
 ;-------------------------------[ Area headers ]------------------------------
 
@@ -121,9 +126,9 @@ boss2_header:
     sta     pData
     lda     AreaHdrTable+1,x
     sta     pData+1
-    ldy     #18     ; header length - 1
+    ldy     #sizeof(area_header)-1
   - lda     [pData],y
-    sta     ah_AreaBank,y
+    sta     AreaHdr,y
     dey
     bpl     -
     rts

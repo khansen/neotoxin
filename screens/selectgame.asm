@@ -66,7 +66,7 @@
     beq     @@NoSlotSelect
 ; select current slot
     jsr     SetSavePtr
-    ldy     #60
+    ldy     #save_slot::Checksum
     lda     [pData],y
     iny
     ora     [pData],y
@@ -143,12 +143,12 @@
     lda     #$EE
     sta     PPUString,x
     inx
-    lda     #10
+    lda     #NAME_LENGTH
     sta     Count
     sta     PPUString,x
     inx
     jsr     SetSavePtr
-    ldy     #60
+    ldy     #save_slot::Checksum
     lda     [pData],y
     iny
     ora     [pData],y
@@ -159,7 +159,7 @@
     sta     pData+1
     ldy     #0
     beq     @@CopyNameString
-  + ldy     #49
+  + ldy     #save_slot::Name
     @@CopyNameString:
     lda     [pData],y
     iny

@@ -3,8 +3,21 @@
 .include "game/savegame.h"
 .include "engine/warp.h"
 
+; SetSavePtr (engine/warp.asm) finds a slot by shifting the slot number left
+; six times, and the WRAM format has 64-byte slots.
+.if sizeof(save_slot) != 64
+.error "save_slot must be 64 bytes"
+.endif
+
+.dataseg zeropage
+
+SaveStats       .save_stats
+NameStr         .byte[NAME_LENGTH]
+
 .codeseg
 
+.public SaveStats
+.public NameStr
 .public WriteSaveGame
 .public LoadSaveGame
 .public CalcSaveGameCheckSum
@@ -47,9 +60,9 @@
 .endp
 
 SaveGameInfo:
-.db 17 : .dw Health
-.db 32 : .dw StatusFlags
-.db 10 : .dw NameStr
+.db sizeof(save_stats) : .dw SaveStats
+.db STATUS_FLAG_BYTES : .dw StatusFlags
+.db NAME_LENGTH : .dw NameStr
 .db 0
 
 ; LoadSaveGame
@@ -99,7 +112,8 @@ SaveGameInfo:
 
 ; CalcSaveGameCheckSum
 ; ====================
-; pData = address of save game
+; In:  pData = address of save game
+; Out: Temp = checksum of Stats, Flags and Name, Y = save_slot::Checksum
 
 .proc CalcSaveGameCheckSum
     lda     #0
@@ -113,9 +127,9 @@ SaveGameInfo:
     bcc     +
     inc     Temp+1
   + iny
-    cpy     #59
+    cpy     #save_slot::Name+NAME_LENGTH
     bne     -
-    iny
+    ldy     #save_slot::Checksum
     rts
 .endp
 
