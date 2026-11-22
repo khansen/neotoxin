@@ -7,7 +7,7 @@ boss2_sect1_room0:
 .db $1E,$1E,$1E,$1A,$1E,$19,$00,$1C
 .db $24,$24,$24,$1A,$24,$19,$00,$1C
 .db $1F,$1F,$1F,$00,$1F,$00,$00,$1C
-boss2_sect1_room0_objects:
+; boss2_sect1_room0_objects:
 .db $FF
 boss2_sect1_room1:
 .db $16,$21,$20,$21,$16,$20,$21,$16
@@ -18,7 +18,7 @@ boss2_sect1_room1:
 .db $1C,$1F,$1C,$1C,$1F,$1F,$1C,$16
 .db $1C,$1E,$1C,$1C,$1E,$1E,$1C,$16
 .db $1C,$1F,$1C,$1C,$1F,$1F,$1C,$16
-boss2_sect1_room1_objects:
+; boss2_sect1_room1_objects:
 .db $FF
 boss2_sect1_map:
 .dw boss2_sect1_room0,boss2_sect1_room1

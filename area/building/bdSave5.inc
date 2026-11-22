@@ -8,7 +8,7 @@ building_save5_room0:
 .db $00,$1D,$0C,$52,$25,$26,$1D,$00
 .db $00,$58,$3E,$3E,$3E,$3E,$57,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-building_save5_room0_objects:
+; building_save5_room0_objects:
 .db $03,$AA,<SaveScript,>SaveScript,$02,$A5,$20,$0D
 .db $FF
 building_save5_map:

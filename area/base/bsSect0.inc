@@ -7,7 +7,7 @@ base_sect0_room0:
 .db $20,$43,$42,$20,$42,$43,$42,$20
 .db $4B,$4B,$4B,$4B,$4B,$4B,$4B,$7D
 .db $4C,$4C,$4C,$4C,$4C,$4C,$4C,$3D
-base_sect0_room0_objects:
+; base_sect0_room0_objects:
 .db $03,$80,$41,$00,$FF
 base_sect0_room1:
 .db $0D,$0A,$13,$0D,$0A,$13,$0D,$0A
@@ -18,7 +18,7 @@ base_sect0_room1:
 .db $42,$43,$42,$28,$27,$24,$42,$42
 .db $4B,$4B,$53,$28,$27,$77,$7D,$4B
 .db $4C,$4C,$52,$24,$27,$28,$3D,$4C
-base_sect0_room1_objects:
+; base_sect0_room1_objects:
 .db $FF
 base_sect0_room2:
 .db $13,$0D,$0A,$13,$0D,$0A,$13,$0D
@@ -29,7 +29,7 @@ base_sect0_room2:
 .db $42,$42,$42,$72,$2C,$2C,$73,$16
 .db $4B,$4B,$53,$00,$00,$00,$00,$17
 .db $4C,$4C,$52,$11,$11,$11,$11,$11
-base_sect0_room2_objects:
+; base_sect0_room2_objects:
 .db $FF
 base_sect0_room3:
 .db $0A,$13,$0D,$0A,$13,$0D,$0A,$13
@@ -40,7 +40,7 @@ base_sect0_room3:
 .db $00,$21,$21,$21,$21,$00,$00,$20
 .db $16,$21,$21,$21,$21,$00,$00,$00
 .db $17,$72,$2C,$2C,$73,$00,$00,$00
-base_sect0_room3_objects:
+; base_sect0_room3_objects:
 .db $FF
 base_sect0_room4:
 .db $0D,$0A,$13,$0D,$0A,$13,$0D,$0A
@@ -51,7 +51,7 @@ base_sect0_room4:
 .db $24,$24,$24,$20,$00,$00,$3B,$3B
 .db $7A,$7B,$7A,$00,$00,$00,$3B,$3B
 .db $54,$5E,$54,$00,$00,$00,$3B,$15
-base_sect0_room4_objects:
+; base_sect0_room4_objects:
 .db $FF
 base_sect0_room5:
 .db $13,$0D,$0A,$13,$0D,$0A,$13,$0D
@@ -62,7 +62,7 @@ base_sect0_room5:
 .db $5C,$3B,$3B,$25,$25,$25,$26,$74
 .db $01,$3B,$3B,$25,$25,$26,$00,$74
 .db $02,$15,$3B,$25,$26,$00,$00,$74
-base_sect0_room5_objects:
+; base_sect0_room5_objects:
 .db $02,$E1,$62,$01,$FF
 base_sect0_room6:
 .db $0A,$13,$0D,$0A,$13,$0D,$0A,$13
@@ -73,7 +73,7 @@ base_sect0_room6:
 .db $4C,$3D,$4C,$4C,$52,$25,$25,$25
 .db $4C,$49,$4C,$4C,$52,$29,$29,$29
 .db $4C,$3D,$4C,$4C,$52,$79,$77,$79
-base_sect0_room6_objects:
+; base_sect0_room6_objects:
 .db $FF
 base_sect0_room7:
 .db $0D,$0A,$13,$0D,$0A,$13,$0D,$0A
@@ -84,7 +84,7 @@ base_sect0_room7:
 .db $25,$25,$25,$26,$00,$00,$18,$19
 .db $29,$26,$26,$00,$00,$18,$19,$00
 .db $77,$00,$00,$00,$18,$19,$00,$00
-base_sect0_room7_objects:
+; base_sect0_room7_objects:
 .db $FF
 base_sect0_room8:
 .db $13,$0D,$0A,$13,$0D,$0A,$13,$0D
@@ -95,7 +95,7 @@ base_sect0_room8:
 .db $75,$4B,$4B,$7D,$4B,$53,$27,$28
 .db $74,$4C,$4C,$49,$4C,$52,$27,$28
 .db $74,$4C,$4C,$3D,$4C,$52,$27,$13
-base_sect0_room8_objects:
+; base_sect0_room8_objects:
 .db $FF
 base_sect0_room9:
 .db $0A,$13,$0D,$0A,$13,$0D,$0A,$13
@@ -106,7 +106,7 @@ base_sect0_room9:
 .db $27,$28,$27,$28,$27,$28,$27,$24
 .db $27,$28,$27,$28,$24,$28,$27,$77
 .db $27,$28,$27,$28,$79,$28,$27,$28
-base_sect0_room9_objects:
+; base_sect0_room9_objects:
 .db $FF
 base_sect0_room10:
 .db $0D,$0A,$13,$0D,$0A,$13,$0D,$0A
@@ -117,7 +117,7 @@ base_sect0_room10:
 .db $24,$24,$24,$74,$4C,$4C,$4C,$4C
 .db $79,$77,$79,$74,$4C,$4C,$4C,$4C
 .db $27,$28,$27,$74,$4C,$4C,$4C,$4C
-base_sect0_room10_objects:
+; base_sect0_room10_objects:
 .db $FF
 base_sect0_room11:
 .db $13,$0D,$0A,$13,$0D,$0A,$13,$0D
@@ -128,7 +128,7 @@ base_sect0_room11:
 .db $3D,$4C,$52,$28,$28,$27,$28,$28
 .db $49,$4C,$52,$5C,$5C,$24,$24,$5C
 .db $3D,$4C,$52,$5C,$5C,$5C,$5C,$5C
-base_sect0_room11_objects:
+; base_sect0_room11_objects:
 .db $FF
 base_sect0_room12:
 .db $0A,$13,$0D,$0A,$13,$0D,$0A,$13
@@ -139,7 +139,7 @@ base_sect0_room12:
 .db $27,$28,$28,$27,$28,$28,$27,$28
 .db $5C,$5C,$24,$24,$5C,$5C,$27,$28
 .db $5C,$5C,$5C,$5C,$5C,$5C,$27,$28
-base_sect0_room12_objects:
+; base_sect0_room12_objects:
 .db $FF
 base_sect0_room13:
 .db $0A,$0A,$13,$0D,$0A,$13,$0D,$0A
@@ -150,7 +150,7 @@ base_sect0_room13:
 .db $28,$27,$28,$28,$27,$28,$28,$25
 .db $28,$27,$28,$28,$27,$28,$28,$25
 .db $28,$27,$28,$28,$27,$28,$25,$25
-base_sect0_room13_objects:
+; base_sect0_room13_objects:
 .db $FF
 base_sect0_room14:
 .db $13,$0D,$0A,$13,$0D,$0A,$13,$0D
@@ -161,7 +161,7 @@ base_sect0_room14:
 .db $00,$00,$00,$00,$00,$7A,$00,$7B
 .db $00,$00,$00,$00,$00,$5F,$15,$15
 .db $00,$00,$00,$00,$18,$42,$42,$42
-base_sect0_room14_objects:
+; base_sect0_room14_objects:
 .db $FF
 base_sect0_room15:
 .db $0A,$13,$0D,$0A,$13,$0D,$0A,$0A
@@ -172,7 +172,7 @@ base_sect0_room15:
 .db $00,$7A,$00,$7B,$03,$7A,$00,$0A
 .db $5F,$5F,$5F,$5F,$04,$5F,$5F,$0A
 .db $42,$42,$42,$42,$42,$42,$42,$42
-base_sect0_room15_objects:
+; base_sect0_room15_objects:
 .db $FF
 base_sect0_room16:
 .db $4C,$4C,$4C,$4C,$4C,$4C,$4C,$3D
@@ -183,7 +183,7 @@ base_sect0_room16:
 .db $52,$35,$01,$25,$26,$38,$38,$39
 .db $52,$36,$02,$26,$00,$38,$39,$38
 .db $10,$10,$0F,$0F,$10,$0F,$0F,$0F
-base_sect0_room16_objects:
+; base_sect0_room16_objects:
 .db $02,$C5,$7D,$00,$FF
 base_sect0_room17:
 .db $4C,$4C,$52,$77,$27,$28,$3D,$4C
@@ -194,7 +194,7 @@ base_sect0_room17:
 .db $38,$38,$38,$28,$27,$24,$3D,$4C
 .db $38,$39,$38,$28,$27,$77,$3D,$4C
 .db $10,$0F,$0F,$24,$27,$28,$3D,$4C
-base_sect0_room17_objects:
+; base_sect0_room17_objects:
 .db $FF
 base_sect0_room18:
 .db $4C,$4C,$52,$50,$4F,$01,$56,$50
@@ -205,7 +205,7 @@ base_sect0_room18:
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$4C
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$4C
 .db $4C,$4C,$4C,$4C,$4C,$49,$4C,$72
-base_sect0_room18_objects:
+; base_sect0_room18_objects:
 .db $02,$2B,$42,$00,$FF
 base_sect0_room19:
 .db $00,$00,$46,$15,$46,$15,$46,$00
@@ -216,7 +216,7 @@ base_sect0_room19:
 .db $4C,$4C,$4C,$4C,$7D,$4C,$4C,$52
 .db $4C,$4C,$4C,$4C,$3D,$4C,$4C,$52
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$73
-base_sect0_room19_objects:
+; base_sect0_room19_objects:
 .db $FF
 base_sect0_room20:
 .db $54,$5E,$54,$00,$00,$18,$07,$06
@@ -227,7 +227,7 @@ base_sect0_room20:
 .db $54,$5E,$24,$3D,$4C,$4C,$4C,$4C
 .db $54,$5E,$7A,$3D,$4C,$4C,$52,$2C
 .db $24,$5E,$54,$49,$4C,$4C,$52,$00
-base_sect0_room20_objects:
+; base_sect0_room20_objects:
 .db $FF
 base_sect0_room21:
 .db $07,$06,$07,$06,$07,$06,$06,$74
@@ -238,7 +238,7 @@ base_sect0_room21:
 .db $4C,$4C,$52,$4C,$4C,$4C,$4C,$4C
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
 .db $00,$00,$00,$7B,$00,$7B,$00,$7B
-base_sect0_room21_objects:
+; base_sect0_room21_objects:
 .db $FF
 base_sect0_room22:
 .db $4C,$3D,$4C,$4C,$52,$27,$28,$27
@@ -249,7 +249,7 @@ base_sect0_room22:
 .db $4C,$3D,$4C,$4C,$52,$00,$00,$00
 .db $2C,$2C,$2C,$2C,$73,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-base_sect0_room22_objects:
+; base_sect0_room22_objects:
 .db $FF
 base_sect0_room23:
 .db $28,$00,$00,$18,$19,$00,$00,$00
@@ -260,7 +260,7 @@ base_sect0_room23:
 .db $79,$00,$27,$00,$27,$13,$00,$13
 .db $27,$00,$27,$00,$13,$13,$13,$13
 .db $27,$00,$13,$13,$13,$13,$13,$13
-base_sect0_room23_objects:
+; base_sect0_room23_objects:
 .db $FF
 base_sect0_room24:
 .db $74,$4C,$4C,$3D,$4C,$52,$27,$13
@@ -271,7 +271,7 @@ base_sect0_room24:
 .db $74,$4C,$4C,$3D,$4C,$4C,$4C,$4C
 .db $74,$4C,$4C,$3D,$4C,$4C,$52,$72
 .db $74,$4C,$4C,$49,$4C,$4C,$52,$1B
-base_sect0_room24_objects:
+; base_sect0_room24_objects:
 .db $FF
 base_sect0_room25:
 .db $27,$28,$27,$28,$27,$28,$27,$28
@@ -282,7 +282,7 @@ base_sect0_room25:
 .db $4C,$4C,$49,$4C,$4C,$52,$27,$28
 .db $2C,$2C,$2C,$2C,$2C,$73,$24,$28
 .db $79,$1B,$79,$1B,$79,$1B,$79,$28
-base_sect0_room25_objects:
+; base_sect0_room25_objects:
 .db $FF
 base_sect0_room26:
 .db $27,$28,$27,$74,$4C,$4C,$4C,$4C
@@ -293,7 +293,7 @@ base_sect0_room26:
 .db $27,$77,$27,$74,$4C,$4C,$4C,$4C
 .db $27,$28,$27,$74,$4C,$4C,$4C,$4C
 .db $27,$28,$27,$74,$4C,$4C,$4C,$4C
-base_sect0_room26_objects:
+; base_sect0_room26_objects:
 .db $FF
 base_sect0_room27:
 .db $3D,$4C,$52,$5C,$5C,$5C,$5C,$5C
@@ -304,7 +304,7 @@ base_sect0_room27:
 .db $3D,$4C,$4C,$4C,$4C,$4C,$4C,$49
 .db $3D,$4C,$4C,$4C,$4C,$4C,$4C,$3D
 .db $49,$4C,$4C,$4C,$4C,$4C,$4C,$3D
-base_sect0_room27_objects:
+; base_sect0_room27_objects:
 .db $FF
 base_sect0_room28:
 .db $24,$5C,$5C,$5C,$5C,$5C,$27,$28
@@ -315,7 +315,7 @@ base_sect0_room28:
 .db $4C,$4C,$4C,$4C,$4C,$4C,$49,$4C
 .db $4C,$4C,$4C,$4C,$4C,$4C,$3D,$4C
 .db $4C,$4C,$4C,$4C,$4C,$4C,$49,$4C
-base_sect0_room28_objects:
+; base_sect0_room28_objects:
 .db $02,$41,$43,$00,$FF
 base_sect0_room29:
 .db $24,$24,$28,$28,$27,$25,$25,$26
@@ -326,7 +326,7 @@ base_sect0_room29:
 .db $4C,$4C,$4C,$4C,$4C,$49,$00,$24
 .db $4C,$4C,$4C,$4C,$4C,$3D,$00,$7B
 .db $4C,$4C,$4C,$4C,$4C,$49,$00,$5E
-base_sect0_room29_objects:
+; base_sect0_room29_objects:
 .db $FF
 base_sect0_room30:
 .db $00,$00,$00,$42,$19,$4B,$4B,$4B
@@ -337,7 +337,7 @@ base_sect0_room30:
 .db $24,$00,$54,$00,$00,$00,$00,$00
 .db $7B,$00,$54,$00,$00,$00,$00,$00
 .db $5E,$00,$54,$00,$00,$00,$00,$00
-base_sect0_room30_objects:
+; base_sect0_room30_objects:
 .db $FF
 base_sect0_room31:
 .db $4B,$4B,$4B,$7D,$4B,$4B,$4B,$4B
@@ -348,7 +348,7 @@ base_sect0_room31:
 .db $78,$78,$78,$78,$78,$78,$74,$4C
 .db $37,$37,$37,$37,$37,$37,$74,$4C
 .db $37,$37,$37,$37,$37,$37,$74,$4C
-base_sect0_room31_objects:
+; base_sect0_room31_objects:
 .db $FF
 base_sect0_room32:
 .db $7D,$4B,$4B,$4B,$4B,$4B,$4B,$7D
@@ -359,7 +359,7 @@ base_sect0_room32:
 .db $3D,$4C,$4C,$4C,$4C,$4C,$52,$15
 .db $49,$4C,$4C,$4C,$4C,$4C,$52,$34
 .db $3D,$4C,$4C,$4C,$4C,$4C,$52,$10
-base_sect0_room32_objects:
+; base_sect0_room32_objects:
 .db $FF
 base_sect0_room33:
 .db $4B,$4B,$53,$77,$27,$24,$72,$2C
@@ -370,7 +370,7 @@ base_sect0_room33:
 .db $03,$15,$54,$54,$54,$54,$49,$4C
 .db $04,$4D,$54,$5F,$5F,$5F,$3D,$4C
 .db $0F,$10,$54,$5F,$5F,$5F,$3D,$4C
-base_sect0_room33_objects:
+; base_sect0_room33_objects:
 .db $FF
 base_sect0_room34:
 .db $2C,$2C,$2C,$2C,$2C,$2C,$73,$1B
@@ -381,7 +381,7 @@ base_sect0_room34:
 .db $4C,$4C,$4C,$4C,$4C,$49,$4C,$4C
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$4C
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$72
-base_sect0_room34_objects:
+; base_sect0_room34_objects:
 .db $FF
 base_sect0_room35:
 .db $1B,$7C,$7C,$7C,$7C,$7C,$7C,$7C
@@ -392,7 +392,7 @@ base_sect0_room35:
 .db $4C,$4C,$4C,$52,$49,$4C,$4C,$52
 .db $4C,$4C,$4C,$52,$3D,$4C,$4C,$52
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$73
-base_sect0_room35_objects:
+; base_sect0_room35_objects:
 .db $FF
 base_sect0_room36:
 .db $7A,$5E,$54,$3D,$4C,$4C,$52,$00
@@ -403,7 +403,7 @@ base_sect0_room36:
 .db $54,$5E,$24,$49,$4C,$4C,$4C,$4C
 .db $24,$5E,$7A,$3D,$4C,$4C,$4C,$4C
 .db $7A,$5E,$54,$3D,$4C,$4C,$4C,$4C
-base_sect0_room36_objects:
+; base_sect0_room36_objects:
 .db $FF
 base_sect0_room37:
 .db $00,$00,$00,$5E,$00,$5E,$00,$5E
@@ -414,7 +414,7 @@ base_sect0_room37:
 .db $4C,$52,$00,$5E,$00,$5E,$00,$5E
 .db $4C,$52,$24,$24,$00,$5E,$00,$5E
 .db $4C,$52,$00,$7B,$00,$5E,$00,$24
-base_sect0_room37_objects:
+; base_sect0_room37_objects:
 .db $FF
 base_sect0_room38:
 .db $00,$00,$00,$00,$00,$00,$18,$42
@@ -425,7 +425,7 @@ base_sect0_room38:
 .db $00,$18,$19,$00,$00,$00,$00,$49
 .db $18,$24,$24,$24,$24,$24,$24,$3D
 .db $24,$00,$50,$01,$15,$50,$50,$3D
-base_sect0_room38_objects:
+; base_sect0_room38_objects:
 .db $FF
 base_sect0_room39:
 .db $42,$42,$42,$42,$42,$42,$42,$42
@@ -436,7 +436,7 @@ base_sect0_room39:
 .db $4C,$4C,$4C,$4C,$4C,$49,$4C,$52
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$52
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$52
-base_sect0_room39_objects:
+; base_sect0_room39_objects:
 .db $FF
 base_sect0_room40:
 .db $74,$4C,$4C,$3D,$4C,$4C,$52,$77
@@ -447,7 +447,7 @@ base_sect0_room40:
 .db $27,$28,$27,$28,$27,$28,$27,$28
 .db $5F,$5F,$5F,$5F,$5F,$5F,$5F,$5F
 .db $7B,$7B,$5F,$01,$5F,$7B,$7B,$7B
-base_sect0_room40_objects:
+; base_sect0_room40_objects:
 .db $FF
 base_sect0_room41:
 .db $27,$77,$27,$77,$27,$77,$27,$28
@@ -458,7 +458,7 @@ base_sect0_room41:
 .db $27,$28,$27,$28,$27,$77,$27,$28
 .db $5F,$24,$24,$5F,$5F,$5F,$5F,$24
 .db $5F,$5F,$5F,$7B,$7B,$7B,$7B,$5F
-base_sect0_room41_objects:
+; base_sect0_room41_objects:
 .db $FF
 base_sect0_room42:
 .db $27,$24,$24,$74,$4C,$4C,$4C,$4C
@@ -469,7 +469,7 @@ base_sect0_room42:
 .db $27,$28,$27,$74,$4C,$4C,$4C,$4C
 .db $24,$24,$24,$74,$4C,$4C,$4C,$4C
 .db $5F,$5F,$5F,$74,$4C,$4C,$4C,$4C
-base_sect0_room42_objects:
+; base_sect0_room42_objects:
 .db $FF
 base_sect0_room43:
 .db $3D,$4C,$4C,$4C,$4C,$4C,$4C,$49
@@ -480,7 +480,7 @@ base_sect0_room43:
 .db $49,$4C,$52,$00,$54,$37,$00,$37
 .db $3D,$4C,$52,$00,$54,$37,$00,$37
 .db $3D,$4C,$52,$1B,$54,$37,$1B,$37
-base_sect0_room43_objects:
+; base_sect0_room43_objects:
 .db $FF
 base_sect0_room44:
 .db $4C,$52,$72,$2C,$2C,$2C,$2C,$2C
@@ -491,7 +491,7 @@ base_sect0_room44:
 .db $25,$25,$25,$00,$00,$37,$00,$00
 .db $26,$25,$25,$00,$00,$37,$00,$18
 .db $1B,$25,$25,$1B,$1B,$37,$18,$19
-base_sect0_room44_objects:
+; base_sect0_room44_objects:
 .db $FF
 base_sect0_room45:
 .db $2C,$2C,$2C,$2C,$2C,$73,$24,$24
@@ -502,7 +502,7 @@ base_sect0_room45:
 .db $37,$13,$13,$37,$37,$37,$13,$76
 .db $42,$42,$42,$42,$42,$42,$42,$42
 .db $4B,$4B,$4B,$4B,$4B,$7D,$4B,$4B
-base_sect0_room45_objects:
+; base_sect0_room45_objects:
 .db $FF
 base_sect0_room46:
 .db $24,$24,$24,$24,$00,$00,$00,$00
@@ -513,7 +513,7 @@ base_sect0_room46:
 .db $63,$76,$63,$76,$00,$00,$00,$0F
 .db $42,$42,$42,$42,$42,$00,$00,$00
 .db $4B,$4B,$4B,$4B,$53,$0E,$0E,$0E
-base_sect0_room46_objects:
+; base_sect0_room46_objects:
 .db $FF
 base_sect0_room47:
 .db $37,$37,$37,$37,$37,$37,$74,$4C
@@ -524,7 +524,7 @@ base_sect0_room47:
 .db $10,$0F,$10,$0F,$10,$0F,$74,$4C
 .db $00,$00,$00,$00,$00,$00,$74,$4C
 .db $0E,$0E,$0E,$0E,$0E,$0E,$0F,$10
-base_sect0_room47_objects:
+; base_sect0_room47_objects:
 .db $FF
 base_sect0_room48:
 .db $3D,$4C,$4C,$4C,$4C,$4C,$52,$7A
@@ -535,7 +535,7 @@ base_sect0_room48:
 .db $25,$25,$26,$00,$23,$23,$54,$54
 .db $42,$42,$42,$42,$42,$42,$42,$54
 .db $4B,$4B,$4B,$4B,$4B,$4B,$53,$28
-base_sect0_room48_objects:
+; base_sect0_room48_objects:
 .db $03,$A0,$44,$00,$FF
 base_sect0_room49:
 .db $7A,$7A,$54,$5E,$01,$5E,$49,$52
@@ -546,7 +546,7 @@ base_sect0_room49:
 .db $54,$54,$54,$47,$47,$47,$7D,$4B
 .db $54,$54,$0F,$0F,$10,$0F,$49,$4C
 .db $54,$28,$77,$79,$77,$77,$3D,$4C
-base_sect0_room49_objects:
+; base_sect0_room49_objects:
 .db $02,$29,$45,$00,$FF
 base_sect0_room50:
 .db $2C,$2C,$2C,$2C,$2C,$2C,$73,$7B
@@ -557,7 +557,7 @@ base_sect0_room50:
 .db $4B,$4B,$4B,$4B,$4B,$7D,$4B,$4B
 .db $4C,$4C,$4C,$4C,$4C,$49,$4C,$4C
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$4C
-base_sect0_room50_objects:
+; base_sect0_room50_objects:
 .db $FF
 base_sect0_room51:
 .db $7A,$7B,$7A,$7B,$7A,$7B,$7A,$7B
@@ -568,7 +568,7 @@ base_sect0_room51:
 .db $4B,$4B,$4B,$4B,$7D,$4B,$4B,$4B
 .db $4C,$4C,$4C,$4C,$49,$4C,$4C,$4C
 .db $4C,$4C,$4C,$4C,$3D,$4C,$4C,$4C
-base_sect0_room51_objects:
+; base_sect0_room51_objects:
 .db $FF
 base_sect0_room52:
 .db $54,$5E,$24,$72,$2C,$2C,$2C,$2C
@@ -579,7 +579,7 @@ base_sect0_room52:
 .db $4B,$4B,$4B,$3D,$4B,$4B,$4B,$4B
 .db $4C,$4C,$4C,$49,$4C,$4C,$4C,$4C
 .db $4C,$4C,$4C,$3D,$4C,$4C,$4C,$4C
-base_sect0_room52_objects:
+; base_sect0_room52_objects:
 .db $FF
 base_sect0_room53:
 .db $2C,$73,$00,$5E,$00,$5E,$00,$0E
@@ -590,7 +590,7 @@ base_sect0_room53:
 .db $4B,$4B,$3D,$4B,$4B,$4B,$4B,$4B
 .db $4C,$4C,$49,$4C,$4C,$4C,$4C,$4C
 .db $4C,$4C,$3D,$4C,$4C,$4C,$4C,$4C
-base_sect0_room53_objects:
+; base_sect0_room53_objects:
 .db $FF
 base_sect0_room54:
 .db $0E,$0E,$34,$02,$4E,$4D,$13,$49
@@ -601,7 +601,7 @@ base_sect0_room54:
 .db $4B,$3D,$4B,$53,$17,$16,$00,$00
 .db $4C,$49,$4C,$52,$00,$17,$16,$00
 .db $4C,$3D,$4C,$52,$00,$4B,$17,$16
-base_sect0_room54_objects:
+; base_sect0_room54_objects:
 .db $02,$07,$46,$00,$FF
 base_sect0_room55:
 .db $4C,$4C,$4C,$4C,$4C,$49,$4C,$52
@@ -612,7 +612,7 @@ base_sect0_room55:
 .db $00,$72,$73,$1B,$1B,$1B,$72,$73
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$11,$11,$11,$11
-base_sect0_room55_objects:
+; base_sect0_room55_objects:
 .db $FF
 base_sect0_room56:
 .db $5F,$5F,$5F,$02,$5F,$5F,$5F,$5F
@@ -623,7 +623,7 @@ base_sect0_room56:
 .db $00,$5E,$5F,$1B,$1B,$5F,$1B,$1B
 .db $00,$5E,$5F,$7B,$7B,$5F,$7B,$7B
 .db $11,$5E,$5F,$5E,$5E,$5F,$5E,$5E
-base_sect0_room56_objects:
+; base_sect0_room56_objects:
 .db $02,$07,$7E,$00,$FF
 base_sect0_room57:
 .db $5F,$5F,$5F,$5F,$5F,$5F,$5F,$5F
@@ -634,7 +634,7 @@ base_sect0_room57:
 .db $5F,$1B,$1B,$5F,$1B,$1B,$5F,$1B
 .db $5F,$7B,$7B,$5F,$7B,$7B,$5F,$7B
 .db $5F,$5E,$5E,$5F,$5E,$5E,$5F,$5E
-base_sect0_room57_objects:
+; base_sect0_room57_objects:
 .db $FF
 base_sect0_room58:
 .db $5F,$5F,$5F,$74,$4C,$4C,$4C,$4C
@@ -645,7 +645,7 @@ base_sect0_room58:
 .db $1B,$5F,$1B,$74,$4C,$52,$27,$27
 .db $7B,$5F,$7B,$74,$4C,$52,$27,$27
 .db $5E,$5F,$5E,$74,$4C,$52,$42,$42
-base_sect0_room58_objects:
+; base_sect0_room58_objects:
 .db $FF
 base_sect0_room59:
 .db $49,$4C,$52,$00,$54,$37,$00,$37
@@ -656,7 +656,7 @@ base_sect0_room59:
 .db $27,$27,$54,$00,$24,$24,$24,$24
 .db $27,$27,$54,$00,$00,$7A,$00,$78
 .db $42,$27,$54,$00,$00,$54,$00,$37
-base_sect0_room59_objects:
+; base_sect0_room59_objects:
 .db $FF
 base_sect0_room60:
 .db $00,$26,$25,$00,$42,$42,$19,$4B
@@ -667,7 +667,7 @@ base_sect0_room60:
 .db $00,$00,$00,$00,$5E,$00,$7B,$7B
 .db $00,$00,$00,$00,$5E,$1B,$5E,$5E
 .db $00,$00,$42,$42,$42,$42,$42,$42
-base_sect0_room60_objects:
+; base_sect0_room60_objects:
 .db $FF
 base_sect0_room61:
 .db $4C,$4C,$4C,$4C,$4C,$49,$4C,$4C
@@ -678,7 +678,7 @@ base_sect0_room61:
 .db $7B,$7B,$7B,$7B,$7B,$7B,$00,$5E
 .db $5E,$1B,$1B,$5E,$5E,$5E,$1B,$5E
 .db $42,$42,$42,$42,$42,$42,$42,$42
-base_sect0_room61_objects:
+; base_sect0_room61_objects:
 .db $FF
 base_sect0_room62:
 .db $4C,$4C,$4C,$4C,$52,$05,$05,$05
@@ -689,7 +689,7 @@ base_sect0_room62:
 .db $00,$00,$00,$5E,$00,$7B,$00,$7B
 .db $1B,$13,$1B,$5E,$1B,$5E,$00,$5E
 .db $42,$42,$42,$42,$42,$42,$42,$42
-base_sect0_room62_objects:
+; base_sect0_room62_objects:
 .db $FF
 base_sect0_room63:
 .db $05,$05,$05,$05,$05,$05,$0E,$0E
@@ -700,7 +700,7 @@ base_sect0_room63:
 .db $00,$7B,$00,$7B,$00,$7B,$74,$4C
 .db $00,$5E,$00,$5E,$00,$5E,$74,$4C
 .db $42,$5E,$00,$5E,$42,$42,$74,$4C
-base_sect0_room63_objects:
+; base_sect0_room63_objects:
 .db $03,$0F,$47,$00,$FF
 base_sect0_room64:
 .db $4C,$4C,$4C,$4C,$4C,$4C,$52,$28
@@ -711,7 +711,7 @@ base_sect0_room64:
 .db $4C,$52,$2C,$2C,$2C,$2C,$73,$28
 .db $4C,$52,$5F,$5F,$5F,$5F,$5F,$28
 .db $4C,$52,$00,$78,$5F,$00,$78,$28
-base_sect0_room64_objects:
+; base_sect0_room64_objects:
 .db $FF
 base_sect0_room65:
 .db $54,$28,$28,$27,$28,$28,$3D,$4C
@@ -722,7 +722,7 @@ base_sect0_room65:
 .db $27,$28,$28,$27,$24,$28,$27,$00
 .db $27,$28,$28,$27,$77,$28,$27,$00
 .db $27,$28,$28,$27,$28,$28,$27,$00
-base_sect0_room65_objects:
+; base_sect0_room65_objects:
 .db $FF
 base_sect0_room66:
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$4C
@@ -733,7 +733,7 @@ base_sect0_room66:
 .db $00,$25,$5C,$5C,$5C,$5C,$5C,$5C
 .db $00,$25,$26,$5C,$5C,$5C,$5C,$5C
 .db $23,$22,$23,$5C,$5C,$5C,$5C,$5C
-base_sect0_room66_objects:
+; base_sect0_room66_objects:
 .db $FF
 base_sect0_room67:
 .db $4C,$4C,$4C,$4C,$3D,$4C,$4C,$4C
@@ -744,7 +744,7 @@ base_sect0_room67:
 .db $25,$25,$26,$00,$00,$11,$11,$11
 .db $25,$26,$46,$46,$00,$50,$56,$01
 .db $26,$00,$47,$47,$00,$34,$4E,$02
-base_sect0_room67_objects:
+; base_sect0_room67_objects:
 .db $02,$EF,$48,$00,$FF
 base_sect0_room68:
 .db $4C,$4C,$4C,$3D,$4C,$4C,$4C,$4C
@@ -755,7 +755,7 @@ base_sect0_room68:
 .db $11,$11,$11,$3D,$4C,$4C,$4C,$4C
 .db $56,$56,$50,$3D,$4C,$4C,$4C,$4C
 .db $4E,$13,$4D,$49,$4C,$4C,$4C,$4C
-base_sect0_room68_objects:
+; base_sect0_room68_objects:
 .db $FF
 base_sect0_room69:
 .db $4C,$4C,$49,$4C,$4C,$4C,$4C,$4C
@@ -766,7 +766,7 @@ base_sect0_room69:
 .db $4C,$4C,$52,$57,$13,$57,$57,$5A
 .db $4C,$4C,$52,$24,$24,$24,$57,$57
 .db $4C,$4C,$52,$58,$58,$58,$57,$5A
-base_sect0_room69_objects:
+; base_sect0_room69_objects:
 .db $FF
 base_sect0_room70:
 .db $4C,$3D,$4C,$52,$00,$4C,$4B,$17
@@ -777,7 +777,7 @@ base_sect0_room70:
 .db $57,$57,$57,$52,$28,$28,$27,$28
 .db $57,$57,$57,$52,$24,$28,$27,$28
 .db $57,$57,$57,$52,$77,$28,$27,$28
-base_sect0_room70_objects:
+; base_sect0_room70_objects:
 .db $FF
 base_sect0_room71:
 .db $16,$00,$00,$00,$50,$51,$50,$51
@@ -788,7 +788,7 @@ base_sect0_room71:
 .db $74,$4C,$4C,$4C,$4C,$4C,$4C,$4C
 .db $74,$4C,$4C,$4C,$4C,$4C,$4C,$4C
 .db $74,$4C,$4C,$4C,$4C,$4C,$4C,$4C
-base_sect0_room71_objects:
+; base_sect0_room71_objects:
 .db $02,$4D,$49,$00,$FF
 base_sect0_room72:
 .db $50,$5E,$5F,$5E,$24,$24,$5E,$5E
@@ -799,7 +799,7 @@ base_sect0_room72:
 .db $52,$5E,$5F,$5E,$5E,$24,$24,$24
 .db $52,$5E,$5F,$5F,$5F,$5F,$7B,$7B
 .db $52,$24,$24,$7B,$7B,$5F,$5E,$5E
-base_sect0_room72_objects:
+; base_sect0_room72_objects:
 .db $FF
 base_sect0_room73:
 .db $42,$42,$42,$42,$42,$42,$42,$42
@@ -810,7 +810,7 @@ base_sect0_room73:
 .db $74,$4C,$3D,$4C,$4C,$4C,$4C,$4C
 .db $74,$4C,$3D,$4C,$4C,$4C,$4C,$4C
 .db $74,$4C,$49,$4C,$4C,$4C,$4C,$4C
-base_sect0_room73_objects:
+; base_sect0_room73_objects:
 .db $FF
 base_sect0_room74:
 .db $42,$42,$42,$4C,$4C,$52,$79,$79
@@ -821,7 +821,7 @@ base_sect0_room74:
 .db $4C,$3D,$4C,$4C,$4C,$4C,$4C,$4C
 .db $4C,$3D,$4C,$4C,$4C,$4C,$4C,$4C
 .db $4C,$49,$4C,$4C,$4C,$52,$72,$2C
-base_sect0_room74_objects:
+; base_sect0_room74_objects:
 .db $FF
 base_sect0_room75:
 .db $79,$27,$54,$00,$00,$54,$00,$37
@@ -832,7 +832,7 @@ base_sect0_room75:
 .db $3D,$4C,$4C,$4C,$4C,$4C,$52,$24
 .db $3D,$4C,$52,$2C,$2C,$74,$52,$5F
 .db $2C,$2C,$73,$5F,$78,$2C,$73,$78
-base_sect0_room75_objects:
+; base_sect0_room75_objects:
 .db $FF
 base_sect0_room76:
 .db $00,$00,$00,$75,$4B,$4B,$7D,$4B
@@ -843,7 +843,7 @@ base_sect0_room76:
 .db $54,$54,$37,$74,$4C,$4C,$3D,$4C
 .db $5F,$5F,$5F,$74,$4C,$4C,$3D,$4C
 .db $7A,$7A,$24,$72,$2C,$2C,$2C,$2C
-base_sect0_room76_objects:
+; base_sect0_room76_objects:
 .db $FF
 base_sect0_room77:
 .db $4B,$4B,$4B,$4B,$4B,$7D,$4B,$4B
@@ -854,7 +854,7 @@ base_sect0_room77:
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$4C
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$4C
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
-base_sect0_room77_objects:
+; base_sect0_room77_objects:
 .db $FF
 base_sect0_room78:
 .db $4B,$4B,$4B,$4B,$7D,$4B,$53,$7B
@@ -865,7 +865,7 @@ base_sect0_room78:
 .db $4C,$4C,$4C,$4C,$3D,$4C,$52,$5E
 .db $4C,$4C,$4C,$4C,$3D,$4C,$52,$5E
 .db $2C,$2C,$2C,$73,$49,$4C,$52,$5E
-base_sect0_room78_objects:
+; base_sect0_room78_objects:
 .db $FF
 base_sect0_room79:
 .db $5F,$5E,$5F,$5E,$5F,$7B,$74,$4C
@@ -876,7 +876,7 @@ base_sect0_room79:
 .db $5F,$5E,$5F,$5E,$5F,$7B,$74,$4C
 .db $00,$5E,$1C,$5E,$00,$5E,$74,$4C
 .db $01,$5E,$00,$5E,$00,$5E,$74,$4C
-base_sect0_room79_objects:
+; base_sect0_room79_objects:
 .db $FF
 base_sect0_room80:
 .db $4C,$52,$00,$37,$5F,$00,$37,$28
@@ -887,7 +887,7 @@ base_sect0_room80:
 .db $4B,$53,$24,$37,$5F,$00,$42,$42
 .db $4C,$52,$5F,$5F,$5F,$5F,$75,$4B
 .db $4C,$52,$00,$78,$5F,$24,$74,$4C
-base_sect0_room80_objects:
+; base_sect0_room80_objects:
 .db $03,$60,$4A,$00,$FF
 base_sect0_room81:
 .db $27,$28,$28,$27,$28,$28,$24,$24
@@ -898,7 +898,7 @@ base_sect0_room81:
 .db $42,$42,$42,$42,$42,$42,$42,$42
 .db $4B,$4B,$4B,$4B,$4B,$4B,$7D,$4B
 .db $4C,$4C,$4C,$4C,$4C,$4C,$3D,$4C
-base_sect0_room81_objects:
+; base_sect0_room81_objects:
 .db $FF
 base_sect0_room82:
 .db $24,$24,$24,$24,$24,$24,$24,$24
@@ -909,7 +909,7 @@ base_sect0_room82:
 .db $42,$42,$42,$42,$42,$42,$42,$42
 .db $4B,$4B,$4B,$4B,$4B,$7D,$4B,$4B
 .db $4C,$4C,$4C,$4C,$4C,$3D,$4C,$4C
-base_sect0_room82_objects:
+; base_sect0_room82_objects:
 .db $FF
 base_sect0_room83:
 .db $24,$24,$24,$24,$24,$24,$24,$24
@@ -920,7 +920,7 @@ base_sect0_room83:
 .db $42,$42,$42,$42,$16,$00,$5F,$5F
 .db $4B,$4B,$4B,$4B,$17,$16,$5F,$00
 .db $4C,$4C,$4C,$4C,$7D,$17,$06,$06
-base_sect0_room83_objects:
+; base_sect0_room83_objects:
 .db $02,$85,$4B,$00,$FF
 base_sect0_room84:
 .db $24,$24,$24,$3D,$4C,$4C,$4C,$4C
@@ -931,7 +931,7 @@ base_sect0_room84:
 .db $5F,$5F,$5F,$5F,$5F,$5F,$5F,$5F
 .db $5F,$00,$5F,$00,$5F,$00,$5F,$00
 .db $07,$06,$07,$06,$07,$16,$5F,$0E
-base_sect0_room84_objects:
+; base_sect0_room84_objects:
 .db $FF
 base_sect0_room85:
 .db $4C,$4C,$52,$5A,$57,$5A,$57,$24
@@ -942,7 +942,7 @@ base_sect0_room85:
 .db $5F,$5F,$5F,$5F,$13,$23,$22,$23
 .db $5F,$00,$5F,$00,$24,$24,$24,$24
 .db $5F,$13,$5F,$0E,$0E,$0E,$0E,$0E
-base_sect0_room85_objects:
+; base_sect0_room85_objects:
 .db $02,$6F,$4C,$00,$FF
 base_sect0_room86:
 .db $24,$24,$24,$52,$28,$28,$27,$24
@@ -953,7 +953,7 @@ base_sect0_room86:
 .db $22,$13,$77,$79,$28,$24,$24,$28
 .db $24,$24,$28,$27,$28,$28,$79,$28
 .db $0E,$0E,$28,$27,$28,$28,$27,$28
-base_sect0_room86_objects:
+; base_sect0_room86_objects:
 .db $FF
 base_sect0_room87:
 .db $74,$4C,$4C,$4C,$4C,$4C,$4C,$4C
@@ -964,7 +964,7 @@ base_sect0_room87:
 .db $28,$27,$28,$28,$27,$28,$28,$27
 .db $28,$27,$28,$28,$27,$28,$28,$27
 .db $28,$27,$28,$28,$13,$28,$28,$27
-base_sect0_room87_objects:
+; base_sect0_room87_objects:
 .db $FF
 base_sect0_room88:
 .db $52,$7B,$5F,$5E,$5E,$5F,$5E,$5E
@@ -975,7 +975,7 @@ base_sect0_room88:
 .db $28,$5E,$5F,$7B,$7B,$5F,$5E,$5E
 .db $28,$5E,$5F,$5F,$5F,$5F,$5E,$5E
 .db $28,$5E,$13,$13,$13,$5F,$5E,$5E
-base_sect0_room88_objects:
+; base_sect0_room88_objects:
 .db $FF
 base_sect0_room89:
 .db $74,$4C,$3D,$4C,$72,$2C,$2C,$2C
@@ -986,7 +986,7 @@ base_sect0_room89:
 .db $42,$42,$42,$42,$42,$42,$42,$42
 .db $75,$4B,$7D,$4B,$4B,$4B,$4B,$4B
 .db $74,$4C,$3D,$4C,$4C,$4C,$4C,$4C
-base_sect0_room89_objects:
+; base_sect0_room89_objects:
 .db $FF
 base_sect0_room90:
 .db $2C,$2C,$2C,$2C,$2C,$73,$00,$5F
@@ -997,7 +997,7 @@ base_sect0_room90:
 .db $42,$42,$16,$5E,$00,$37,$00,$5F
 .db $4B,$7D,$17,$42,$42,$42,$00,$5F
 .db $4C,$3D,$4B,$4B,$4B,$53,$00,$5F
-base_sect0_room90_objects:
+; base_sect0_room90_objects:
 .db $FF
 base_sect0_room91:
 .db $78,$5F,$78,$5F,$37,$5F,$78,$37
@@ -1008,7 +1008,7 @@ base_sect0_room91:
 .db $78,$5F,$78,$5F,$37,$5F,$37,$37
 .db $5F,$5F,$5F,$5F,$5F,$5F,$37,$37
 .db $78,$5F,$78,$5F,$78,$5F,$37,$37
-base_sect0_room91_objects:
+; base_sect0_room91_objects:
 .db $FF
 base_sect0_room92:
 .db $54,$54,$78,$00,$78,$00,$00,$7A
@@ -1019,7 +1019,7 @@ base_sect0_room92:
 .db $54,$54,$78,$00,$37,$00,$00,$79
 .db $54,$54,$37,$00,$24,$24,$00,$27
 .db $54,$54,$37,$00,$78,$00,$00,$27
-base_sect0_room92_objects:
+; base_sect0_room92_objects:
 .db $FF
 base_sect0_room93:
 .db $1B,$7A,$1B,$39,$1B,$7A,$1B,$7A
@@ -1030,7 +1030,7 @@ base_sect0_room93:
 .db $00,$79,$00,$79,$00,$79,$00,$00
 .db $00,$27,$00,$27,$00,$27,$00,$00
 .db $00,$27,$00,$27,$00,$27,$00,$00
-base_sect0_room93_objects:
+; base_sect0_room93_objects:
 .db $FF
 base_sect0_room94:
 .db $1B,$7A,$39,$7A,$3D,$4C,$52,$5E
@@ -1041,7 +1041,7 @@ base_sect0_room94:
 .db $77,$79,$77,$79,$77,$79,$79,$00
 .db $28,$27,$28,$27,$28,$27,$27,$00
 .db $28,$27,$28,$27,$28,$27,$27,$00
-base_sect0_room94_objects:
+; base_sect0_room94_objects:
 .db $02,$65,$4D,$00,$FF
 base_sect0_room95:
 .db $02,$5E,$5F,$5E,$5F,$5E,$74,$4C
@@ -1052,7 +1052,7 @@ base_sect0_room95:
 .db $79,$79,$77,$79,$77,$79,$77,$0A
 .db $27,$27,$28,$27,$28,$27,$28,$0A
 .db $27,$27,$28,$27,$28,$27,$28,$0A
-base_sect0_room95_objects:
+; base_sect0_room95_objects:
 .db $02,$01,$4E,$00,$FF
 base_sect0_room96:
 .db $4C,$52,$00,$37,$5F,$00,$74,$4C
@@ -1063,7 +1063,7 @@ base_sect0_room96:
 .db $4C,$52,$24,$37,$5F,$00,$00,$5F
 .db $4C,$52,$5F,$5F,$5F,$5F,$5F,$5F
 .db $4C,$52,$00,$78,$24,$24,$00,$5F
-base_sect0_room96_objects:
+; base_sect0_room96_objects:
 .db $FF
 base_sect0_room97:
 .db $4C,$4C,$4C,$4C,$4C,$4C,$49,$4C
@@ -1074,7 +1074,7 @@ base_sect0_room97:
 .db $00,$5F,$5F,$5F,$5F,$5F,$00,$78
 .db $5F,$5E,$37,$01,$37,$5E,$00,$37
 .db $00,$5F,$37,$02,$13,$5F,$00,$37
-base_sect0_room97_objects:
+; base_sect0_room97_objects:
 .db $02,$E7,$4F,$00,$FF
 base_sect0_room98:
 .db $4C,$4C,$4C,$4C,$4C,$49,$4C,$4C
@@ -1085,7 +1085,7 @@ base_sect0_room98:
 .db $74,$4C,$4C,$4C,$52,$00,$00,$78
 .db $74,$4C,$4C,$4C,$52,$00,$00,$37
 .db $74,$4C,$4C,$4C,$52,$00,$00,$37
-base_sect0_room98_objects:
+; base_sect0_room98_objects:
 .db $FF
 base_sect0_room99:
 .db $4C,$4C,$4C,$4C,$3D,$4B,$4B,$4B
@@ -1096,7 +1096,7 @@ base_sect0_room99:
 .db $00,$00,$78,$00,$00,$78,$00,$7A
 .db $00,$00,$37,$00,$00,$37,$00,$54
 .db $00,$00,$37,$00,$1C,$1C,$16,$54
-base_sect0_room99_objects:
+; base_sect0_room99_objects:
 .db $FF
 base_sect0_room100:
 .db $4B,$4B,$4B,$7D,$4B,$17,$06,$07
@@ -1107,7 +1107,7 @@ base_sect0_room100:
 .db $78,$7E,$7A,$7E,$7A,$00,$78,$00
 .db $37,$7E,$01,$7E,$54,$00,$37,$00
 .db $37,$7E,$02,$7E,$54,$18,$1C,$1C
-base_sect0_room100_objects:
+; base_sect0_room100_objects:
 .db $02,$E5,$C1,$00,$FF
 base_sect0_room101:
 .db $06,$06,$06,$07,$06,$06,$06,$07
@@ -1118,7 +1118,7 @@ base_sect0_room101:
 .db $00,$78,$00,$00,$78,$00,$00,$00
 .db $00,$37,$00,$00,$37,$00,$00,$00
 .db $00,$37,$00,$00,$37,$00,$00,$00
-base_sect0_room101_objects:
+; base_sect0_room101_objects:
 .db $FF
 base_sect0_room102:
 .db $06,$06,$06,$07,$06,$06,$06,$07
@@ -1129,7 +1129,7 @@ base_sect0_room102:
 .db $00,$00,$00,$00,$44,$44,$00,$00
 .db $00,$00,$00,$00,$44,$44,$00,$00
 .db $00,$00,$00,$00,$44,$44,$00,$00
-base_sect0_room102_objects:
+; base_sect0_room102_objects:
 .db $FF
 base_sect0_room103:
 .db $06,$06,$06,$07,$06,$06,$06,$07
@@ -1140,7 +1140,7 @@ base_sect0_room103:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-base_sect0_room103_objects:
+; base_sect0_room103_objects:
 .db $FF
 base_sect0_room104:
 .db $06,$06,$06,$07,$06,$06,$06,$07
@@ -1151,7 +1151,7 @@ base_sect0_room104:
 .db $00,$37,$00,$37,$00,$37,$00,$37
 .db $00,$37,$00,$37,$00,$37,$00,$37
 .db $00,$37,$00,$37,$00,$37,$00,$37
-base_sect0_room104_objects:
+; base_sect0_room104_objects:
 .db $FF
 base_sect0_room105:
 .db $4C,$4C,$49,$4C,$4C,$4C,$4C,$4C
@@ -1162,7 +1162,7 @@ base_sect0_room105:
 .db $37,$78,$78,$58,$58,$58,$58,$58
 .db $37,$37,$37,$57,$57,$57,$57,$57
 .db $37,$37,$37,$57,$57,$57,$57,$5A
-base_sect0_room105_objects:
+; base_sect0_room105_objects:
 .db $FF
 base_sect0_room106:
 .db $4C,$49,$4C,$4C,$4C,$52,$1B,$5F
@@ -1173,7 +1173,7 @@ base_sect0_room106:
 .db $58,$58,$58,$58,$58,$58,$57,$74
 .db $57,$57,$57,$57,$57,$5A,$57,$74
 .db $57,$57,$57,$57,$57,$57,$57,$72
-base_sect0_room106_objects:
+; base_sect0_room106_objects:
 .db $FF
 base_sect0_room107:
 .db $1B,$5F,$1B,$5F,$13,$5F,$37,$13
@@ -1184,7 +1184,7 @@ base_sect0_room107:
 .db $4C,$3D,$4C,$4C,$4C,$4C,$3D,$4C
 .db $4C,$49,$4C,$4C,$4C,$4C,$49,$4C
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
-base_sect0_room107_objects:
+; base_sect0_room107_objects:
 .db $FF
 base_sect0_room108:
 .db $54,$54,$37,$00,$37,$00,$00,$27
@@ -1195,7 +1195,7 @@ base_sect0_room108:
 .db $4C,$4C,$4C,$4C,$4C,$4C,$4C,$3D
 .db $4C,$4C,$4C,$4C,$4C,$4C,$4C,$49
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
-base_sect0_room108_objects:
+; base_sect0_room108_objects:
 .db $FF
 base_sect0_room109:
 .db $00,$27,$00,$27,$00,$27,$00,$00
@@ -1206,7 +1206,7 @@ base_sect0_room109:
 .db $4C,$4C,$4C,$4C,$4C,$4C,$3D,$4C
 .db $4C,$4C,$4C,$4C,$4C,$4C,$49,$4C
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
-base_sect0_room109_objects:
+; base_sect0_room109_objects:
 .db $FF
 base_sect0_room110:
 .db $28,$24,$24,$27,$28,$24,$24,$00
@@ -1217,7 +1217,7 @@ base_sect0_room110:
 .db $4C,$4C,$4C,$4C,$3D,$4C,$4C,$53
 .db $4C,$4C,$4C,$4C,$49,$4C,$4C,$52
 .db $4C,$4C,$4C,$4C,$3D,$4C,$4C,$52
-base_sect0_room110_objects:
+; base_sect0_room110_objects:
 .db $FF
 base_sect0_room111:
 .db $27,$27,$28,$27,$28,$27,$28,$0A
@@ -1228,7 +1228,7 @@ base_sect0_room111:
 .db $77,$79,$28,$27,$28,$27,$28,$0A
 .db $28,$27,$28,$27,$24,$24,$24,$0A
 .db $28,$27,$28,$27,$77,$79,$77,$0A
-base_sect0_room111_objects:
+; base_sect0_room111_objects:
 .db $FF
 base_sect0_room112:
 .db $52,$73,$00,$37,$5F,$00,$00,$24
@@ -1239,7 +1239,7 @@ base_sect0_room112:
 .db $4C,$4C,$4C,$4C,$49,$4C,$4C,$4C
 .db $4C,$4C,$4C,$4C,$3D,$4C,$4C,$4C
 .db $4C,$4C,$4C,$4C,$3D,$4C,$4C,$4C
-base_sect0_room112_objects:
+; base_sect0_room112_objects:
 .db $FF
 base_sect0_room113:
 .db $24,$24,$24,$24,$24,$24,$00,$37
@@ -1250,7 +1250,7 @@ base_sect0_room113:
 .db $4C,$4C,$4C,$49,$4C,$4C,$4C,$4C
 .db $4C,$4C,$4C,$3D,$4C,$4C,$4C,$4C
 .db $4C,$4C,$4C,$3D,$4C,$4C,$4C,$4C
-base_sect0_room113_objects:
+; base_sect0_room113_objects:
 .db $FF
 base_sect0_room114:
 .db $74,$4C,$4C,$4C,$52,$00,$00,$37
@@ -1261,7 +1261,7 @@ base_sect0_room114:
 .db $4C,$4C,$4C,$4C,$52,$00,$17,$10
 .db $4C,$4C,$4C,$4C,$52,$5B,$5B,$5B
 .db $4C,$4C,$4C,$4C,$52,$5B,$5B,$5B
-base_sect0_room114_objects:
+; base_sect0_room114_objects:
 .db $FF
 base_sect0_room115:
 .db $00,$00,$37,$00,$00,$37,$17,$06
@@ -1272,7 +1272,7 @@ base_sect0_room115:
 .db $0F,$10,$0F,$10,$0F,$10,$0F,$10
 .db $5B,$5B,$5B,$5B,$5B,$5B,$5B,$5B
 .db $5B,$5B,$5B,$5B,$5B,$5B,$5B,$5B
-base_sect0_room115_objects:
+; base_sect0_room115_objects:
 .db $FF
 base_sect0_room116:
 .db $07,$06,$07,$07,$06,$19,$78,$00
@@ -1283,7 +1283,7 @@ base_sect0_room116:
 .db $0F,$10,$0F,$10,$0F,$10,$0F,$10
 .db $5B,$5B,$5B,$5B,$5B,$5B,$5B,$5B
 .db $5B,$5B,$5B,$5B,$5B,$5B,$5B,$5B
-base_sect0_room116_objects:
+; base_sect0_room116_objects:
 .db $FF
 base_sect0_room117:
 .db $00,$37,$00,$00,$37,$00,$00,$00
@@ -1294,7 +1294,7 @@ base_sect0_room117:
 .db $0F,$10,$0F,$10,$0F,$10,$0F,$10
 .db $5B,$5B,$5B,$5B,$5B,$5B,$5B,$5B
 .db $5B,$5B,$5B,$5B,$5B,$5B,$5B,$5B
-base_sect0_room117_objects:
+; base_sect0_room117_objects:
 .db $FF
 base_sect0_room118:
 .db $00,$00,$00,$00,$72,$73,$00,$00
@@ -1305,7 +1305,7 @@ base_sect0_room118:
 .db $19,$5B,$5B,$5B,$5B,$5B,$5B,$5B
 .db $5B,$5B,$5B,$5B,$5B,$72,$2C,$2C
 .db $5B,$5B,$5B,$5B,$5B,$00,$00,$00
-base_sect0_room118_objects:
+; base_sect0_room118_objects:
 .db $FF
 base_sect0_room119:
 .db $00,$00,$00,$00,$49,$00,$00,$00
@@ -1316,7 +1316,7 @@ base_sect0_room119:
 .db $5B,$5B,$72,$2C,$2C,$2C,$73,$5B
 .db $2C,$73,$00,$00,$00,$00,$00,$72
 .db $00,$00,$00,$00,$00,$00,$00,$00
-base_sect0_room119_objects:
+; base_sect0_room119_objects:
 .db $FF
 base_sect0_room120:
 .db $00,$37,$00,$37,$00,$37,$00,$37
@@ -1327,7 +1327,7 @@ base_sect0_room120:
 .db $5B,$5B,$5B,$5B,$5B,$5B,$5B,$5B
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
 .db $00,$00,$00,$00,$00,$00,$00,$00
-base_sect0_room120_objects:
+; base_sect0_room120_objects:
 .db $FF
 base_sect0_room121:
 .db $37,$37,$37,$57,$57,$57,$57,$57
@@ -1338,7 +1338,7 @@ base_sect0_room121:
 .db $5B,$5B,$5B,$57,$57,$57,$57,$57
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
 .db $00,$00,$00,$00,$00,$00,$00,$00
-base_sect0_room121_objects:
+; base_sect0_room121_objects:
 .db $FF
 base_sect0_room122:
 .db $57,$57,$57,$57,$57,$57,$57,$58
@@ -1349,7 +1349,7 @@ base_sect0_room122:
 .db $57,$57,$5A,$57,$57,$57,$57,$57
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
 .db $00,$00,$00,$00,$00,$00,$00,$00
-base_sect0_room122_objects:
+; base_sect0_room122_objects:
 .db $FF
 base_sect0_room123:
 .db $58,$58,$58,$58,$58,$58,$58,$58
@@ -1360,7 +1360,7 @@ base_sect0_room123:
 .db $57,$57,$57,$57,$57,$57,$57,$57
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
 .db $00,$00,$00,$00,$00,$00,$00,$00
-base_sect0_room123_objects:
+; base_sect0_room123_objects:
 .db $FF
 base_sect0_room124:
 .db $58,$58,$58,$58,$58,$58,$58,$58
@@ -1371,7 +1371,7 @@ base_sect0_room124:
 .db $57,$59,$59,$59,$59,$59,$59,$57
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
 .db $00,$00,$00,$00,$00,$00,$00,$00
-base_sect0_room124_objects:
+; base_sect0_room124_objects:
 .db $FF
 base_sect0_room125:
 .db $58,$58,$58,$58,$25,$25,$25,$25
@@ -1382,7 +1382,7 @@ base_sect0_room125:
 .db $57,$57,$5A,$57,$77,$27,$28,$27
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
 .db $00,$00,$00,$00,$00,$00,$00,$76
-base_sect0_room125_objects:
+; base_sect0_room125_objects:
 .db $FF
 base_sect0_room126:
 .db $4C,$4C,$4C,$4C,$3D,$4C,$4C,$52
@@ -1393,7 +1393,7 @@ base_sect0_room126:
 .db $28,$27,$28,$27,$02,$27,$28,$27
 .db $2C,$2C,$2C,$2C,$2C,$2C,$2C,$2C
 .db $00,$76,$00,$76,$00,$76,$00,$76
-base_sect0_room126_objects:
+; base_sect0_room126_objects:
 .db $02,$A9,$7F,$00,$FF
 base_sect0_room127:
 .db $24,$24,$28,$27,$28,$27,$28,$0A
@@ -1404,7 +1404,7 @@ base_sect0_room127:
 .db $28,$27,$28,$27,$28,$27,$28,$0A
 .db $2C,$2C,$2C,$2C,$2C,$2C,$73,$0A
 .db $00,$76,$00,$76,$00,$76,$00,$0A
-base_sect0_room127_objects:
+; base_sect0_room127_objects:
 .db $FF
 base_sect0_map:
 .dw base_sect0_room0,base_sect0_room1,base_sect0_room2,base_sect0_room3

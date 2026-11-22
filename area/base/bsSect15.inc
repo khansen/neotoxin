@@ -7,7 +7,7 @@ base_sect15_room0:
 .db $44,$1F,$01,$1F,$1F,$1F,$1F,$1F
 .db $44,$1F,$02,$1F,$1F,$1F,$1F,$1F
 .db $44,$41,$41,$41,$41,$41,$41,$41
-base_sect15_room0_objects:
+; base_sect15_room0_objects:
 .db $02,$C5,$40,$11,$FF
 base_sect15_room1:
 .db $54,$44,$54,$54,$44,$54,$54,$44
@@ -18,7 +18,7 @@ base_sect15_room1:
 .db $1F,$1F,$1F,$1F,$1F,$1F,$1F,$44
 .db $1F,$1F,$1F,$1F,$1F,$1F,$1F,$44
 .db $41,$41,$41,$41,$41,$41,$41,$44
-base_sect15_room1_objects:
+; base_sect15_room1_objects:
 .db $FF
 base_sect15_map:
 .dw base_sect15_room0,base_sect15_room1

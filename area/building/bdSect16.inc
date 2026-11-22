@@ -10,7 +10,7 @@ building_sect16_room0:
 .db $71,$33,$33,$37,$33,$2F,$33,$37
 .db $3A,$36,$36,$39,$36,$36,$36,$39
 .db $3A,$41,$41,$41,$41,$41,$41,$41
-building_sect16_room0_objects:
+; building_sect16_room0_objects:
 .db $FF
 building_sect16_room1:
 .db $3A,$3A,$3A,$3A,$3A,$3A,$3A,$3A
@@ -21,7 +21,7 @@ building_sect16_room1:
 .db $33,$0B,$33,$37,$33,$1C,$33,$71
 .db $36,$0C,$36,$39,$36,$36,$36,$3A
 .db $41,$41,$41,$41,$41,$41,$41,$3A
-building_sect16_room1_objects:
+; building_sect16_room1_objects:
 .db $02,$C3,$00,$0A
 .db $FF
 building_sect16_map:

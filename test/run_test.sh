@@ -5,8 +5,8 @@ ROM="${1:-neotoxin.nes}"
 CFG_DIR="/tmp/fceux_neotoxin_test"
 LOG_FILE="$CFG_DIR/test.log"
 
+rm -rf "$CFG_DIR"
 mkdir -p "$CFG_DIR"
-rm -f "$LOG_FILE"
 
 HOME="$CFG_DIR" \
 QT_QPA_PLATFORM=offscreen \

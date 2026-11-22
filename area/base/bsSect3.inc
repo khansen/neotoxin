@@ -7,7 +7,7 @@ base_sect3_room0:
 .db $52,$26,$00,$00,$27,$18,$06,$06
 .db $52,$06,$06,$06,$06,$19,$27,$54
 .db $52,$54,$54,$54,$27,$00,$27,$54
-base_sect3_room0_objects:
+; base_sect3_room0_objects:
 .db $02,$8F,$40,$04,$FF
 base_sect3_room1:
 .db $5D,$5D,$5D,$5D,$5D,$5D,$74,$4C
@@ -18,7 +18,7 @@ base_sect3_room1:
 .db $06,$16,$27,$00,$00,$00,$74,$4C
 .db $27,$17,$06,$06,$06,$06,$74,$4C
 .db $27,$00,$27,$54,$54,$54,$74,$4C
-base_sect3_room1_objects:
+; base_sect3_room1_objects:
 .db $FF
 base_sect3_map:
 .dw base_sect3_room0,base_sect3_room1

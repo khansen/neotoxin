@@ -329,6 +329,11 @@ FlashTable:
     ldy     #>IntroScript
     jmp     LoadScript
 
+; InitGameState
+; =============
+; Initializes player stats from InitialSaveGame and clears StatusFlags.
+; Out: A = 0
+
     InitGameState:
     ldx     #16
   - lda     InitialSaveGame,x

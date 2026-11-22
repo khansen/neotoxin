@@ -10,7 +10,7 @@ building_sect19_room0:
 .db $75,$36,$39,$0C,$36,$39,$36,$36
 .db $75,$03,$03,$03,$03,$03,$03,$03
 .db $75,$00,$00,$34,$00,$00,$34,$00
-building_sect19_room0_objects:
+; building_sect19_room0_objects:
 .db $02,$A7,$00,$01
 .db $FF
 building_sect19_room1:
@@ -22,7 +22,7 @@ building_sect19_room1:
 .db $36,$39,$36,$36,$39,$36,$36,$75
 .db $03,$03,$03,$03,$03,$03,$03,$75
 .db $00,$00,$34,$00,$00,$34,$00,$75
-building_sect19_room1_objects:
+; building_sect19_room1_objects:
 .db $FF
 building_sect19_map:
 .dw building_sect19_room0,building_sect19_room1

@@ -7,7 +7,7 @@ plant_sect15_room0:
 .db $14,$00,$39,$39,$00,$00,$00,$00
 .db $14,$03,$03,$03,$03,$04,$00,$00
 .db $14,$2A,$2A,$2A,$2A,$2A,$2A,$2A
-plant_sect15_room0_objects:
+; plant_sect15_room0_objects:
 .db $03,$CF,$20,$11,$FF
 plant_sect15_map:
 .dw plant_sect15_room0

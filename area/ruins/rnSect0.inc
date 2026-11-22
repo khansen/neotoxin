@@ -32,7 +32,7 @@ ruins_sect0_room0:
 .db $00,$00,$13,$11,$51,$12,$00,$00
 .db $00,$0F,$50,$48,$5B,$00,$00,$00
 .db $34,$7C,$08,$47,$07,$0B,$34,$00
-ruins_sect0_room0_objects:
+; ruins_sect0_room0_objects:
 .db $02,$E7,$60,$00,$FF
 ruins_sect0_room1:
 .db $00,$00,$05,$00,$00,$00,$06,$00
@@ -43,7 +43,7 @@ ruins_sect0_room1:
 .db $00,$00,$05,$6E,$75,$6B,$73,$6D
 .db $00,$00,$05,$6E,$76,$6E,$6A,$6E
 .db $00,$00,$05,$71,$70,$70,$70,$70
-ruins_sect0_room1_objects:
+; ruins_sect0_room1_objects:
 .db $FF
 ruins_sect0_room2:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -54,7 +54,7 @@ ruins_sect0_room2:
 .db $6E,$6D,$00,$00,$00,$00,$06,$00
 .db $6E,$6E,$00,$35,$00,$00,$00,$00
 .db $70,$72,$00,$35,$20,$6F,$20,$4F
-ruins_sect0_room2_objects:
+; ruins_sect0_room2_objects:
 .db $FF
 ruins_sect0_room3:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -65,7 +65,7 @@ ruins_sect0_room3:
 .db $35,$67,$28,$67,$28,$67,$28,$67
 .db $35,$67,$67,$67,$67,$67,$67,$67
 .db $59,$66,$66,$66,$66,$66,$66,$66
-ruins_sect0_room3_objects:
+; ruins_sect0_room3_objects:
 .db $FF
 ruins_sect0_room4:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -76,7 +76,7 @@ ruins_sect0_room4:
 .db $00,$00,$00,$33,$31,$04,$04,$04
 .db $00,$00,$00,$00,$37,$00,$00,$00
 .db $33,$32,$00,$00,$35,$00,$00,$00
-ruins_sect0_room4_objects:
+; ruins_sect0_room4_objects:
 .db $FF
 ruins_sect0_room5:
 .db $00,$00,$00,$06,$00,$00,$00,$00
@@ -87,7 +87,7 @@ ruins_sect0_room5:
 .db $04,$04,$04,$31,$32,$00,$00,$02
 .db $00,$00,$00,$02,$00,$00,$00,$02
 .db $00,$00,$33,$36,$00,$33,$04,$36
-ruins_sect0_room5_objects:
+; ruins_sect0_room5_objects:
 .db $FF
 ruins_sect0_room6:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -98,7 +98,7 @@ ruins_sect0_room6:
 .db $00,$2B,$2B,$2B,$2B,$2B,$2B,$2B
 .db $00,$3B,$4E,$5D,$4E,$5D,$4E,$58
 .db $00,$24,$4E,$4E,$4E,$4E,$4E,$2F
-ruins_sect0_room6_objects:
+; ruins_sect0_room6_objects:
 .db $FF
 ruins_sect0_room7:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -109,7 +109,7 @@ ruins_sect0_room7:
 .db $00,$00,$00,$00,$35,$00,$00,$00
 .db $00,$00,$00,$00,$35,$00,$00,$00
 .db $00,$00,$00,$00,$34,$00,$00,$00
-ruins_sect0_room7_objects:
+; ruins_sect0_room7_objects:
 .db $FF
 ruins_sect0_room8:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -120,7 +120,7 @@ ruins_sect0_room8:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$7C,$50
-ruins_sect0_room8_objects:
+; ruins_sect0_room8_objects:
 .db $FF
 ruins_sect0_room9:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -131,7 +131,7 @@ ruins_sect0_room9:
 .db $00,$00,$00,$00,$00,$05,$05,$00
 .db $00,$00,$00,$00,$00,$05,$05,$00
 .db $7D,$00,$00,$33,$04,$04,$04,$32
-ruins_sect0_room9_objects:
+; ruins_sect0_room9_objects:
 .db $FF
 ruins_sect0_room10:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -142,7 +142,7 @@ ruins_sect0_room10:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$06,$00,$00,$00,$00
-ruins_sect0_room10_objects:
+; ruins_sect0_room10_objects:
 .db $FF
 ruins_sect0_room11:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -153,7 +153,7 @@ ruins_sect0_room11:
 .db $00,$00,$00,$00,$7C,$50,$7D,$7C
 .db $00,$00,$00,$00,$0E,$08,$08,$08
 .db $06,$00,$00,$00,$0F,$08,$08,$0D
-ruins_sect0_room11_objects:
+; ruins_sect0_room11_objects:
 .db $FF
 ruins_sect0_room12:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -164,7 +164,7 @@ ruins_sect0_room12:
 .db $14,$14,$14,$14,$14,$0B,$00,$18
 .db $08,$08,$08,$08,$0C,$00,$00,$0E
 .db $08,$08,$28,$08,$08,$0B,$00,$0F
-ruins_sect0_room12_objects:
+; ruins_sect0_room12_objects:
 .db $FF
 ruins_sect0_room13:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -175,7 +175,7 @@ ruins_sect0_room13:
 .db $14,$14,$14,$7D,$7C,$14,$14,$14
 .db $08,$08,$08,$08,$08,$08,$08,$08
 .db $28,$08,$08,$0D,$08,$08,$5D,$08
-ruins_sect0_room13_objects:
+; ruins_sect0_room13_objects:
 .db $FF
 ruins_sect0_room14:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -186,7 +186,7 @@ ruins_sect0_room14:
 .db $14,$14,$7D,$00,$00,$00,$00,$00
 .db $08,$08,$09,$00,$00,$00,$00,$00
 .db $08,$08,$0A,$00,$00,$00,$00,$00
-ruins_sect0_room14_objects:
+; ruins_sect0_room14_objects:
 .db $FF
 ruins_sect0_room15:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -197,7 +197,7 @@ ruins_sect0_room15:
 .db $00,$06,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room15_objects:
+; ruins_sect0_room15_objects:
 .db $FF
 ruins_sect0_room16:
 .db $30,$30,$30,$30,$30,$30,$30,$41
@@ -208,7 +208,7 @@ ruins_sect0_room16:
 .db $00,$00,$00,$00,$55,$55,$00,$00
 .db $39,$5E,$3A,$00,$24,$24,$00,$00
 .db $01,$01,$01,$01,$01,$24,$00,$49
-ruins_sect0_room16_objects:
+; ruins_sect0_room16_objects:
 .db $FF
 ruins_sect0_room17:
 .db $00,$00,$05,$4C,$4C,$4C,$48,$4C
@@ -219,7 +219,7 @@ ruins_sect0_room17:
 .db $00,$00,$00,$00,$79,$00,$00,$00
 .db $00,$00,$39,$55,$55,$00,$00,$39
 .db $00,$01,$01,$01,$01,$01,$00,$24
-ruins_sect0_room17_objects:
+; ruins_sect0_room17_objects:
 .db $02,$2D,$61,$00,$FF
 ruins_sect0_room18:
 .db $4C,$00,$00,$35,$1E,$21,$1E,$21
@@ -230,7 +230,7 @@ ruins_sect0_room18:
 .db $24,$00,$07,$08,$08,$47,$0A,$7B
 .db $24,$00,$13,$51,$11,$12,$7D,$7C
 .db $24,$00,$07,$1D,$08,$75,$08,$1D
-ruins_sect0_room18_objects:
+; ruins_sect0_room18_objects:
 .db $02,$AB,$65,$01,$FF
 ruins_sect0_room19:
 .db $59,$67,$28,$75,$28,$67,$28,$67
@@ -241,7 +241,7 @@ ruins_sect0_room19:
 .db $4A,$2F,$24,$24,$24,$24,$2D,$00
 .db $7D,$30,$30,$30,$30,$30,$41,$42
 .db $09,$00,$00,$00,$00,$00,$00,$43
-ruins_sect0_room19_objects:
+; ruins_sect0_room19_objects:
 .db $FF
 ruins_sect0_room20:
 .db $00,$00,$00,$00,$35,$00,$00,$00
@@ -252,7 +252,7 @@ ruins_sect0_room20:
 .db $00,$00,$35,$35,$00,$34,$00,$00
 .db $45,$44,$30,$30,$30,$30,$41,$42
 .db $46,$00,$00,$00,$00,$00,$00,$40
-ruins_sect0_room20_objects:
+; ruins_sect0_room20_objects:
 .db $FF
 ruins_sect0_room21:
 .db $00,$00,$00,$02,$00,$00,$00,$02
@@ -263,7 +263,7 @@ ruins_sect0_room21:
 .db $00,$00,$33,$31,$32,$00,$00,$00
 .db $00,$00,$00,$37,$00,$00,$45,$44
 .db $3E,$00,$00,$35,$00,$30,$46,$00
-ruins_sect0_room21_objects:
+; ruins_sect0_room21_objects:
 .db $FF
 ruins_sect0_room22:
 .db $00,$57,$57,$4E,$4E,$4E,$57,$57
@@ -274,7 +274,7 @@ ruins_sect0_room22:
 .db $00,$24,$4E,$2F,$47,$52,$4E,$2F
 .db $30,$2B,$2B,$2B,$2B,$2B,$2B,$2B
 .db $00,$3B,$7E,$3B,$00,$00,$3B,$00
-ruins_sect0_room22_objects:
+; ruins_sect0_room22_objects:
 .db $02,$A9,$64,$00,$FF
 ruins_sect0_room23:
 .db $00,$00,$00,$33,$31,$32,$00,$00
@@ -285,7 +285,7 @@ ruins_sect0_room23:
 .db $45,$44,$30,$30,$30,$30,$41,$00
 .db $46,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$39,$5E,$3A
-ruins_sect0_room23_objects:
+; ruins_sect0_room23_objects:
 .db $FF
 ruins_sect0_room24:
 .db $39,$3A,$00,$00,$00,$35,$0E,$08
@@ -296,7 +296,7 @@ ruins_sect0_room24:
 .db $24,$24,$00,$07,$08,$08,$08,$08
 .db $24,$24,$49,$07,$08,$08,$75,$08
 .db $24,$24,$53,$0A,$10,$0E,$76,$09
-ruins_sect0_room24_objects:
+; ruins_sect0_room24_objects:
 .db $FF
 ruins_sect0_room25:
 .db $09,$00,$00,$00,$00,$05,$05,$00
@@ -307,7 +307,7 @@ ruins_sect0_room25:
 .db $09,$49,$24,$24,$00,$05,$05,$00
 .db $09,$53,$24,$2D,$00,$05,$05,$00
 .db $10,$53,$24,$00,$00,$05,$05,$00
-ruins_sect0_room25_objects:
+; ruins_sect0_room25_objects:
 .db $FF
 ruins_sect0_room26:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -318,7 +318,7 @@ ruins_sect0_room26:
 .db $00,$00,$00,$00,$00,$06,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room26_objects:
+; ruins_sect0_room26_objects:
 .db $FF
 ruins_sect0_room27:
 .db $00,$00,$00,$00,$00,$0E,$08,$08
@@ -329,7 +329,7 @@ ruins_sect0_room27:
 .db $00,$00,$00,$00,$07,$08,$08,$08
 .db $00,$00,$00,$00,$07,$08,$08,$28
 .db $00,$00,$00,$00,$07,$08,$08,$08
-ruins_sect0_room27_objects:
+; ruins_sect0_room27_objects:
 .db $02,$4F,$00,$00,$FF
 ruins_sect0_room28:
 .db $08,$08,$08,$08,$08,$0B,$00,$00
@@ -340,7 +340,7 @@ ruins_sect0_room28:
 .db $08,$08,$08,$08,$08,$08,$08,$08
 .db $08,$08,$28,$08,$08,$5D,$08,$08
 .db $08,$08,$08,$08,$08,$08,$0A,$0E
-ruins_sect0_room28_objects:
+; ruins_sect0_room28_objects:
 .db $09,$83,$FF
 ruins_sect0_room29:
 .db $0E,$08,$08,$08,$08,$08,$08,$08
@@ -351,7 +351,7 @@ ruins_sect0_room29:
 .db $08,$08,$08,$08,$08,$08,$08,$08
 .db $28,$08,$0D,$28,$08,$08,$28,$08
 .db $08,$08,$08,$08,$08,$08,$08,$08
-ruins_sect0_room29_objects:
+; ruins_sect0_room29_objects:
 .db $FF
 ruins_sect0_room30:
 .db $08,$08,$0B,$00,$00,$00,$00,$00
@@ -362,7 +362,7 @@ ruins_sect0_room30:
 .db $08,$08,$09,$00,$00,$00,$00,$00
 .db $08,$08,$09,$00,$00,$00,$00,$00
 .db $08,$08,$0A,$00,$00,$00,$35,$00
-ruins_sect0_room30_objects:
+; ruins_sect0_room30_objects:
 .db $02,$41,$00,$00,$FF
 ruins_sect0_room31:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -373,7 +373,7 @@ ruins_sect0_room31:
 .db $00,$00,$00,$66,$66,$66,$66,$66
 .db $06,$00,$00,$67,$67,$67,$67,$67
 .db $00,$00,$00,$69,$69,$69,$69,$69
-ruins_sect0_room31_objects:
+; ruins_sect0_room31_objects:
 .db $FF
 ruins_sect0_room32:
 .db $00,$00,$00,$00,$55,$24,$00,$53
@@ -384,7 +384,7 @@ ruins_sect0_room32:
 .db $06,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$39,$3A,$00,$39,$3A
-ruins_sect0_room32_objects:
+; ruins_sect0_room32_objects:
 .db $FF
 ruins_sect0_room33:
 .db $00,$00,$39,$55,$55,$00,$00,$24
@@ -395,7 +395,7 @@ ruins_sect0_room33:
 .db $00,$00,$00,$05,$00,$00,$00,$00
 .db $00,$00,$00,$05,$00,$06,$00,$00
 .db $39,$39,$3A,$05,$00,$00,$00,$00
-ruins_sect0_room33_objects:
+; ruins_sect0_room33_objects:
 .db $FF
 ruins_sect0_room34:
 .db $2D,$00,$0A,$0E,$08,$76,$08,$08
@@ -406,7 +406,7 @@ ruins_sect0_room34:
 .db $00,$00,$07,$08,$0A,$0E,$08,$08
 .db $00,$00,$07,$08,$0B,$0F,$08,$08
 .db $00,$00,$07,$08,$50,$50,$08,$08
-ruins_sect0_room34_objects:
+; ruins_sect0_room34_objects:
 .db $FF
 ruins_sect0_room35:
 .db $0A,$00,$00,$00,$00,$00,$00,$00
@@ -417,7 +417,7 @@ ruins_sect0_room35:
 .db $09,$00,$00,$00,$00,$00,$00,$00
 .db $0A,$00,$00,$00,$00,$00,$00,$00
 .db $0B,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room35_objects:
+; ruins_sect0_room35_objects:
 .db $FF
 ruins_sect0_room36:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -428,7 +428,7 @@ ruins_sect0_room36:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $03,$00,$00,$00,$00,$00,$00,$00
 .db $02,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room36_objects:
+; ruins_sect0_room36_objects:
 .db $FF
 ruins_sect0_room37:
 .db $40,$3E,$34,$35,$00,$00,$00,$00
@@ -439,7 +439,7 @@ ruins_sect0_room37:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$03,$06,$00,$00,$00,$00,$00
-ruins_sect0_room37_objects:
+; ruins_sect0_room37_objects:
 .db $FF
 ruins_sect0_room38:
 .db $00,$24,$53,$24,$00,$00,$24,$00
@@ -450,7 +450,7 @@ ruins_sect0_room38:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $06,$00,$00,$00,$00,$00,$00,$39
 .db $00,$00,$00,$06,$00,$00,$39,$5C
-ruins_sect0_room38_objects:
+; ruins_sect0_room38_objects:
 .db $FF
 ruins_sect0_room39:
 .db $00,$00,$00,$45,$44,$01,$01,$01
@@ -461,7 +461,7 @@ ruins_sect0_room39:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $3A,$3A,$00,$00,$00,$00,$06,$00
 .db $6B,$6A,$3A,$00,$00,$06,$00,$00
-ruins_sect0_room39_objects:
+; ruins_sect0_room39_objects:
 .db $FF
 ruins_sect0_room40:
 .db $01,$01,$01,$2B,$2B,$2B,$2B,$2B
@@ -472,7 +472,7 @@ ruins_sect0_room40:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$06,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$06
-ruins_sect0_room40_objects:
+; ruins_sect0_room40_objects:
 .db $FF
 ruins_sect0_room41:
 .db $2B,$2B,$01,$01,$01,$01,$01,$01
@@ -483,7 +483,7 @@ ruins_sect0_room41:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$35,$00,$00,$00,$00,$00
 .db $00,$00,$35,$00,$00,$00,$00,$00
-ruins_sect0_room41_objects:
+; ruins_sect0_room41_objects:
 .db $FF
 ruins_sect0_room42:
 .db $01,$00,$00,$00,$00,$00,$00,$00
@@ -494,7 +494,7 @@ ruins_sect0_room42:
 .db $00,$00,$00,$00,$00,$00,$00,$45
 .db $00,$00,$00,$00,$00,$00,$3D,$3F
 .db $00,$00,$00,$00,$00,$3D,$3F,$00
-ruins_sect0_room42_objects:
+; ruins_sect0_room42_objects:
 .db $FF
 ruins_sect0_room43:
 .db $00,$06,$00,$00,$10,$0E,$0A,$5D
@@ -505,7 +505,7 @@ ruins_sect0_room43:
 .db $44,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$55,$55,$00,$00,$00,$7E
 .db $00,$00,$65,$65,$00,$00,$00,$53
-ruins_sect0_room43_objects:
+; ruins_sect0_room43_objects:
 .db $08,$8C,$FF
 ruins_sect0_room44:
 .db $08,$08,$28,$08,$08,$28,$7D,$7C
@@ -516,7 +516,7 @@ ruins_sect0_room44:
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$7E,$00,$00,$7E,$00,$00,$00
 .db $00,$53,$00,$00,$53,$00,$06,$00
-ruins_sect0_room44_objects:
+; ruins_sect0_room44_objects:
 .db $02,$8F,$20,$13,$FF
 ruins_sect0_room45:
 .db $28,$08,$08,$5D,$08,$08,$28,$08
@@ -527,7 +527,7 @@ ruins_sect0_room45:
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $35,$00,$06,$00,$00,$00,$00,$3A
-ruins_sect0_room45_objects:
+; ruins_sect0_room45_objects:
 .db $FF
 ruins_sect0_room46:
 .db $08,$0A,$00,$34,$00,$00,$35,$34
@@ -538,7 +538,7 @@ ruins_sect0_room46:
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$13,$11,$11,$51,$11,$11
-ruins_sect0_room46_objects:
+; ruins_sect0_room46_objects:
 .db $FF
 ruins_sect0_room47:
 .db $06,$00,$00,$68,$68,$68,$68,$68
@@ -549,7 +549,7 @@ ruins_sect0_room47:
 .db $30,$30,$30,$7A,$7A,$7A,$7A,$7A
 .db $00,$00,$00,$17,$00,$17,$00,$17
 .db $12,$00,$00,$77,$31,$7B,$31,$79
-ruins_sect0_room47_objects:
+; ruins_sect0_room47_objects:
 .db $02,$8B,$6E,$00,$08,$80,$FF
 ruins_sect0_room48:
 .db $00,$00,$62,$5F,$16,$5E,$5F,$2E
@@ -560,7 +560,7 @@ ruins_sect0_room48:
 .db $00,$00,$63,$5F,$16,$16,$48,$16
 .db $00,$60,$15,$1B,$2E,$5F,$47,$1B
 .db $30,$30,$30,$30,$30,$30,$30,$30
-ruins_sect0_room48_objects:
+; ruins_sect0_room48_objects:
 .db $02,$CD,$6C,$00,$FF
 ruins_sect0_room49:
 .db $5F,$16,$64,$05,$00,$00,$00,$00
@@ -571,7 +571,7 @@ ruins_sect0_room49:
 .db $2E,$5F,$1A,$05,$00,$00,$00,$00
 .db $5F,$24,$64,$05,$00,$00,$00,$00
 .db $30,$30,$30,$30,$41,$00,$00,$3D
-ruins_sect0_room49_objects:
+; ruins_sect0_room49_objects:
 .db $FF
 ruins_sect0_room50:
 .db $06,$00,$07,$1D,$08,$48,$08,$0D
@@ -582,7 +582,7 @@ ruins_sect0_room50:
 .db $00,$00,$07,$08,$0B,$0F,$75,$08
 .db $00,$00,$10,$0E,$0B,$0F,$76,$08
 .db $30,$30,$30,$30,$30,$30,$30,$30
-ruins_sect0_room50_objects:
+; ruins_sect0_room50_objects:
 .db $02,$2B,$65,$00,$08,$CB,$FF
 ruins_sect0_room51:
 .db $09,$00,$00,$00,$00,$00,$00,$00
@@ -593,7 +593,7 @@ ruins_sect0_room51:
 .db $09,$05,$24,$33,$31,$32,$00,$00
 .db $0A,$05,$24,$00,$02,$00,$60,$00
 .db $30,$30,$30,$30,$31,$31,$04,$31
-ruins_sect0_room51_objects:
+; ruins_sect0_room51_objects:
 .db $FF
 ruins_sect0_room52:
 .db $02,$00,$00,$00,$00,$00,$00,$00
@@ -604,7 +604,7 @@ ruins_sect0_room52:
 .db $00,$00,$00,$33,$31,$32,$00,$35
 .db $00,$00,$00,$34,$02,$00,$00,$34
 .db $31,$04,$04,$31,$31,$04,$04,$04
-ruins_sect0_room52_objects:
+; ruins_sect0_room52_objects:
 .db $FF
 ruins_sect0_room53:
 .db $00,$02,$00,$00,$00,$00,$00,$00
@@ -615,7 +615,7 @@ ruins_sect0_room53:
 .db $00,$00,$00,$00,$00,$02,$00,$35
 .db $00,$00,$00,$35,$00,$02,$00,$35
 .db $04,$31,$04,$04,$04,$31,$04,$04
-ruins_sect0_room53_objects:
+; ruins_sect0_room53_objects:
 .db $08,$C2,$FF
 ruins_sect0_room54:
 .db $06,$00,$00,$00,$00,$00,$71,$70
@@ -626,7 +626,7 @@ ruins_sect0_room54:
 .db $35,$00,$24,$5E,$24,$00,$6B,$6C
 .db $35,$38,$24,$5F,$2D,$00,$6E,$6E
 .db $04,$32,$30,$30,$30,$30,$71,$70
-ruins_sect0_room54_objects:
+; ruins_sect0_room54_objects:
 .db $08,$C6,$FF
 ruins_sect0_room55:
 .db $70,$70,$72,$00,$00,$00,$00,$00
@@ -637,7 +637,7 @@ ruins_sect0_room55:
 .db $48,$6E,$6C,$00,$00,$00,$00,$00
 .db $47,$6E,$6D,$00,$00,$35,$00,$00
 .db $70,$70,$72,$30,$30,$30,$41,$00
-ruins_sect0_room55_objects:
+; ruins_sect0_room55_objects:
 .db $02,$C1,$74,$00,$FF
 ruins_sect0_room56:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -648,7 +648,7 @@ ruins_sect0_room56:
 .db $00,$00,$00,$00,$00,$00,$00,$35
 .db $00,$00,$00,$00,$00,$00,$00,$35
 .db $00,$00,$00,$00,$00,$00,$34,$35
-ruins_sect0_room56_objects:
+; ruins_sect0_room56_objects:
 .db $08,$EB,$FF
 ruins_sect0_room57:
 .db $00,$00,$35,$00,$00,$00,$00,$00
@@ -659,7 +659,7 @@ ruins_sect0_room57:
 .db $7A,$7A,$7A,$7A,$7A,$00,$00,$35
 .db $17,$4D,$48,$4D,$7B,$00,$00,$35
 .db $77,$74,$47,$74,$78,$00,$00,$34
-ruins_sect0_room57_objects:
+; ruins_sect0_room57_objects:
 .db $02,$E5,$63,$00,$FF
 ruins_sect0_room58:
 .db $00,$00,$00,$45,$44,$46,$00,$00
@@ -670,7 +670,7 @@ ruins_sect0_room58:
 .db $00,$00,$00,$00,$05,$35,$00,$00
 .db $00,$78,$00,$00,$05,$35,$00,$00
 .db $60,$77,$7D,$60,$05,$34,$38,$00
-ruins_sect0_room58_objects:
+; ruins_sect0_room58_objects:
 .db $FF
 ruins_sect0_room59:
 .db $00,$00,$65,$2D,$00,$00,$00,$54
@@ -681,7 +681,7 @@ ruins_sect0_room59:
 .db $00,$00,$65,$65,$00,$00,$65,$65
 .db $00,$00,$65,$2D,$00,$00,$65,$2D
 .db $00,$00,$2D,$45,$44,$30,$30,$30
-ruins_sect0_room59_objects:
+; ruins_sect0_room59_objects:
 .db $FF
 ruins_sect0_room60:
 .db $00,$53,$00,$00,$54,$00,$00,$00
@@ -692,7 +692,7 @@ ruins_sect0_room60:
 .db $00,$00,$00,$2D,$00,$00,$15,$16
 .db $39,$78,$7D,$60,$38,$38,$15,$5F
 .db $30,$30,$30,$30,$30,$30,$30,$30
-ruins_sect0_room60_objects:
+; ruins_sect0_room60_objects:
 .db $FF
 ruins_sect0_room61:
 .db $34,$00,$39,$3A,$00,$00,$00,$24
@@ -703,7 +703,7 @@ ruins_sect0_room61:
 .db $4D,$1B,$75,$5D,$16,$1A,$00,$00
 .db $16,$2E,$76,$5C,$5F,$4B,$00,$35
 .db $30,$30,$30,$30,$30,$30,$30,$30
-ruins_sect0_room61_objects:
+; ruins_sect0_room61_objects:
 .db $FF
 ruins_sect0_room62:
 .db $00,$00,$0F,$14,$14,$7D,$7C,$14
@@ -714,7 +714,7 @@ ruins_sect0_room62:
 .db $35,$00,$10,$00,$7C,$48,$08,$75
 .db $34,$60,$5B,$7C,$08,$47,$08,$76
 .db $30,$30,$13,$11,$11,$11,$11,$11
-ruins_sect0_room62_objects:
+; ruins_sect0_room62_objects:
 .db $02,$CB,$6B,$00,$FF
 ruins_sect0_room63:
 .db $19,$00,$00,$79,$37,$39,$37,$00
@@ -725,7 +725,7 @@ ruins_sect0_room63:
 .db $09,$00,$00,$65,$23,$65,$4D,$25
 .db $0A,$60,$35,$65,$23,$65,$4E,$25
 .db $12,$30,$30,$30,$30,$30,$30,$30
-ruins_sect0_room63_objects:
+; ruins_sect0_room63_objects:
 .db $FF
 ruins_sect0_room64:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -736,7 +736,7 @@ ruins_sect0_room64:
 .db $00,$17,$75,$17,$48,$17,$75,$17
 .db $00,$79,$76,$74,$47,$77,$76,$79
 .db $30,$7A,$7A,$7A,$7A,$7A,$7A,$7A
-ruins_sect0_room64_objects:
+; ruins_sect0_room64_objects:
 .db $02,$C9,$6F,$00,$FF
 ruins_sect0_room65:
 .db $00,$00,$00,$00,$00,$00,$3D,$46
@@ -747,7 +747,7 @@ ruins_sect0_room65:
 .db $53,$49,$00,$00,$00,$00,$00,$00
 .db $53,$53,$39,$55,$3A,$39,$55,$3A
 .db $30,$30,$30,$30,$30,$30,$30,$30
-ruins_sect0_room65_objects:
+; ruins_sect0_room65_objects:
 .db $FF
 ruins_sect0_room66:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -758,7 +758,7 @@ ruins_sect0_room66:
 .db $00,$23,$61,$1D,$1D,$23,$48,$23
 .db $00,$23,$61,$61,$61,$23,$47,$23
 .db $30,$30,$30,$30,$30,$30,$30,$30
-ruins_sect0_room66_objects:
+; ruins_sect0_room66_objects:
 .db $FF
 ruins_sect0_room67:
 .db $00,$00,$00,$00,$02,$05,$00,$05
@@ -769,7 +769,7 @@ ruins_sect0_room67:
 .db $1D,$1D,$61,$23,$02,$05,$00,$05
 .db $61,$61,$61,$23,$02,$05,$00,$05
 .db $30,$30,$30,$30,$30,$30,$30,$30
-ruins_sect0_room67_objects:
+; ruins_sect0_room67_objects:
 .db $FF
 ruins_sect0_room68:
 .db $02,$00,$00,$05,$02,$00,$00,$00
@@ -780,7 +780,7 @@ ruins_sect0_room68:
 .db $02,$00,$00,$05,$02,$00,$00,$00
 .db $02,$00,$00,$05,$02,$00,$06,$00
 .db $30,$30,$30,$30,$30,$41,$00,$00
-ruins_sect0_room68_objects:
+; ruins_sect0_room68_objects:
 .db $FF
 ruins_sect0_room69:
 .db $00,$02,$00,$00,$00,$02,$00,$00
@@ -791,7 +791,7 @@ ruins_sect0_room69:
 .db $00,$00,$00,$00,$00,$00,$00,$13
 .db $00,$00,$00,$00,$00,$00,$00,$18
 .db $00,$00,$00,$06,$00,$00,$00,$0E
-ruins_sect0_room69_objects:
+; ruins_sect0_room69_objects:
 .db $FF
 ruins_sect0_room70:
 .db $00,$00,$00,$00,$00,$00,$4C,$4C
@@ -802,7 +802,7 @@ ruins_sect0_room70:
 .db $11,$11,$11,$12,$00,$00,$00,$00
 .db $14,$75,$14,$14,$7D,$00,$00,$00
 .db $08,$76,$08,$0D,$0A,$00,$00,$00
-ruins_sect0_room70_objects:
+; ruins_sect0_room70_objects:
 .db $08,$E6,$FF
 ruins_sect0_room71:
 .db $4C,$4C,$4C,$00,$00,$00,$00,$00
@@ -813,7 +813,7 @@ ruins_sect0_room71:
 .db $00,$65,$65,$44,$3F,$00,$00,$00
 .db $44,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room71_objects:
+; ruins_sect0_room71_objects:
 .db $FF
 ruins_sect0_room72:
 .db $00,$45,$44,$30,$30,$30,$30,$30
@@ -824,7 +824,7 @@ ruins_sect0_room72:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $30,$41,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$06,$00
-ruins_sect0_room72_objects:
+; ruins_sect0_room72_objects:
 .db $FF
 ruins_sect0_room73:
 .db $7A,$7A,$7A,$7A,$7A,$30,$30,$30
@@ -835,7 +835,7 @@ ruins_sect0_room73:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$06,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room73_objects:
+; ruins_sect0_room73_objects:
 .db $FF
 ruins_sect0_room74:
 .db $30,$30,$30,$30,$30,$30,$30,$41
@@ -846,7 +846,7 @@ ruins_sect0_room74:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$06,$00,$00,$00,$00,$00,$06
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room74_objects:
+; ruins_sect0_room74_objects:
 .db $FF
 ruins_sect0_room75:
 .db $00,$00,$44,$3F,$00,$00,$25,$25
@@ -857,7 +857,7 @@ ruins_sect0_room75:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$3A,$00,$00,$00,$00
-ruins_sect0_room75_objects:
+; ruins_sect0_room75_objects:
 .db $FF
 ruins_sect0_room76:
 .db $25,$25,$25,$25,$00,$00,$25,$25
@@ -868,7 +868,7 @@ ruins_sect0_room76:
 .db $06,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room76_objects:
+; ruins_sect0_room76_objects:
 .db $FF
 ruins_sect0_room77:
 .db $25,$25,$25,$25,$25,$25,$01,$01
@@ -879,7 +879,7 @@ ruins_sect0_room77:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$06,$00,$00,$00,$00,$00,$00
-ruins_sect0_room77_objects:
+; ruins_sect0_room77_objects:
 .db $FF
 ruins_sect0_room78:
 .db $01,$01,$0E,$0A,$10,$10,$10,$0E
@@ -890,7 +890,7 @@ ruins_sect0_room78:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$06,$00
 .db $00,$06,$00,$00,$00,$00,$00,$00
-ruins_sect0_room78_objects:
+; ruins_sect0_room78_objects:
 .db $FF
 ruins_sect0_room79:
 .db $0B,$00,$00,$00,$00,$25,$25,$25
@@ -901,7 +901,7 @@ ruins_sect0_room79:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$06,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room79_objects:
+; ruins_sect0_room79_objects:
 .db $FF
 ruins_sect0_room80:
 .db $00,$00,$2B,$79,$7E,$7B,$2B,$7E
@@ -912,7 +912,7 @@ ruins_sect0_room80:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$60,$7C,$7D,$00,$00
 .db $00,$00,$13,$51,$11,$11,$12,$00
-ruins_sect0_room80_objects:
+; ruins_sect0_room80_objects:
 .db $FF
 ruins_sect0_room81:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -923,7 +923,7 @@ ruins_sect0_room81:
 .db $00,$00,$00,$00,$00,$00,$06,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room81_objects:
+; ruins_sect0_room81_objects:
 .db $FF
 ruins_sect0_room82:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -934,7 +934,7 @@ ruins_sect0_room82:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$29
 .db $00,$00,$00,$00,$00,$00,$57,$57
-ruins_sect0_room82_objects:
+; ruins_sect0_room82_objects:
 .db $FF
 ruins_sect0_room83:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -945,7 +945,7 @@ ruins_sect0_room83:
 .db $00,$03,$36,$35,$00,$00,$00,$00
 .db $35,$31,$36,$34,$00,$00,$00,$00
 .db $57,$57,$57,$57,$57,$00,$00,$00
-ruins_sect0_room83_objects:
+; ruins_sect0_room83_objects:
 .db $FF
 ruins_sect0_room84:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -956,7 +956,7 @@ ruins_sect0_room84:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$03,$00,$00,$00,$00
-ruins_sect0_room84_objects:
+; ruins_sect0_room84_objects:
 .db $FF
 ruins_sect0_room85:
 .db $00,$00,$00,$00,$00,$00,$00,$0F
@@ -967,7 +967,7 @@ ruins_sect0_room85:
 .db $00,$00,$00,$06,$06,$00,$00,$0F
 .db $00,$00,$00,$00,$00,$00,$00,$0F
 .db $03,$00,$00,$00,$00,$00,$00,$0F
-ruins_sect0_room85_objects:
+; ruins_sect0_room85_objects:
 .db $FF
 ruins_sect0_room86:
 .db $07,$13,$11,$51,$12,$30,$41,$42
@@ -978,7 +978,7 @@ ruins_sect0_room86:
 .db $08,$08,$0D,$08,$09,$00,$39,$5E
 .db $08,$08,$08,$08,$0A,$30,$30,$30
 .db $08,$08,$08,$08,$0B,$00,$35,$35
-ruins_sect0_room86_objects:
+; ruins_sect0_room86_objects:
 .db $FF
 ruins_sect0_room87:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -989,7 +989,7 @@ ruins_sect0_room87:
 .db $55,$3A,$00,$40,$3E,$00,$00,$00
 .db $30,$30,$30,$30,$30,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$3D
-ruins_sect0_room87_objects:
+; ruins_sect0_room87_objects:
 .db $FF
 ruins_sect0_room88:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -1000,7 +1000,7 @@ ruins_sect0_room88:
 .db $00,$45,$44,$30,$30,$30,$30,$41
 .db $3D,$3F,$00,$00,$00,$00,$00,$00
 .db $3F,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room88_objects:
+; ruins_sect0_room88_objects:
 .db $FF
 ruins_sect0_room89:
 .db $00,$00,$00,$00,$00,$06,$00,$00
@@ -1011,7 +1011,7 @@ ruins_sect0_room89:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room89_objects:
+; ruins_sect0_room89_objects:
 .db $FF
 ruins_sect0_room90:
 .db $00,$00,$00,$00,$00,$55,$00,$00
@@ -1022,7 +1022,7 @@ ruins_sect0_room90:
 .db $00,$00,$00,$01,$01,$01,$01,$01
 .db $00,$00,$00,$25,$25,$25,$25,$25
 .db $06,$00,$00,$23,$23,$4E,$25,$57
-ruins_sect0_room90_objects:
+; ruins_sect0_room90_objects:
 .db $FF
 ruins_sect0_room91:
 .db $00,$00,$00,$24,$00,$00,$00,$00
@@ -1033,7 +1033,7 @@ ruins_sect0_room91:
 .db $01,$01,$01,$01,$01,$01,$00,$00
 .db $25,$25,$25,$25,$25,$25,$00,$00
 .db $57,$25,$4E,$4E,$23,$25,$00,$39
-ruins_sect0_room91_objects:
+; ruins_sect0_room91_objects:
 .db $FF
 ruins_sect0_room92:
 .db $00,$00,$06,$00,$00,$00,$00,$00
@@ -1044,7 +1044,7 @@ ruins_sect0_room92:
 .db $00,$00,$00,$35,$00,$00,$06,$00
 .db $00,$00,$03,$35,$00,$00,$00,$00
 .db $3A,$00,$36,$34,$00,$00,$00,$00
-ruins_sect0_room92_objects:
+; ruins_sect0_room92_objects:
 .db $FF
 ruins_sect0_room93:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -1055,7 +1055,7 @@ ruins_sect0_room93:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$31,$2B,$2B,$00,$00,$00
-ruins_sect0_room93_objects:
+; ruins_sect0_room93_objects:
 .db $FF
 ruins_sect0_room94:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -1066,7 +1066,7 @@ ruins_sect0_room94:
 .db $00,$00,$00,$00,$00,$7B,$35,$74
 .db $00,$06,$00,$00,$00,$78,$35,$74
 .db $00,$00,$00,$00,$34,$74,$34,$7B
-ruins_sect0_room94_objects:
+; ruins_sect0_room94_objects:
 .db $FF
 ruins_sect0_room95:
 .db $00,$00,$00,$00,$00,$06,$00,$31
@@ -1077,7 +1077,7 @@ ruins_sect0_room95:
 .db $00,$00,$00,$00,$00,$00,$00,$02
 .db $00,$00,$00,$33,$04,$04,$04,$31
 .db $00,$00,$00,$00,$00,$00,$00,$02
-ruins_sect0_room95_objects:
+; ruins_sect0_room95_objects:
 .db $FF
 ruins_sect0_room96:
 .db $00,$00,$18,$14,$48,$14,$19,$00
@@ -1088,7 +1088,7 @@ ruins_sect0_room96:
 .db $00,$00,$0F,$08,$08,$08,$0A,$00
 .db $20,$6F,$0F,$08,$08,$08,$7D,$21
 .db $1E,$21,$00,$10,$48,$08,$09,$4F
-ruins_sect0_room96_objects:
+; ruins_sect0_room96_objects:
 .db $02,$29,$00,$00,$FF
 ruins_sect0_room97:
 .db $00,$06,$00,$00,$00,$00,$00,$00
@@ -1099,7 +1099,7 @@ ruins_sect0_room97:
 .db $00,$00,$00,$00,$00,$2B,$2B,$2B
 .db $6F,$5A,$00,$00,$00,$15,$1D,$7F
 .db $21,$59,$00,$35,$00,$15,$1B,$16
-ruins_sect0_room97_objects:
+; ruins_sect0_room97_objects:
 .db $FF
 ruins_sect0_room98:
 .db $39,$55,$55,$00,$00,$00,$25,$00
@@ -1110,7 +1110,7 @@ ruins_sect0_room98:
 .db $2B,$2B,$2B,$2B,$2B,$00,$23,$25
 .db $7F,$7F,$1D,$5E,$64,$00,$23,$57
 .db $48,$16,$1B,$1B,$4B,$00,$23,$25
-ruins_sect0_room98_objects:
+; ruins_sect0_room98_objects:
 .db $FF
 ruins_sect0_room99:
 .db $39,$5E,$3A,$00,$25,$00,$39,$00
@@ -1121,7 +1121,7 @@ ruins_sect0_room99:
 .db $4E,$4E,$4E,$25,$23,$00,$24,$33
 .db $57,$57,$57,$57,$23,$36,$4E,$4E
 .db $28,$48,$28,$25,$23,$37,$1D,$1D
-ruins_sect0_room99_objects:
+; ruins_sect0_room99_objects:
 .db $FF
 ruins_sect0_room100:
 .db $00,$00,$00,$31,$32,$00,$00,$35
@@ -1132,7 +1132,7 @@ ruins_sect0_room100:
 .db $04,$31,$04,$31,$04,$04,$31,$32
 .db $25,$02,$00,$37,$00,$35,$02,$00
 .db $23,$02,$00,$00,$00,$35,$02,$00
-ruins_sect0_room100_objects:
+; ruins_sect0_room100_objects:
 .db $FF
 ruins_sect0_room101:
 .db $02,$00,$00,$00,$00,$00,$00,$13
@@ -1143,7 +1143,7 @@ ruins_sect0_room101:
 .db $02,$31,$31,$04,$32,$35,$00,$0F
 .db $02,$02,$37,$00,$00,$35,$35,$13
 .db $02,$02,$00,$00,$00,$35,$35,$18
-ruins_sect0_room101_objects:
+; ruins_sect0_room101_objects:
 .db $FF
 ruins_sect0_room102:
 .db $51,$11,$12,$08,$09,$00,$35,$35
@@ -1154,7 +1154,7 @@ ruins_sect0_room102:
 .db $08,$0D,$08,$08,$0B,$00,$35,$00
 .db $11,$11,$11,$12,$00,$00,$35,$00
 .db $14,$14,$75,$14,$7D,$00,$35,$00
-ruins_sect0_room102_objects:
+; ruins_sect0_room102_objects:
 .db $09,$22,$FF
 ruins_sect0_room103:
 .db $00,$00,$00,$00,$00,$00,$3D,$3F
@@ -1165,7 +1165,7 @@ ruins_sect0_room103:
 .db $44,$30,$30,$41,$00,$00,$00,$77
 .db $00,$7E,$00,$00,$00,$00,$00,$7A
 .db $00,$53,$00,$00,$00,$00,$00,$17
-ruins_sect0_room103_objects:
+; ruins_sect0_room103_objects:
 .db $FF
 ruins_sect0_room104:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -1176,7 +1176,7 @@ ruins_sect0_room104:
 .db $74,$77,$74,$77,$00,$07,$08,$76
 .db $7A,$7A,$7A,$7A,$00,$13,$11,$11
 .db $28,$75,$28,$17,$00,$00,$0F,$14
-ruins_sect0_room104_objects:
+; ruins_sect0_room104_objects:
 .db $FF
 ruins_sect0_room105:
 .db $00,$00,$7C,$50,$00,$00,$00,$00
@@ -1187,7 +1187,7 @@ ruins_sect0_room105:
 .db $0D,$0B,$0F,$08,$0D,$0C,$00,$56
 .db $11,$11,$11,$11,$11,$12,$00,$3B
 .db $14,$14,$75,$14,$14,$19,$00,$24
-ruins_sect0_room105_objects:
+; ruins_sect0_room105_objects:
 .db $FF
 ruins_sect0_room106:
 .db $00,$00,$00,$57,$23,$28,$25,$28
@@ -1198,7 +1198,7 @@ ruins_sect0_room106:
 .db $57,$57,$00,$25,$23,$4E,$25,$4E
 .db $4E,$00,$00,$23,$23,$56,$57,$57
 .db $28,$00,$00,$23,$23,$4E,$75,$4E
-ruins_sect0_room106_objects:
+; ruins_sect0_room106_objects:
 .db $FF
 ruins_sect0_room107:
 .db $28,$25,$28,$28,$23,$57,$00,$71
@@ -1209,7 +1209,7 @@ ruins_sect0_room107:
 .db $4E,$25,$4E,$4E,$23,$25,$1E,$6D
 .db $57,$57,$57,$57,$23,$25,$20,$71
 .db $48,$4E,$75,$4E,$23,$25,$1E,$4C
-ruins_sect0_room107_objects:
+; ruins_sect0_room107_objects:
 .db $FF
 ruins_sect0_room108:
 .db $70,$70,$70,$72,$00,$00,$00,$00
@@ -1220,7 +1220,7 @@ ruins_sect0_room108:
 .db $6B,$6E,$6E,$6E,$59,$59,$35,$00
 .db $70,$70,$70,$72,$59,$59,$35,$00
 .db $4C,$75,$4C,$4C,$5A,$59,$35,$00
-ruins_sect0_room108_objects:
+; ruins_sect0_room108_objects:
 .db $FF
 ruins_sect0_room109:
 .db $00,$00,$02,$00,$00,$00,$00,$00
@@ -1231,7 +1231,7 @@ ruins_sect0_room109:
 .db $00,$2B,$2B,$2B,$2B,$53,$49,$00
 .db $00,$15,$5E,$7F,$64,$2B,$2B,$00
 .db $00,$63,$48,$2E,$1A,$62,$1A,$00
-ruins_sect0_room109_objects:
+; ruins_sect0_room109_objects:
 .db $FF
 ruins_sect0_room110:
 .db $00,$00,$00,$00,$7A,$7A,$7A,$7A
@@ -1242,7 +1242,7 @@ ruins_sect0_room110:
 .db $00,$00,$00,$00,$78,$79,$77,$74
 .db $03,$00,$00,$00,$7A,$7A,$7A,$7A
 .db $02,$00,$00,$00,$17,$17,$48,$17
-ruins_sect0_room110_objects:
+; ruins_sect0_room110_objects:
 .db $FF
 ruins_sect0_room111:
 .db $78,$00,$00,$00,$00,$00,$00,$02
@@ -1253,7 +1253,7 @@ ruins_sect0_room111:
 .db $77,$00,$00,$31,$04,$04,$31,$02
 .db $7A,$00,$00,$37,$00,$35,$37,$02
 .db $17,$00,$00,$03,$00,$35,$00,$02
-ruins_sect0_room111_objects:
+; ruins_sect0_room111_objects:
 .db $FF
 ruins_sect0_room112:
 .db $20,$4F,$7C,$7D,$47,$08,$0C,$21
@@ -1264,7 +1264,7 @@ ruins_sect0_room112:
 .db $36,$36,$23,$53,$23,$25,$49,$53
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room112_objects:
+; ruins_sect0_room112_objects:
 .db $02,$09,$73,$00,$08,$A8,$FF
 ruins_sect0_room113:
 .db $1F,$5A,$00,$35,$34,$15,$5C,$5F
@@ -1275,7 +1275,7 @@ ruins_sect0_room113:
 .db $31,$32,$23,$23,$36,$77,$47,$79
 .db $30,$3E,$7A,$31,$7A,$31,$7A,$7A
 .db $00,$40,$78,$37,$17,$37,$78,$17
-ruins_sect0_room113_objects:
+; ruins_sect0_room113_objects:
 .db $02,$AD,$60,$00,$FF
 ruins_sect0_room114:
 .db $47,$5C,$5F,$4B,$3A,$38,$23,$25
@@ -1286,7 +1286,7 @@ ruins_sect0_room114:
 .db $00,$26,$26,$26,$26,$00,$35,$23
 .db $7A,$7A,$7A,$7A,$30,$30,$30,$30
 .db $17,$17,$17,$78,$00,$00,$00,$00
-ruins_sect0_room114_objects:
+; ruins_sect0_room114_objects:
 .db $02,$01,$69,$00,$08,$AD,$FF
 ruins_sect0_room115:
 .db $4E,$47,$4E,$25,$23,$34,$4E,$4E
@@ -1297,7 +1297,7 @@ ruins_sect0_room115:
 .db $23,$23,$23,$25,$00,$00,$23,$23
 .db $30,$30,$30,$41,$42,$3D,$30,$30
 .db $00,$00,$00,$00,$40,$3F,$00,$00
-ruins_sect0_room115_objects:
+; ruins_sect0_room115_objects:
 .db $02,$03,$6D,$00,$08,$AF,$FF
 ruins_sect0_room116:
 .db $23,$02,$60,$00,$35,$34,$37,$00
@@ -1308,7 +1308,7 @@ ruins_sect0_room116:
 .db $23,$45,$44,$30,$41,$42,$38,$53
 .db $30,$46,$00,$00,$00,$40,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room116_objects:
+; ruins_sect0_room116_objects:
 .db $09,$49,$FF
 ruins_sect0_room117:
 .db $02,$37,$38,$34,$38,$35,$35,$07
@@ -1319,7 +1319,7 @@ ruins_sect0_room117:
 .db $53,$31,$32,$34,$60,$38,$03,$24
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room117_objects:
+; ruins_sect0_room117_objects:
 .db $FF
 ruins_sect0_room118:
 .db $0A,$0E,$76,$08,$0C,$00,$34,$00
@@ -1330,7 +1330,7 @@ ruins_sect0_room118:
 .db $53,$39,$24,$24,$2D,$7C,$50,$7D
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room118_objects:
+; ruins_sect0_room118_objects:
 .db $08,$A4,$FF
 ruins_sect0_room119:
 .db $00,$54,$00,$00,$00,$00,$00,$77
@@ -1341,7 +1341,7 @@ ruins_sect0_room119:
 .db $39,$3A,$00,$60,$38,$49,$00,$6B
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room119_objects:
+; ruins_sect0_room119_objects:
 .db $FF
 ruins_sect0_room120:
 .db $74,$76,$74,$77,$00,$5B,$00,$10
@@ -1352,7 +1352,7 @@ ruins_sect0_room120:
 .db $47,$6E,$6D,$60,$31,$05,$23,$23
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room120_objects:
+; ruins_sect0_room120_objects:
 .db $02,$A1,$77,$00,$FF
 ruins_sect0_room121:
 .db $0E,$08,$76,$08,$0D,$0A,$34,$2D
@@ -1363,7 +1363,7 @@ ruins_sect0_room121:
 .db $23,$25,$45,$44,$30,$41,$42,$25
 .db $30,$30,$46,$00,$00,$00,$43,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room121_objects:
+; ruins_sect0_room121_objects:
 .db $FF
 ruins_sect0_room122:
 .db $4E,$39,$00,$23,$23,$4E,$76,$4E
@@ -1374,7 +1374,7 @@ ruins_sect0_room122:
 .db $23,$25,$00,$0E,$47,$08,$08,$0B
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room122_objects:
+; ruins_sect0_room122_objects:
 .db $02,$A9,$62,$00,$FF
 ruins_sect0_room123:
 .db $47,$4E,$76,$4E,$23,$25,$20,$6E
@@ -1385,7 +1385,7 @@ ruins_sect0_room123:
 .db $25,$23,$23,$23,$25,$00,$60,$23
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room123_objects:
+; ruins_sect0_room123_objects:
 .db $02,$01,$71,$00,$FF
 ruins_sect0_room124:
 .db $6E,$76,$6E,$6D,$59,$5A,$34,$38
@@ -1396,7 +1396,7 @@ ruins_sect0_room124:
 .db $23,$23,$23,$25,$45,$44,$30,$41
 .db $30,$30,$30,$30,$46,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room124_objects:
+; ruins_sect0_room124_objects:
 .db $FF
 ruins_sect0_room125:
 .db $03,$15,$47,$1B,$1A,$63,$1A,$38
@@ -1407,7 +1407,7 @@ ruins_sect0_room125:
 .db $42,$23,$23,$23,$23,$61,$76,$61
 .db $43,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room125_objects:
+; ruins_sect0_room125_objects:
 .db $02,$05,$68,$00,$FF
 ruins_sect0_room126:
 .db $36,$34,$03,$60,$77,$74,$47,$79
@@ -1418,7 +1418,7 @@ ruins_sect0_room126:
 .db $61,$00,$00,$00,$00,$00,$00,$00
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room126_objects:
+; ruins_sect0_room126_objects:
 .db $02,$0D,$6A,$00,$FF
 ruins_sect0_room127:
 .db $77,$34,$00,$02,$60,$35,$35,$02
@@ -1429,7 +1429,7 @@ ruins_sect0_room127:
 .db $00,$00,$39,$78,$7D,$60,$53,$00
 .db $30,$30,$30,$30,$30,$30,$30,$30
 .db $00,$00,$00,$00,$00,$00,$00,$00
-ruins_sect0_room127_objects:
+; ruins_sect0_room127_objects:
 .db $FF
 ruins_sect0_map:
 .dw ruins_sect0_room0,ruins_sect0_room1,ruins_sect0_room2,ruins_sect0_room3

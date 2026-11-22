@@ -10,7 +10,7 @@ building_sect5_room0:
 .db $10,$6D,$69,$6B,$00,$6E,$4D,$4D
 .db $71,$00,$6E,$6C,$58,$3E,$3E,$3E
 .db $15,$6D,$4D,$52,$15,$15,$7A,$15
-building_sect5_room0_objects:
+; building_sect5_room0_objects:
 .db $FF
 building_sect5_room1:
 .db $18,$18,$10,$18,$18,$10,$18,$18
@@ -21,7 +21,7 @@ building_sect5_room1:
 .db $4D,$70,$1D,$6A,$6C,$1D,$6D,$69
 .db $3E,$3E,$10,$3E,$3E,$10,$3E,$3E
 .db $15,$7A,$10,$15,$15,$10,$15,$15
-building_sect5_room1_objects:
+; building_sect5_room1_objects:
 .db $FF
 building_sect5_room2:
 .db $10,$18,$18,$10,$18,$18,$10,$18
@@ -32,7 +32,7 @@ building_sect5_room2:
 .db $00,$6D,$4D,$1D,$6D,$69,$1D,$6D
 .db $3E,$3E,$3E,$10,$3E,$3E,$10,$3E
 .db $7A,$15,$15,$10,$15,$7A,$10,$15
-building_sect5_room2_objects:
+; building_sect5_room2_objects:
 .db $FF
 building_sect5_room3:
 .db $18,$10,$18,$18,$10,$18,$18,$10
@@ -43,7 +43,7 @@ building_sect5_room3:
 .db $4D,$70,$0E,$00,$67,$67,$67,$7B
 .db $3E,$3E,$3E,$3E,$3E,$3E,$3E,$71
 .db $15,$15,$15,$15,$7A,$15,$15,$15
-building_sect5_room3_objects:
+; building_sect5_room3_objects:
 .db $FF
 building_sect5_room4:
 .db $10,$6D,$6B,$19,$3F,$3F,$3F,$3F
@@ -54,7 +54,7 @@ building_sect5_room4:
 .db $7C,$32,$00,$0F,$0D,$0D,$0D,$0E
 .db $71,$32,$00,$00,$3C,$3C,$3C,$00
 .db $15,$32,$00,$00,$32,$00,$32,$00
-building_sect5_room4_objects:
+; building_sect5_room4_objects:
 .db $FF
 building_sect5_room5:
 .db $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F
@@ -65,7 +65,7 @@ building_sect5_room5:
 .db $00,$32,$78,$74,$79,$00,$00,$78
 .db $00,$32,$73,$59,$72,$78,$79,$73
 .db $00,$32,$73,$59,$72,$73,$72,$73
-building_sect5_room5_objects:
+; building_sect5_room5_objects:
 .db $FF
 building_sect5_room6:
 .db $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F
@@ -76,7 +76,7 @@ building_sect5_room6:
 .db $74,$79,$32,$00,$0F,$0D,$0D,$0D
 .db $59,$72,$32,$00,$00,$3C,$3C,$3C
 .db $59,$72,$32,$00,$00,$32,$00,$32
-building_sect5_room6_objects:
+; building_sect5_room6_objects:
 .db $FF
 building_sect5_room7:
 .db $3F,$3F,$3F,$3F,$3F,$3F,$3F,$10
@@ -87,7 +87,7 @@ building_sect5_room7:
 .db $0D,$0D,$0D,$0D,$0C,$0D,$0D,$7B
 .db $3C,$3C,$3C,$3C,$3C,$3C,$3C,$71
 .db $00,$32,$00,$32,$00,$32,$00,$15
-building_sect5_room7_objects:
+; building_sect5_room7_objects:
 .db $02,$A9,$00,$14
 .db $FF
 building_sect5_map:

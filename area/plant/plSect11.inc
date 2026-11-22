@@ -7,7 +7,7 @@ plant_sect11_room0:
 .db $00,$1A,$1A,$7C,$66,$66,$7C,$1A
 .db $2B,$2B,$2B,$2B,$2B,$2B,$2B,$2B
 .db $15,$15,$15,$15,$15,$15,$15,$15
-plant_sect11_room0_objects:
+; plant_sect11_room0_objects:
 .db $03,$A0,$20,$14,$FF
 plant_sect11_room1:
 .db $14,$14,$14,$14,$14,$14,$14,$14
@@ -18,7 +18,7 @@ plant_sect11_room1:
 .db $70,$6D,$6D,$70,$6D,$6D,$6D,$14
 .db $2B,$2B,$2B,$2B,$2B,$2B,$2B,$14
 .db $15,$15,$15,$15,$15,$15,$15,$14
-plant_sect11_room1_objects:
+; plant_sect11_room1_objects:
 .db $FF
 plant_sect11_map:
 .dw plant_sect11_room0,plant_sect11_room1

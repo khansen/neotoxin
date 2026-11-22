@@ -10,7 +10,7 @@ building_sect1_room0:
 .db $4C,$6D,$4D,$0C,$4D,$52,$4D,$4D
 .db $4C,$41,$41,$41,$41,$41,$41,$41
 .db $4C,$0D,$0D,$0D,$0D,$0D,$0D,$0D
-building_sect1_room0_objects:
+; building_sect1_room0_objects:
 .db $02,$A7,$00,$15,$04,$BC
 .db $FF
 building_sect1_room1:
@@ -22,7 +22,7 @@ building_sect1_room1:
 .db $4D,$52,$4D,$69,$6B,$6B,$6A,$4D
 .db $0F,$6A,$69,$66,$68,$68,$65,$6A
 .db $00,$41,$41,$41,$41,$41,$41,$41
-building_sect1_room1_objects:
+; building_sect1_room1_objects:
 .db $04,$3B
 .db $FF
 building_sect1_room2:
@@ -34,7 +34,7 @@ building_sect1_room2:
 .db $4D,$4D,$4D,$4D,$52,$4D,$4D,$4D
 .db $52,$4D,$69,$6A,$4D,$52,$69,$0E
 .db $41,$41,$41,$41,$41,$41,$41,$00
-building_sect1_room2_objects:
+; building_sect1_room2_objects:
 .db $04,$D4
 .db $FF
 building_sect1_room3:
@@ -46,7 +46,7 @@ building_sect1_room3:
 .db $4D,$4D,$4D,$4D,$52,$4D,$52,$4C
 .db $41,$41,$41,$41,$41,$41,$41,$4C
 .db $0D,$0D,$0D,$0D,$0D,$0D,$0D,$4C
-building_sect1_room3_objects:
+; building_sect1_room3_objects:
 .db $FF
 building_sect1_map:
 .dw building_sect1_room0,building_sect1_room1,building_sect1_room2,building_sect1_room3

@@ -6,6 +6,12 @@ XASM = xasm $(AFLAGS)
 
 XLNK = xlnk $(LFLAGS)
 
+CXX = c++
+
+CXXFLAGS = -O2 -Wall -Wextra
+
+TOOLS = tools/nga2asm tools/xm2muz tools/comp
+
 SCRIPTS = script/introscript.bin script/npc6script.bin
 
 OBJS = vste.o ngsl.o huff.o titlescreen.o gameinfo.o selectgame.o \
@@ -28,7 +34,11 @@ HEADERS = $(wildcard *.h)
 
 CHRFILES = $(wildcard chr/*.chr)
 
-all: $(BINFILE)
+PLANT_GEN_SECTS = $(patsubst %,area/plant/plSect%.inc,1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)
+
+BASE_GEN_SECTS = $(patsubst %,area/base/bsSect%.inc,1 2 3 4 5 6 7 8 9 10 11 13 14 15)
+
+all: $(TOOLS) $(BINFILE)
 
 $(BINFILE): $(OBJS) $(HEADERFILE) $(SCRIPTFILE) $(CHRFILES)
 	$(XLNK) $(SCRIPTFILE) -o $@
@@ -73,10 +83,34 @@ boss2.o: area/boss2/b2Main.asm $(wildcard area/boss2/*.inc)
 script/%.bin: script/%.asm script/script.h
 	$(XASM) --pure-binary -Iscript $< -o $@
 
+tools/%: tools/%.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+huff/huffpuff.tab huff/strings.inc: huff/strings.txt font.tbl
+	huffpuff --character-map=font.tbl --table-output=huff/huffpuff.tab --data-output=huff/strings.inc --table-label= --generate-string-table --string-table-label= huff/strings.txt
+
+data/dialog.dat: data/dialog.nam tools/comp
+	tools/comp $< 32 24 0x2082 $@
+
+data/name2.dat: data/name.nam tools/comp
+	tools/comp $< 32 23 0x2062 $@
+
+data/select22.dat: data/select2.nam tools/comp
+	tools/comp $< 32 24 0x2065 $@
+
+$(PLANT_GEN_SECTS): area/plant/plSect%.inc: area/plant/plant_sect%.nga tools/nga2asm
+	tools/nga2asm $< -r -w > $@
+
+$(BASE_GEN_SECTS): area/base/bsSect%.inc: area/base/base_sect%.nga tools/nga2asm
+	tools/nga2asm $< -r -w > $@
+
+music/neox009.inc: music/neox009.xm tools/xm2muz
+	tools/xm2muz $< > $@
+
 test: $(BINFILE)
 	./test/run_test.sh $(BINFILE)
 
 .PHONY: all clean test
 
 clean:
-	rm -f $(BINFILE) $(OBJS) $(SCRIPTS)
+	rm -f $(BINFILE) $(OBJS) $(SCRIPTS) $(TOOLS)

@@ -7,7 +7,7 @@ base_sect11_room0:
 .db $2A,$63,$63,$63,$63,$63,$63,$63
 .db $3C,$63,$37,$37,$63,$37,$37,$63
 .db $3C,$1C,$1C,$1C,$1C,$1C,$1C,$1C
-base_sect11_room0_objects:
+; base_sect11_room0_objects:
 .db $FF
 base_sect11_room1:
 .db $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3C
@@ -18,7 +18,7 @@ base_sect11_room1:
 .db $63,$63,$63,$00,$1C,$1C,$1C,$2A
 .db $37,$37,$63,$00,$21,$21,$21,$3C
 .db $1C,$1C,$1C,$1C,$1C,$1C,$1C,$3C
-base_sect11_room1_objects:
+; base_sect11_room1_objects:
 .db $02,$8B,$40,$0D,$FF
 base_sect11_map:
 .dw base_sect11_room0,base_sect11_room1

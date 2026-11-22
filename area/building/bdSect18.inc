@@ -10,7 +10,7 @@ building_sect18_room0:
 .db $75,$59,$72,$4A,$7F,$40,$40,$40
 .db $75,$59,$72,$4A,$7F,$4A,$78,$74
 .db $75,$40,$40,$4A,$7F,$4A,$73,$59
-building_sect18_room0_objects:
+; building_sect18_room0_objects:
 .db $FF
 building_sect18_room1:
 .db $75,$75,$75,$75,$75,$75,$75,$75
@@ -21,7 +21,7 @@ building_sect18_room1:
 .db $40,$40,$40,$7F,$4A,$73,$59,$75
 .db $74,$79,$4A,$7F,$4A,$73,$59,$75
 .db $59,$72,$4A,$7F,$4A,$40,$40,$75
-building_sect18_room1_objects:
+; building_sect18_room1_objects:
 .db $FF
 building_sect18_room2:
 .db $75,$74,$79,$4A,$7F,$4A,$73,$59
@@ -32,7 +32,7 @@ building_sect18_room2:
 .db $75,$6A,$79,$67,$79,$67,$79,$0C
 .db $75,$03,$03,$03,$03,$03,$03,$03
 .db $75,$78,$79,$78,$79,$78,$79,$78
-building_sect18_room2_objects:
+; building_sect18_room2_objects:
 .db $02,$AF,$00,$07
 .db $FF
 building_sect18_room3:
@@ -44,7 +44,7 @@ building_sect18_room3:
 .db $79,$67,$79,$67,$79,$67,$79,$75
 .db $03,$03,$03,$03,$03,$03,$03,$75
 .db $79,$78,$79,$78,$79,$78,$79,$75
-building_sect18_room3_objects:
+; building_sect18_room3_objects:
 .db $FF
 building_sect18_map:
 .dw building_sect18_room0,building_sect18_room1,building_sect18_room2,building_sect18_room3

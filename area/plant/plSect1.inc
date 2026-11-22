@@ -7,7 +7,7 @@ plant_sect1_room0:
 .db $14,$03,$03,$03,$03,$03,$03,$03
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-plant_sect1_room0_objects:
+; plant_sect1_room0_objects:
 .db $FF
 plant_sect1_room1:
 .db $00,$00,$00,$00,$00,$00,$00,$00
@@ -18,7 +18,7 @@ plant_sect1_room1:
 .db $03,$03,$03,$03,$03,$03,$03,$14
 .db $00,$00,$00,$00,$00,$00,$00,$00
 .db $00,$00,$00,$00,$00,$00,$00,$00
-plant_sect1_room1_objects:
+; plant_sect1_room1_objects:
 .db $02,$8B,$20,$01,$FF
 plant_sect1_map:
 .dw plant_sect1_room0,plant_sect1_room1

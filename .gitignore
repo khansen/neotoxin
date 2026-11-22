@@ -1,3 +1,6 @@
 *.o
 neotoxin.nes
 script/*.bin
+tools/nga2asm
+tools/xm2muz
+tools/comp

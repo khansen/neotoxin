@@ -10,7 +10,7 @@ building_sect9_room0:
 .db $71,$72,$0B,$2C,$07,$44,$73,$71
 .db $4C,$72,$0C,$0D,$0D,$0D,$73,$4C
 .db $4C,$41,$41,$41,$41,$41,$41,$4C
-building_sect9_room0_objects:
+; building_sect9_room0_objects:
 .db $02,$C5,$00,$08
 .db $FF
 building_sect9_map:

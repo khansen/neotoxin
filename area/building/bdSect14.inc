@@ -10,7 +10,7 @@ building_sect14_room0:
 .db $3A,$67,$79,$67,$79,$70,$6E,$3A
 .db $3A,$41,$41,$41,$6B,$6B,$6A,$3A
 .db $71,$68,$65,$66,$68,$65,$66,$71
-building_sect14_room0_objects:
+; building_sect14_room0_objects:
 .db $FF
 building_sect14_room1:
 .db $3A,$53,$53,$53,$53,$53,$53,$3A
@@ -21,7 +21,7 @@ building_sect14_room1:
 .db $3A,$0D,$0D,$0D,$0C,$0D,$0D,$3A
 .db $3A,$14,$14,$14,$14,$14,$14,$3A
 .db $3A,$78,$79,$78,$79,$78,$79,$3A
-building_sect14_room1_objects:
+; building_sect14_room1_objects:
 .db $02,$A9,$00,$05
 .db $FF
 building_sect14_map:
