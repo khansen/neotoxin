@@ -4,7 +4,6 @@
 .include "game.h"
 .include "engine/gbAction.h"
 .include "engine/obj.h"
-.include "sound/rnme.h"
 .include "area/base/base.h"
 .include "engine/area2d.h"
 .include "engine/bgcollision.h"
@@ -19,6 +18,7 @@
 .include "engine/objcollision.h"
 .include "engine/player.h"
 .include "common/ppu.h"
+.include "sound/sfx.h"
 
 .codeseg
 

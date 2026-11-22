@@ -79,6 +79,7 @@ OBJS = $(addprefix $(BUILD_DIR)/, \
     gamedata.o \
     areahdrs.o \
     dmcdata.o \
+    sfx.o \
     vectors.o)
 
 HEADERFILE = ines.hdr

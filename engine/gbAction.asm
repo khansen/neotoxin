@@ -3,13 +3,13 @@
 .include "game.h"
 .include "engine/gbAction.h"
 .include "engine/obj.h"
-.include "sound/rnme.h"
 .include "engine/area2d.h"
 .include "engine/enemy.h"
 .include "common/fade.h"
 .include "engine/movement.h"
 .include "engine/ngsl.h"
 .include "engine/warp.h"
+.include "sound/sfx.h"
 
 .codeseg
 
@@ -59,8 +59,8 @@
     bne     -
     ; player picked up the item
     jsr     TestSetObjFlag
-    lda     #5
-    sta     SFX_Number+1
+    lda     #SFX_CONFIRM
+    jsr     PlaySFX
     ; launch appropriate cutscene
     lda     OBJ_Var0,x  ; item type
     asl
@@ -109,7 +109,7 @@ ItemPickupScriptPtrs:
     lda     #OE_DISCARDOBJECT
     jsr     SetAnimWaitAction
     lda     #SFX_ROCKETEXPLODE
-    sta     SFX_Number+1
+    jsr     PlaySFX
     jmp     SetExplodeAnim
   + jmp     @@UpAndDownFlyerMain
   
@@ -218,7 +218,7 @@ ItemPickupScriptPtrs:
     tya
     sta     OBJ_SpeedYFrac,x
     lda     #SFX_METAL
-    sta     SFX_Number+1
+    jsr     PlaySFX
     rts
 ; stop bouncing
   + lda     #0
@@ -256,8 +256,8 @@ ItemPickupScriptPtrs:
     jsr     SetHealthPal    ; update health meter palette
     pla
     tax
-    lda     #5
-    sta     SFX_Number+1
+    lda     #SFX_CONFIRM
+    jsr     PlaySFX
     jmp     RemoveObject
 .endp
 

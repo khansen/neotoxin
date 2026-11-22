@@ -1,6 +1,5 @@
 .include "game.h"
 .include "common/nes.h"
-.include "sound/rnme.h"
 .include "engine/area2d.h"
 .include "screens/entername.h"
 .include "common/fade.h"
@@ -12,6 +11,7 @@
 .include "screens/screendata.h"
 .include "engine/warp.h"
 .include "common/mmc3.h"
+.include "sound/sfx.h"
 
 .codeseg
 
@@ -101,8 +101,10 @@
   + lda     JoyFirst
     and     #(btnA | btnB)
     beq     NoNameChange
-    ldy     #4
-    sty     SFX_Number+1
+    pha
+    lda     #SFX_KEY
+    jsr     PlaySFX
+    pla
     and     #btnA
     bne     @@EnterLetter
 ; erase last letter
@@ -129,8 +131,8 @@
 ; name accepted
   + lda     NextRoutine
     sta     MainRoutine
-    ldy     #5
-    sty     SFX_Number+1
+    lda     #SFX_CONFIRM
+    jsr     PlaySFX
     jmp     PAL_FadeToBlack
 
     @@EnterLetter:
@@ -169,8 +171,10 @@
     lda     JoyFirst
     and     #(btnLEFT | btnRIGHT)
     beq     @@NoLetterLeftRight
-    ldy     #3
-    sty     SFX_Number+1
+    pha
+    lda     #SFX_CURSOR
+    jsr     PlaySFX
+    pla
     lsr
     bcs     @@LetterRight
 ; LEFT pressed
@@ -205,8 +209,10 @@
     lda     JoyFirst
     and     #(btnUP | btnDOWN)
     beq     SetLetterCursor
-    ldy     #3
-    sty     SFX_Number+1
+    pha
+    lda     #SFX_CURSOR
+    jsr     PlaySFX
+    pla
     and     #btnDOWN
     bne     @@LetterDown
 ; UP pressed

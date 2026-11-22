@@ -1,10 +1,10 @@
 .include "chr/chr.h"
 .include "game.h"
 .include "common/nes.h"
-.include "sound/rnme.h"
 .include "game/gamedata.h"
 .include "game/levelup.h"
 .include "engine/obj.h"
+.include "sound/sfx.h"
 
 .codeseg
 
@@ -23,7 +23,7 @@
     sta     SelectedCHR+3
 ; play sfx
     lda     #SFX_LEVELUP
-    sta     SFX_Number+1
+    jsr     PlaySFX
 ; set up the sprites that spell "LEVEL UP"
     ldx     SpriteIndex
     ldy     #7

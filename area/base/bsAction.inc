@@ -97,7 +97,7 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     jsr     HurtPlayer
     ExplodeThing:
     lda     #SFX_ROCKETEXPLODE
-    sta     SFX_Number+1
+    jsr     PlaySFX
 ; explode and dispose of bomb
     lda     #OE_DISCARDOBJECT
     jsr     SetAnimWaitAction

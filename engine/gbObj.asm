@@ -5,10 +5,10 @@
 .include "engine/hsge.h"
 .include "engine/obj.h"
 .include "engine/player.h"
-.include "sound/rnme.h"
 .include "game/flags.h"
 .include "engine/gbObj.h"
 .include "game/maincycle.h"
+.include "sound/sfx.h"
 
 .codeseg
 
@@ -106,7 +106,7 @@
     lda     #0
     jsr     ANIM_SetLoop
     lda     #SFX_ROCKETLAUNCH
-    sta     SFX_Number+1
+    jsr     PlaySFX
     rts
 .endp
 
@@ -158,7 +158,7 @@
     lda     #0
     jsr     ANIM_SetLoop
     lda     #SFX_ENERGYBULLET
-    sta     SFX_Number+1
+    jsr     PlaySFX
     rts
 .endp
 
@@ -212,7 +212,7 @@
     lda     #0
     jsr     ANIM_SetLoop
     lda     #SFX_ENERGYBULLET
-    sta     SFX_Number+1
+    jsr     PlaySFX
     rts
 .endp
 

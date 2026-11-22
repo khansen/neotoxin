@@ -10,6 +10,7 @@
 .include "screens/selectgame.h"
 .include "engine/warp.h"
 .include "common/mmc3.h"
+.include "sound/sfx.h"
 
 .codeseg
 
@@ -75,13 +76,13 @@
     sta     NextRoutine
     lda     #mrEnterNameInit
     sta     MainRoutine
-    lda     #5
-    sta     SFX_Number+1
+    lda     #SFX_CONFIRM
+    jsr     PlaySFX
     jmp     PAL_FadeToBlack
 
     @@EnterGameMenu:
-    lda     #3
-    sta     SFX_Number+1
+    lda     #SFX_CURSOR
+    jsr     PlaySFX
     lda     #0
     sta     MenuSelect
     lda     #$0B    ; round dot
@@ -98,8 +99,10 @@
     lda     #(btnUP + btnDOWN + btnSELECT)
     and     JoyFirst
     beq     @@NoSlotChange
-    ldy     #3
-    sty     SFX_Number+1
+    pha
+    lda     #SFX_CURSOR
+    jsr     PlaySFX
+    pla
     and     #(btnDOWN + btnSELECT)
     bne     @@NextSaveSlot
 ; move to previous slot
@@ -177,8 +180,8 @@
     beq     +
 ; exit menu
     @@ExitGameMenu:
-    lda     #3
-    sta     SFX_Number+1
+    lda     #SFX_CURSOR
+    jsr     PlaySFX
     lda     #$03    ; square
     sta     SPR_Tile
     lda     #48
@@ -193,8 +196,10 @@
     and     JoyFirst
     beq     @@NoMenuConfirm
 ; perform selected command
-    ldy     #5
-    sty     SFX_Number+1
+    pha
+    lda     #SFX_CONFIRM
+    jsr     PlaySFX
+    pla
     ldy     MenuSelect
     beq     @@LoadSelectedSlot
     dey
@@ -231,8 +236,11 @@
     and     JoyFirst
     bne     +
     rts
-  + ldy     #3
-    sty     SFX_Number+1
+  +
+ pha
+ lda     #SFX_CURSOR
+ jsr     PlaySFX
+ pla
     and     #(btnDOWN + btnSELECT)
     bne     @@NextMenuItem
 ; previous menu item

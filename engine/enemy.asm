@@ -12,6 +12,7 @@
 .include "game/levelup.h"
 .include "engine/objcollision.h"
 .include "engine/renderer.h"
+.include "sound/sfx.h"
 
 .codeseg
 
@@ -162,7 +163,7 @@
     lda     #30     ; blink for 30 frames (half a second)
     sta     OBJ_Blink,x
     lda     #SFX_ENEMYHIT
-    sta     SFX_Number+1
+    jsr     PlaySFX
     rts
     @@EnemyDead:
 ; calc experience points gained
@@ -173,9 +174,9 @@
     jsr     CheckLevelAdvance
     jsr     SetBigExplodeAnim
     lda     #SFX_ENEMYEXPLODE
-    sta     SFX_Number+1
+    jsr     PlaySFX
     lda     #SFX_NOISEEXPLODE
-    sta     SFX_Number+3
+    jsr     PlayNoiseSFX
     lda     #OE_DISCARDENEMY
     jmp     SetAnimWaitAction
 .endp
@@ -244,7 +245,7 @@
     lda     #$FF
     sta     RNME_LoadTune ; turn off music
     lda     #SFX_PLAYERDIE
-    sta     SFX_Number+1    ; play "player explode" sample
+    jsr     PlaySFX    ; play "player explode" sample
     pla
     tax
     rts

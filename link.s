@@ -70,6 +70,7 @@ link{file=build/statusscreen.o}
 link{file=build/flags.o}
 link{file=build/ppu.o}
 link{file=build/timer.o}
+link{file=build/sfx.o}
 link{file=build/joypad.o}
 link{file=build/clearram.o}
 link{file=build/math.o}

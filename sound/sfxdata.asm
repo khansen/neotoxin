@@ -8,9 +8,9 @@
 RNME_SFXPtrTable:
 .dw RocketLaunchSfx
 .dw MetalSfx
-.dw sfx2
-.dw sfx3
-.dw sfx4
+.dw CursorSfx
+.dw KeySfx
+.dw ConfirmSfx
 .dw RocketExplodeSfx
 .dw PlayerDieSfx
 .dw EnemyExplodeSfx
@@ -27,14 +27,14 @@ RocketLaunchSfx:
 .db $0A, %00110011, %10001011, %00000000, %00001100, 0  ; rocket launch
 MetalSfx:
 .db $0C, %00000011, %00000000, %00001101, %00001000, 0  ; metal
-sfx2:
+CursorSfx:
 .db $04, %10111011, %00000000, %11000000, %00001000
 .db $04, %10110100, %00000000, %00000000, %00001000
 .db $04, %10110010, %00000000, %11000000, %00001000, 0  ; ploink
-sfx3:
+KeySfx:
 .db $06, %10110111, %10000011, %10100000, %00001000
 .db $06, %10110011, %10000011, %10100000, %00001000, 0  ; bang
-sfx4:
+ConfirmSfx:
 .db $04, %00111011, %00000000, %00000000, %00001001
 .db $04, %00111011, %00000000, %10101100, %00001000
 .db $04, %00110100, %00000000, %00000000, %00001001

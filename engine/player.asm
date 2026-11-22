@@ -12,6 +12,7 @@
 .include "engine/movement.h"
 .include "engine/objcollision.h"
 .include "engine/warp.h"
+.include "sound/sfx.h"
 
 .codeseg
 
@@ -86,7 +87,7 @@
     sta     OBJ_Action
  ; play jump sfx
     lda     #SFX_PLAYERJUMP
-    sta     SFX_Number+1
+    jsr     PlaySFX
     SetJumpAnim:
     lda     #amNoCycling
     sta     ANIM_Method
