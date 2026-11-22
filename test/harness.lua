@@ -128,6 +128,20 @@ local function save_ppm(s, path)
     f:close()
 end
 
+-- Hash of the writes to the APU's sound registers ($4000-$4013, $4015, $4017;
+-- not $4014 sprite DMA or $4016 joypad strobe) since the previous checkpoint.
+-- FCEUX runs with sound off, so this is what covers the music and sound
+-- effect engine.
+local apu_h1, apu_h2 = 5381, 0
+memory.registerwrite(0x4000, 0x18, function(addr, size, value)
+    if addr == 0x4014 or addr == 0x4016 then
+        return
+    end
+    local v = (addr - 0x4000) * 256 + value + 1
+    apu_h1 = (apu_h1 * 33 + v) % 4294967291
+    apu_h2 = (apu_h2 * 131 + v) % 4294967279
+end)
+
 local checkpoints = {}
 local function checkpoint(id)
     local gd = gui.gdscreenshot()
@@ -139,6 +153,8 @@ local function checkpoint(id)
     end
     local hash = hash_gd(gd, mode)
     table.insert(checkpoints, {id = id, hash = hash})
+    table.insert(checkpoints, {id = id .. ".apu", hash = string.format("%08x%08x", apu_h1, apu_h2)})
+    apu_h1, apu_h2 = 5381, 0
     note_progress(id)
     if SHOT_DIR then
         save_ppm(gd, SHOT_DIR .. "/" .. id .. ".ppm")
