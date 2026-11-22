@@ -1,0 +1,368 @@
+.include "anim.h"
+.include "coll.h"
+.include "game.h"
+.include "gbAction.h"
+.include "obj.h"
+.include "rnme.h"
+
+.codeseg
+
+.public ProjectileMain
+.public ManualWarpMain
+.public InstantWarpMain
+.public ItemMain
+.public NPCMain
+.public NeoDoorMain
+.public BlockingDoorMain
+.public HealthItemMain
+.public WaitAnimEnd
+.public DiscardEnemy
+.public EnemyMain
+.public CheckHealthItemBounce
+.public ProgramControl
+.public PlayerControl
+.public ExplodeProjectile
+
+.extrn TestPlayerCollide:proc
+.extrn SetupWarp:proc
+.extrn RemoveObject:proc
+.extrn TestSetObjFlag:proc
+.extrn LoadScript:proc
+.extrn PAL_FadeToBlack:proc
+.extrn Item0PickupScript:label
+.extrn Item1PickupScript:label
+.extrn Item2PickupScript:label
+.extrn Item3PickupScript:label
+.extrn Item4PickupScript:label
+.extrn Item5PickupScript:label
+.extrn Item6PickupScript:label
+.extrn Item7PickupScript:label
+.extrn FacePlayer:proc
+.extrn RemoveProjectile:proc
+.extrn SetAnimWaitAction:proc
+.extrn SetExplodeAnim:proc
+.extrn ObjectToHealthItem:proc
+.extrn DiscardObject:proc
+.extrn CheckPlayerHit:proc
+.extrn CheckEnemyHit:proc
+.extrn InvertYSpeed:proc
+.extrn SetHealthPal:proc
+.extrn TestProjectileCollide:proc
+.extrn ExplodeProjectile2:proc
+.extrn ANIM_SetCel:proc
+
+;-----------------------------------------------------------------------------
+
+    ManualWarpMain:
+  - rts
+
+;-----------------------------------------------------------------------------
+
+; Automatically initiates the warp if the player is touching the warp spot.
+
+    InstantWarpMain:
+    jsr     TestPlayerCollide
+    bne     -
+    ; initiate the warp
+    lda     #0  ; warptype = unknown ???
+    jsr     SetupWarp
+    ; remove the warp object, so it isn't triggered again and again
+    jmp     RemoveObject
+
+;-----------------------------------------------------------------------------
+
+    ItemMain:
+    lda     FrameCount
+    and     #7
+    bne     +
+;    jsr     ToggleDirection
+  + jsr     TestPlayerCollide
+    bne     -
+    ; player picked up the item
+    jsr     TestSetObjFlag
+    lda     #5
+    sta     SFX_Number+1
+    ; launch appropriate cutscene
+    lda     OBJ_Var0,x  ; item type
+    asl
+    tay
+    lda     ItemPickupScriptPtrs,y
+    pha
+    lda     ItemPickupScriptPtrs+1,y
+    tay
+    pla
+    jsr     LoadScript
+    jsr     RemoveObject    ; remove item
+    jmp     PAL_FadeToBlack
+
+ItemPickupScriptPtrs:
+.dw Item0PickupScript
+.dw Item1PickupScript
+.dw Item2PickupScript
+.dw Item3PickupScript
+.dw Item4PickupScript
+.dw Item5PickupScript
+.dw Item6PickupScript
+.dw Item7PickupScript
+
+;-----------------------------------------------------------------------------
+
+    NPCMain:
+    jmp     FacePlayer
+
+;-----------------------------------------------------------------------------
+
+    ProjectileMain:
+    lda     OBJ_State,x
+    bpl     +
+    ; projectile went offscreen, ditch it
+    jmp     RemoveProjectile
+  + lda     CollStat
+    beq     +
+    ; projectile hit a solid background tile, explode it
+    ExplodeProjectile:
+    dec     ProjectileCount
+    lda     #$7F        ; HACK!!!
+    sta     OBJ_Type,x
+    lda     #OE_DISCARDOBJECT
+    jsr     SetAnimWaitAction
+    lda     #SFX_ROCKETEXPLODE
+    sta     SFX_Number+1
+    jmp     SetExplodeAnim
+  + jmp     UpAndDownFlyerMain
+  
+;-----------------------------------------------------------------------------
+
+; Makes the object move up and down in an accelerated fashion. :]
+
+    UpAndDownFlyerMain:
+    ; y movement
+    lda     OBJ_AccelY,x
+    bpl     ++
+    ; moving up
+    lda     OBJ_SpeedY,x
+    cmp     #$FB    ; reached max. speed?
+    bne     +
+    lda     OBJ_SpeedYFrac,x
+    bne     +
+    ; turn around
+    lda     #$01
+    sta     OBJ_AccelY,x
+    lda     #$00
+    sta     OBJ_AccelYFrac,x
+    bpl     +
+ ++ ; moving down
+    lda     OBJ_SpeedY,x
+    cmp     #5      ; reached max. speed?
+    bne     +
+    ; turn around
+    lda     #$FF
+    sta     OBJ_AccelY,x
+    lda     #$00
+    sta     OBJ_AccelYFrac,x
+  + rts
+
+;-----------------------------------------------------------------------------
+
+; Standard enemy discard handler.
+; Spawns a health item if this is an odd frame
+; and player doesn't have max health.
+
+    DiscardEnemy:
+    lda     FrameCount
+    lsr
+    bcc     NoHealthItemSpawn
+    lda     Health
+    cmp     MaxHealth       ; only spawn if health isn't already full
+    beq     NoHealthItemSpawn
+    jsr     TestSetObjFlag
+    jmp     ObjectToHealthItem
+    NoHealthItemSpawn:
+    jmp     DiscardObject
+
+;-----------------------------------------------------------------------------
+
+; Transitions to the next state once the animation is done playing.
+
+    WaitAnimEnd:
+    lda     ANIM_Method,x
+    cmp     #amNoCycling
+    bne     +
+    ; set next action as current action
+    GoNextAction:
+    lda     OBJ_NextAction,x
+    sta     OBJ_Action,x
+  + rts
+
+;-----------------------------------------------------------------------------
+
+; Standard enemy handler.
+
+  - rts
+    EnemyMain:
+    lda     OBJ_State,x
+    bmi     -           ; don't update if offscreen
+    jsr     CheckPlayerHit
+    jmp     CheckEnemyHit
+    
+;-----------------------------------------------------------------------------
+
+    HealthItemMain:
+    jsr     CheckHealthItemBounce
+    jsr     CheckHealthItemAlive
+    jmp     CheckHealthItemPickup
+    
+    CheckHealthItemBounce:
+    lda     CollStat
+    and     #COLL_DOWN
+    beq     -
+; item hit floor, see if it should bounce up again
+    lda     OBJ_SpeedYFrac,x
+    sec
+    sbc     #$C0
+    tay
+    lda     OBJ_SpeedY,x
+    sbc     #0
+    bmi     +
+; bounce it
+    sta     OBJ_SpeedY,x
+    tya
+    sta     OBJ_SpeedYFrac,x
+    jsr     InvertYSpeed
+    sta     OBJ_SpeedY,x
+    tya
+    sta     OBJ_SpeedYFrac,x
+    lda     #SFX_METAL
+    sta     SFX_Number+1
+    rts
+; stop bouncing
+  + lda     #0
+    sta     OBJ_SpeedY,x
+    sta     OBJ_SpeedYFrac,x
+  - rts
+    
+    CheckHealthItemAlive:
+    lda     OBJ_Health,x
+    beq     +
+    dec     OBJ_Health,x
+    bne     -
+; make it blink for $50 frames, then disappear
+    lda     #$50
+    sta     OBJ_Blink,x
+  + lda     OBJ_Blink,x
+    bne     -
+    jmp     RemoveObject
+    
+    CheckHealthItemPickup:
+    jsr     TestPlayerCollide
+    bne     -
+; player picks up item
+    lda     Health
+    clc
+    adc     #1
+    bcs     +
+    cmp     MaxHealth
+    bcc     ++
+  + lda     MaxHealth
+ ++ sta     Health
+    txa
+    pha
+    jsr     SetHealthPal    ; update health meter palette
+    pla
+    tax
+    lda     #5
+    sta     SFX_Number+1
+    jmp     RemoveObject
+
+;-----------------------------------------------------------------------------
+
+; PlayerControl
+; =============
+; Gives player control again.
+
+    PlayerControl:
+    lda     $7FFE       ; !!!
+    sta     OBJ_Action  ; restore player's action
+    rts
+
+; ProgramControl
+; ==============
+; Prohibits player from interacting/interfering.
+
+    ProgramControl:
+    lda     OBJ_Action
+    sta     $7FFE       ; !!! store player's current action
+    ldy     #0
+
+; SetObjectIdle
+; =============
+
+    SetObjectIdle:
+    lda     #OE_IDLE
+    sta     OBJ_Action,y
+    rts
+
+;-----------------------------------------------------------------------------
+
+    NeoDoorMain:
+    rts
+
+;-----------------------------------------------------------------------------
+
+    BlockingDoorMain:
+    lda     OBJ_State,x
+    bpl     +
+    ; do nothing if door is not onscreen
+    rts
+  + jsr     BlockPlayer
+    jsr     TestProjectileCollide
+    bne     +
+    jsr     ExplodeProjectile2
+  + lda     RoomFlags
+    beq     +
+; close the door
+    lda     #amForward
+    sta     ANIM_Method,x
+    rts
+; open the door
+  + lda     #amReverse
+    sta     ANIM_Method,x
+    lda     #15
+    jsr     ANIM_SetCel
+    lda     #OE_DISCARDOBJECT
+    jmp     SetAnimWaitAction
+
+; BlockPlayer
+; ===========
+; Stops player from walking through current object.
+; In: X = object slot
+
+    BlockPlayer:
+    jsr     TestPlayerCollide
+    beq     +
+; object isn't touching player, so exit
+    rts
+; stop player from walking through object
+  + lda     OBJ_ScreenX
+    cmp     OBJ_ScreenX,x
+    bcc     +
+    ; object is left of player
+    lda     OBJ_WorldXFrac
+    clc
+    adc     #$80
+    sta     OBJ_WorldXFrac
+    lda     OBJ_WorldXLo
+    adc     #$01
+    sta     OBJ_WorldXLo
+    rts
+  + ; object is right of player
+    lda     OBJ_WorldXFrac
+    sec
+    sbc     #$80
+    sta     OBJ_WorldXFrac
+    lda     OBJ_WorldXLo
+    sbc     #$01
+    sta     OBJ_WorldXLo
+    rts
+
+.end

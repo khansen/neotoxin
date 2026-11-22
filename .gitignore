@@ -1,0 +1,3 @@
+*.o
+neotoxin.nes
+script/*.bin
