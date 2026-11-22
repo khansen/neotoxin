@@ -1,31 +1,65 @@
 #!/bin/sh
+# Runs test/harness.lua in a headless FCEUX and prints the checkpoint results.
+# Exits 0 if every checkpoint matched test/expected_hashes.txt.
+#
+# Usage: test/run_test.sh [ROM]
+#
+# Environment:
+#   FCEUX_BIN              FCEUX executable (default: fceux on PATH). Works
+#                          with FCEUX 2.8.0 (Homebrew) and 2.7.0 Qt builds.
+#   NEOTOXIN_TEST_MODE     "verify" (default), or "record" to rewrite
+#                          test/expected_hashes.txt from this ROM.
+#   NEOTOXIN_TEST_TIMEOUT  Seconds before giving up (default 60).
+#   NEOTOXIN_SHOT_DIR      If set, save every checkpoint's screen there as
+#                          <checkpoint>.ppm (to see what a failing hash shows).
+#
+# FCEUX gets a throwaway home/config directory per run. The harness never quits
+# FCEUX itself; it writes a final PASS:/FAIL: line and idles, and this script
+# then kills FCEUX with SIGKILL. FCEUX traps SIGTERM and segfaults on its
+# emulator thread while shutting down, which leaves a macOS crash report each
+# time, so SIGTERM is not used.
 set -u
 
 ROM="${1:-neotoxin.nes}"
-CFG_DIR="/tmp/fceux_neotoxin_test"
+case "$ROM" in
+    /*) ;;
+    *) ROM="$(pwd)/$ROM" ;;
+esac
+if [ ! -f "$ROM" ]; then
+    echo "FAIL: ROM not found: $ROM"
+    exit 1
+fi
+if [ -n "${NEOTOXIN_SHOT_DIR:-}" ]; then
+    case "$NEOTOXIN_SHOT_DIR" in
+        /*) ;;
+        *) NEOTOXIN_SHOT_DIR="$(pwd)/$NEOTOXIN_SHOT_DIR" ;;
+    esac
+    mkdir -p "$NEOTOXIN_SHOT_DIR" || exit 1
+    export NEOTOXIN_SHOT_DIR
+fi
+cd "$(dirname "$0")/.." || exit 1
+
+FCEUX="${FCEUX_BIN:-fceux}"
+TIMEOUT="${NEOTOXIN_TEST_TIMEOUT:-60}"
+
+CFG_DIR=$(mktemp -d "${TMPDIR:-/tmp}/neotoxin_test.XXXXXX") || exit 1
+trap 'rm -rf "$CFG_DIR"' EXIT
 LOG_FILE="$CFG_DIR/test.log"
 
-NESREV_FCEUX="${XDG_DATA_HOME:-$HOME/.local/share}/nesrev/fceux/current/bin/fceux"
-if [ -n "${FCEUX_BIN:-}" ]; then
-    FCEUX="$FCEUX_BIN"
-elif [ -x "$NESREV_FCEUX" ]; then
-    FCEUX="$NESREV_FCEUX"
-else
-    FCEUX="fceux"
-fi
-
-rm -rf "$CFG_DIR"
+# Software rendering; the OpenGL view cannot start under the offscreen platform.
 mkdir -p "$CFG_DIR/.fceux"
 printf "SDL.VideoDriver = 2\nSDL.OpenGL = 0\n" > "$CFG_DIR/fceux.cfg"
 cp "$CFG_DIR/fceux.cfg" "$CFG_DIR/.fceux/fceux.cfg"
 
-python3 - "$FCEUX" "$CFG_DIR" "$LOG_FILE" "$ROM" <<'PY'
+python3 - "$FCEUX" "$CFG_DIR" "$LOG_FILE" "$ROM" "$TIMEOUT" <<'PY'
 import os, signal, subprocess, sys, time
 
-fceux, cfg_dir, log_file, rom = sys.argv[1:5]
+fceux, cfg_dir, log_file, rom, timeout = sys.argv[1:6]
 env = dict(
     os.environ,
     HOME=cfg_dir,
+    # FCEUX 2.8 asks for a storage location on first run unless one is given.
+    FCEUX_HOME=cfg_dir,
     FCEUX_CONFIG_DIR=cfg_dir,
     QT_QPA_PLATFORM="offscreen",
     NEOTOXIN_TEST_LOG=log_file,
@@ -39,55 +73,48 @@ cmd = [
     rom,
 ]
 
-proc = subprocess.Popen(
-    cmd,
-    stdin=subprocess.DEVNULL,
-    stdout=subprocess.DEVNULL,
-    stderr=subprocess.DEVNULL,
-    env=env,
-    start_new_session=True,
-)
+try:
+    proc = subprocess.Popen(
+        cmd,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        env=env,
+        start_new_session=True,
+    )
+except OSError as e:
+    print("FAIL: cannot run %s: %s" % (fceux, e))
+    sys.exit(1)
 
-def done_written():
-    if not os.path.isfile(log_file):
+def finished():
+    try:
+        with open(log_file, "rb") as f:
+            lines = f.read().splitlines()
+    except FileNotFoundError:
         return False
-    with open(log_file, "rb") as f:
-        data = f.read()
-    for line in data.splitlines():
-        if line.startswith(b"PASS:") or line.startswith(b"FAIL:"):
-            return True
-    return False
+    return any(l.startswith((b"PASS:", b"FAIL:")) for l in lines)
 
-def stop_group():
-    for sig in (signal.SIGTERM, signal.SIGKILL):
-        try:
-            os.killpg(proc.pid, sig)
-        except ProcessLookupError:
+deadline = time.monotonic() + float(timeout)
+try:
+    while not finished():
+        if proc.poll() is not None:
+            print("FAIL: FCEUX exited before the harness finished (status %d)" % proc.returncode)
             break
-        deadline = time.monotonic() + 0.5
-        while time.monotonic() < deadline:
-            if proc.poll() is not None:
-                return
-            time.sleep(0.05)
-
-deadline = time.monotonic() + 30.0
-while proc.poll() is None:
-    if done_written():
-        stop_group()
-        break
-    if time.monotonic() >= deadline:
-        stop_group()
-        print("FAIL: test harness timed out after 30s")
-        sys.exit(1)
-    time.sleep(0.05)
-
-stop_group()
+        if time.monotonic() >= deadline:
+            print("FAIL: test harness timed out after %ss" % timeout)
+            break
+        time.sleep(0.05)
+finally:
+    try:
+        os.killpg(proc.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        pass
+    proc.wait()
 PY
 
-if [ ! -f "$LOG_FILE" ]; then
+if [ -f "$LOG_FILE" ]; then
+    cat "$LOG_FILE"
+else
     echo "FAIL: test harness produced no log output"
-    exit 1
 fi
-
-cat "$LOG_FILE"
-grep -q "^PASS:" "$LOG_FILE"
+grep -q "^PASS:" "$LOG_FILE" 2>/dev/null
