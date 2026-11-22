@@ -8,6 +8,7 @@
 .public EnterNameInit
 .public EnterNameMain
 .public StartNewGame
+.public InitGameState
 .public PerformNameChange
 
 .extrn ScreenOff:proc
@@ -322,6 +323,13 @@ FlashTable:
 ; Start new game in slot (SaveSlot).
 
     StartNewGame:
+    jsr     InitGameState
+    jsr     WriteSaveGame
+    lda     #<IntroScript
+    ldy     #>IntroScript
+    jmp     LoadScript
+
+    InitGameState:
     ldx     #16
   - lda     InitialSaveGame,x
     sta     Health,x
@@ -332,10 +340,7 @@ FlashTable:
   - sta     StatusFlags,x
     dex
     bpl     -
-    jsr     WriteSaveGame
-    lda     #<IntroScript
-    ldy     #>IntroScript
-    jmp     LoadScript
+    rts
 
 
 .end

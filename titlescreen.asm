@@ -1,7 +1,10 @@
 .include "game.h"
 .include "mmc3.h"
 .include "nes.h"
+.include "obj.h"
 .include "rnme.h"
+
+DEMO_FRAMECOUNT_SEED    EQU     $34
 
 .codeseg
 
@@ -20,6 +23,7 @@
 .extrn PAL_FadeFromBlack:proc
 .extrn PAL_FadeToBlack:proc
 .extrn GameDemos:label
+.extrn InitGameState:proc
 .extrn TitleSine:label
 .extrn PAL_FadeToWhite:proc
 .extrn PAL_FadeFromWhite:proc
@@ -85,8 +89,6 @@
 ; see if it's time to start game demo
     lda     Timer
     bne     +
-; yep
-    beq     +   ; nope
     jsr     PAL_FadeToBlack
     lda     DemoNumber
     asl
@@ -98,9 +100,16 @@
     lda     #$01
     sta     JoyCount
     sta     DemoMode
-; TODO: load savegame...
+; seed the RNG inputs so every demo run plays out identically
+    lda     #DEMO_FRAMECOUNT_SEED
+    sta     FrameCount
+    jsr     InitGameState
+    sta     Random
+    sta     CurrentArea
+    sta     OBJ_State
     lda     #mrExecWarp
     sta     MainRoutine
+    rts
 ; wait for sprite 0 hit
   +
   - lda     PPUStat

@@ -24,3 +24,7 @@ demo_replay_end          e316ffbc0a016382
 select_game_slot2        0ebf1557926625b0
 boss0_spawn              98e0155f154430d3
 boss0_action             99afb5aad58942b8
+attract_demo_mid         89efb21da13e367e
+attract_demo_late        776140872d7a5da1
+attract_demo_loop2       776140872d7a5da1
+attract_demo_exit        b7b18aebe72270ee

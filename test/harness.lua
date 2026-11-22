@@ -56,7 +56,7 @@ local function checkpoint(id)
     local mode = nil
     if id == "title_boot" then
         mode = "title_wave"
-    elseif id == "title_from_music" then
+    elseif id == "title_from_music" or id == "attract_demo_exit" then
         mode = "title_static"
     end
     local hash = hash_gd(gd, mode)
@@ -271,6 +271,24 @@ step(35, {right = true, A = true})
 tap("B", 2, 20)
 step(40)
 checkpoint("boss0_action")
+
+-- ============================================================================
+-- Scenario 6: Title Screen Attract-Mode Demo (PlayDemo & Second Loop)
+-- ============================================================================
+emu.softreset()
+-- TitleInit sets Timer = $40 (64 ticks * 12 frames = 768 frames);
+-- idle until PlayDemo starts and runs in City Ruins
+step(1150)
+checkpoint("attract_demo_mid")
+step(250)
+checkpoint("attract_demo_late")
+-- Let the first attract demo finish naturally, return to Title Screen,
+-- and idle into the second attract loop at the exact same offset as attract_demo_late
+step(1711)
+checkpoint("attract_demo_loop2")
+-- Press Start to interrupt PlayDemo (StopDemo -> TitleInit)
+tap("start", 2, 90)
+checkpoint("attract_demo_exit")
 
 -- ============================================================================
 -- Record or Verify Checkpoints
