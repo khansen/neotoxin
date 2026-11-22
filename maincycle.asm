@@ -30,6 +30,17 @@
     .db >(addr-1), <(addr-1)
 .endm
 
+; One GoMainHandler table entry. Each entry names the mr* constant (game.h)
+; that selects it; assembly fails if an entry is out of mr* order.
+mr_slot = 0
+.macro MAIN_SLOT id, addr
+.if id != mr_slot
+.error "GoMainHandler table entry out of mr* order"
+.endif
+mr_slot = mr_slot + 1
+    TC_SLOT addr
+.endm
+
 ; GoRoutine
 ; =========
 ; Indirect jump routine.
@@ -102,34 +113,37 @@ TC_SLOT IRQSwitchBGCHR
     lda     MainRoutine
     jsr     GoRoutine
 
-TC_SLOT TitleInit
-TC_SLOT TitleMain
-TC_SLOT ExecWarp
-TC_SLOT Area2DInit
-TC_SLOT Area2DMain
-TC_SLOT PlayDemo
-TC_SLOT StatusMain
-TC_SLOT LevelUpInit
-TC_SLOT LevelUpMain
-TC_SLOT GameOverInit
-TC_SLOT GameOverMain
-TC_SLOT EnterNameInit
-TC_SLOT EnterNameMain
-TC_SLOT SelectGameInit
-TC_SLOT SelectGameMain
-TC_SLOT GameMenuMain
-TC_SLOT StartNewGame
-TC_SLOT PerformNameChange
-TC_SLOT CreditsInit
-TC_SLOT CreditsMain
-TC_SLOT GameInfoInit
-TC_SLOT GameInfoInit2
-TC_SLOT GameInfoMain
-TC_SLOT WaitTimer
-TC_SLOT ScriptInit
-TC_SLOT NGSL_ExecScript
-TC_SLOT MusicPlayerInit
-TC_SLOT MusicPlayerMain
+MAIN_SLOT mrTitleInit, TitleInit
+MAIN_SLOT mrTitleMain, TitleMain
+MAIN_SLOT mrExecWarp, ExecWarp
+MAIN_SLOT mrArea2DInit, Area2DInit
+MAIN_SLOT mrArea2DMain, Area2DMain
+MAIN_SLOT mrPlayDemo, PlayDemo
+MAIN_SLOT mrStatusMain, StatusMain
+MAIN_SLOT mrLevelUpInit, LevelUpInit
+MAIN_SLOT mrLevelUpMain, LevelUpMain
+MAIN_SLOT mrGameOverInit, GameOverInit
+MAIN_SLOT mrGameOverMain, GameOverMain
+MAIN_SLOT mrEnterNameInit, EnterNameInit
+MAIN_SLOT mrEnterNameMain, EnterNameMain
+MAIN_SLOT mrSelectGameInit, SelectGameInit
+MAIN_SLOT mrSelectGameMain, SelectGameMain
+MAIN_SLOT mrGameMenuMain, GameMenuMain
+MAIN_SLOT mrStartNewGame, StartNewGame
+MAIN_SLOT mrPerformNameChange, PerformNameChange
+MAIN_SLOT mrCreditsInit, CreditsInit
+MAIN_SLOT mrCreditsMain, CreditsMain
+MAIN_SLOT mrGameInfoInit, GameInfoInit
+MAIN_SLOT mrGameInfoInit2, GameInfoInit2
+MAIN_SLOT mrGameInfoMain, GameInfoMain
+MAIN_SLOT mrWaitTimer, WaitTimer
+MAIN_SLOT mrScriptInit, ScriptInit
+MAIN_SLOT mrScriptMain, NGSL_ExecScript
+MAIN_SLOT mrMusicPlayerInit, MusicPlayerInit
+MAIN_SLOT mrMusicPlayerMain, MusicPlayerMain
+.if mr_slot != MR_COUNT
+.error "GoMainHandler table does not cover every mr* routine"
+.endif
 .endp
 
 ; ScriptInit

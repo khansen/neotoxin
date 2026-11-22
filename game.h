@@ -173,6 +173,7 @@ mrScriptInit            EQU     24
 mrScriptMain            EQU     25
 mrMusicPlayerInit       EQU     26
 mrMusicPlayerMain       EQU     27
+MR_COUNT                EQU     28      ; number of mr* routines
 
 INITIAL_DEFENSE         EQU     32
 INITIAL_HEALTH          EQU     24
