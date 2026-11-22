@@ -13,8 +13,18 @@
 .include "game/savegame.h"
 .include "screens/statusscreen.h"
 
+.dataseg zeropage
+
+NGSL_Temp           .byte[4]
+NGSL_pScript        .word   ; current script position
+NGSL_pDataItem      .word
+NGSL_LineAddr       .word   ; PPU address of the text line
+NGSL_TextSpeed      .byte
+NGSL_CharsPerFrame  .byte
+
 .codeseg
 
+.public NGSL_pScript
 .public IntroScript
 .public ZombieScript
 .public NPC6Script

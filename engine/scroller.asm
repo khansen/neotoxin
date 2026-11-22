@@ -2,9 +2,21 @@
 .include "engine/hsge.h"
 .include "engine/renderer.h"
 .include "engine/scroller.h"
+.include "engine/warp.h"
+
+.dataseg zeropage
+
+ObjLoadQueueXSize   .byte
+ObjLoadQueueX       .byte[8]   ; objects to load, horizontal scrolling
+ObjLoadQueueYSize   .byte
+ObjLoadQueueY       .byte[8]   ; objects to load, vertical scrolling
 
 .codeseg
 
+.public ObjLoadQueueXSize
+.public ObjLoadQueueX
+.public ObjLoadQueueYSize
+.public ObjLoadQueueY
 .public HSGE_SetRoomPtr
 .public HSGE_CalcRoomOfs
 .public HSGE_ScrollLeft

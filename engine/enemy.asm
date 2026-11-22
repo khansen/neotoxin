@@ -13,6 +13,7 @@
 .include "engine/objcollision.h"
 .include "engine/renderer.h"
 .include "sound/sfx.h"
+.include "engine/scroller.h"
 
 .codeseg
 

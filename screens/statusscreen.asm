@@ -15,8 +15,24 @@
 .include "engine/renderer.h"
 .include "engine/warp.h"
 
+.dataseg zeropage
+
+AC0                 .byte   ; PrintValue: value to print (24 bits), quotient
+AC1                 .byte
+AC2                 .byte
+XTND0               .byte   ; remainder
+XTND1               .byte
+XTND2               .byte
+AUX0                .byte   ; divisor
+AUX1                .byte
+AUX2                .byte
+TMP0                .byte
+
 .codeseg
 
+.public AC0
+.public AC1
+.public AC2
 .public PrintValue
 .public UpdateClock
 .public CheckPause

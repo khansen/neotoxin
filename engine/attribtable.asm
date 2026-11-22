@@ -3,6 +3,7 @@
 .include "engine/attribtable.h"
 .include "common/ppu.h"
 .include "engine/scroller.h"
+.include "engine/warp.h"
 
 .codeseg
 

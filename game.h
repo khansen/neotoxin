@@ -86,17 +86,6 @@ MenuItemCount           EQU     $4B
 ; 2D area header (ah_AreaBank, ah_pMaps, ...)
 .include "area/areahdrs.h"
 
-; current section
-MapWidth                EQU     $97
-MapHeight               EQU     $99
-pMap                    EQU     $9B
-p2DWarps                EQU     $9D
-
-ObjLoadQueueXSize       EQU     $D4
-ObjLoadQueueX           EQU     $D5 ; 8 bytes
-ObjLoadQueueYSize       EQU     $DD
-ObjLoadQueueY           EQU     $DE ; -$E5, 8 bytes
-
 pCode                   EQU     $FC
 pData                   EQU     $FE
 
@@ -140,15 +129,5 @@ INITIAL_MAXHEALTH       EQU     24
 
 ; DEMOREC EQU 1 ; uncomment to record demo
 
-AC0    EQU $F2  ; initial dividend & resulting quotient
-AC1    EQU $F3
-AC2    EQU $F4
-XTND0  EQU $F5  ; remainder
-XTND1  EQU $F6
-XTND2  EQU $F7
-AUX0   EQU $F8  ; divisor
-AUX1   EQU $F9
-AUX2   EQU $FA
-TMP0   EQU $FB
 
 .endif

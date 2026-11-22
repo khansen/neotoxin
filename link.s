@@ -9,8 +9,8 @@
 # xlnk places the smallest variables first, each in the first block that
 # fits. The small zero page block is listed first so that they fill it and
 # leave the large one in one piece for the structs.
-ram{start=$C0,end=$D4}      # zero page
-ram{start=$4C,end=$97}      # zero page
+ram{start=$C0,end=$FC}      # zero page
+ram{start=$4C,end=$A0}      # zero page
 ram{start=$0180,end=$01A0}
 ram{start=$0700,end=$0800}
 copy{file=ines.hdr}

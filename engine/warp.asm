@@ -8,8 +8,18 @@
 .include "engine/warp.h"
 .include "area/areahdrs.h"
 
+.dataseg zeropage
+
+MapWidth            .byte   ; current section, in rooms
+MapHeight           .byte
+pMap                .word   ; room pointer table of the current section
+p2DWarps            .word   ; warp table of the current section
+
 .codeseg
 
+.public MapWidth
+.public MapHeight
+.public pMap
 .public SetSavePtr
 .public SetupWarp
 .public ExecWarp

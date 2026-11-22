@@ -9,6 +9,7 @@
 .include "game/flags.h"
 .include "common/math.h"
 .include "engine/renderer.h"
+.include "engine/warp.h"
 
 .codeseg
 

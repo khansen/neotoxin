@@ -3,12 +3,6 @@
 
 ; NES Game Script Language
 
-NGSL_Temp               EQU     $E6
-NGSL_pScript            EQU     $EA
-NGSL_pDataItem          EQU     $EC
-NGSL_LineAddr           EQU     $EE
-NGSL_TextSpeed          EQU     $F0
-NGSL_CharsPerFrame      EQU     $F1
 
 ; Script Opcode defines
 
@@ -39,6 +33,7 @@ SO_PLAYSFX          EQU     23
 
 
 ; Exported symbols.
+.extrn NGSL_pScript:word
 .extrn IntroScript:label
 .extrn ZombieScript:label
 .extrn NPC6Script:label

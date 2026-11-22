@@ -2,6 +2,10 @@
 .define SCROLLER_H
 
 ; Exported symbols.
+.extrn ObjLoadQueueXSize:byte
+.extrn ObjLoadQueueX:byte
+.extrn ObjLoadQueueYSize:byte
+.extrn ObjLoadQueueY:byte
 .extrn HSGE_SetRoomPtr:proc
 .extrn HSGE_CalcRoomOfs:proc
 .extrn HSGE_ScrollLeft:proc

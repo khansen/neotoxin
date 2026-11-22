@@ -5,6 +5,7 @@
 .include "common/math.h"
 .include "engine/movement.h"
 .include "engine/scroller.h"
+.include "engine/warp.h"
 
 .codeseg
 

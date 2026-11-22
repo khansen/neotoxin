@@ -2,6 +2,9 @@
 .define STATUSSCREEN_H
 
 ; Exported symbols.
+.extrn AC0:byte
+.extrn AC1:byte
+.extrn AC2:byte
 .extrn PrintValue:proc
 .extrn UpdateClock:proc
 .extrn CheckPause:proc
