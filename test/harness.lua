@@ -2,7 +2,9 @@
 -- Replays deterministic input sessions across Title, Music Player, Select Game,
 -- Enter Name, Intro Cutscene, Building, Status Screen, NPC Dialog, Save/Reload,
 -- Base, City Ruins (including the 827-frame recorded demo input stream from
--- data/demo.dat), and Boss 0, verifying 256x240 screen hashes at 27 checkpoints.
+-- data/demo.dat), Boss 0, Title Attract-Mode Demo (two loops), Power Plant,
+-- Boss 1, Boss 2, Level-Up Screen, Game Over & Continue, Save Point Terminal,
+-- and the End Credits Scroller, verifying 256x240 screen hashes at 50 checkpoints.
 
 emu.speedmode("turbo")
 
@@ -20,6 +22,26 @@ local function log(s)
     if out then
         out:write(s .. "\n")
         out:flush()
+    end
+end
+
+local function finish()
+    if out then
+        out:flush()
+        out:close()
+        out = nil
+    end
+    -- Wait for the test runner supervisor to terminate FCEUX after observing
+    -- the final PASS/FAIL line (avoiding FCEUX's cross-thread os.exit race).
+    while true do
+        emu.frameadvance()
+    end
+end
+
+local function check_state(cond, msg)
+    if not cond then
+        log("FAIL: " .. tostring(msg))
+        finish()
     end
 end
 
@@ -119,18 +141,20 @@ local function replay_demo_file(path)
 end
 
 -- Helper to write a valid 64-byte save slot into battery-backed WRAM ($6000 + slot * 64)
-local function write_wram_slot(slot, area, section, warp, weapon)
+local function write_wram_slot(slot, area, section, warp, weapon, opts)
+    opts = opts or {}
+    local exp = opts.exp or 0
     local base = 0x6000 + slot * 64
     for i = 0, 63 do
         memory.writebyte(base + i, 0)
     end
     local hdr = {
-        24, -- Health
+        opts.health or 24, -- Health
         32, -- HealthFrac
-        0,  -- Level
+        opts.level or 0,  -- Level
         24, -- MaxHealth
         32, -- Defense
-        0, 0, -- Experience
+        exp % 256, math.floor(exp / 256), -- Experience
         32, -- ExpFrac
         0, 0, 0, 0, -- Hours, Minutes, Seconds, ClockTicks
         area,
@@ -142,6 +166,11 @@ local function write_wram_slot(slot, area, section, warp, weapon)
     for i, v in ipairs(hdr) do
         memory.writebyte(base + i - 1, v)
     end
+    if opts.flags then
+        for idx, val in pairs(opts.flags) do
+            memory.writebyte(base + 17 + idx, val)
+        end
+    end
     memory.writebyte(base + 49, 0x8A) -- 'A'
     local sum = 0
     for i = 0, 58 do
@@ -149,6 +178,26 @@ local function write_wram_slot(slot, area, section, warp, weapon)
     end
     memory.writebyte(base + 60, sum % 256)
     memory.writebyte(base + 61, math.floor(sum / 256))
+end
+
+-- Locate MainRoutine's zero-page address dynamically from GoMainHandler in PRG-ROM
+-- (lda MainRoutine / jsr GoRoutine), so the test remains independent of ZP layout.
+local function find_main_routine_zp()
+    local matches = {}
+    for addr = 0xC000, 0xFFF0 do
+        if memory.readbyte(addr) == 0xA5 and memory.readbyte(addr + 2) == 0x20 then
+            local target = memory.readbyte(addr + 3) + memory.readbyte(addr + 4) * 256
+            if target >= 0xC000 and addr > target
+               and memory.readbyte(target) == 0x0A
+               and memory.readbyte(target + 1) == 0xA8
+               and memory.readbyte(target + 2) == 0xC8
+               and memory.readbyte(target + 3) == 0x68 then
+                table.insert(matches, memory.readbyte(addr + 1))
+            end
+        end
+    end
+    -- GoIRQRoutine is the first match; GoMainHandler is the second match.
+    return assert(matches[2], "Failed to locate MainRoutine in GoMainHandler")
 end
 
 -- ============================================================================
@@ -291,6 +340,181 @@ tap("start", 2, 90)
 checkpoint("attract_demo_exit")
 
 -- ============================================================================
+-- Scenario 7: Power Plant (Area 1, Section 0 & Section 14)
+-- ============================================================================
+emu.softreset()
+step(90)
+write_wram_slot(0, 1, 0, 0, 0)
+write_wram_slot(1, 5, 1, 1, 0)
+write_wram_slot(2, 6, 0, 19, 0)
+
+tap("start", 2, 120)
+tap("start", 2, 30)
+tap("start", 2, 120)
+checkpoint("plant_sect0_spawn")
+
+-- Move right and jump in Power Plant section 0
+step(35, {right = true})
+step(25, {right = true, A = true})
+tap("B", 2, 20)
+checkpoint("plant_sect0_action")
+
+-- Walk back left into InstantWarp ($A0) -> Power Plant section 14
+step(80, {left = true})
+step(100)
+checkpoint("plant_sect14_warp")
+
+-- ============================================================================
+-- Scenario 8: Boss 1 (Area 5, Section 1 -> 0) & Boss 2 (Area 6, Section 0)
+-- ============================================================================
+emu.softreset()
+step(90)
+write_wram_slot(0, 1, 0, 0, 0)
+write_wram_slot(1, 5, 1, 1, 0)
+write_wram_slot(2, 6, 0, 19, 0)
+
+-- Load Slot 1 -> Boss 1 corridor (Area 5, Section 1, Warp 1)
+tap("start", 2, 120)
+tap("down", 2, 20)
+tap("start", 2, 30)
+tap("start", 2, 120)
+checkpoint("boss1_sect1_spawn")
+
+-- Walk left across corridor into InstantWarp ($80) -> Boss 1 chamber (Section 0)
+step(140, {left = true})
+step(100)
+checkpoint("boss1_sect0_warp")
+
+-- Walk left to reveal the Boss 1 eye chamber and fire weapon
+step(90, {left = true})
+tap("B", 2, 25)
+checkpoint("boss1_action")
+
+-- Soft reset and load Slot 2 -> Boss 2 chamber (Area 6, Section 0, Warp 19)
+emu.softreset()
+step(90)
+write_wram_slot(2, 6, 0, 19, 0)
+tap("start", 2, 120)
+tap("down", 2, 20)
+tap("down", 2, 20)
+tap("start", 2, 30)
+tap("start", 2, 120)
+checkpoint("boss2_spawn")
+
+step(45, {right = true, A = true})
+tap("B", 2, 25)
+checkpoint("boss2_action")
+
+-- ============================================================================
+-- Scenario 9: Level-Up Screen (Kill enemy at 100 XP -> AdvanceLevel)
+-- ============================================================================
+emu.softreset()
+step(90)
+-- Area 0 (Ruins), Section 0, Warp 18 (room 47, pos $8B; AcidZombie is in the same room at $80).
+-- Set weapon = 0 (straight energy bullet, 1 damage/shot), exp = 100, and flag 1 set ($02) so ZombieScript is skipped.
+write_wram_slot(0, 0, 0, 18, 0, {exp = 100, flags = {[0] = 0x02}})
+
+tap("start", 2, 120)
+tap("start", 2, 30)
+tap("start", 2, 120)
+
+-- Turn left towards room 47's AcidZombie ($80) and fire three shots to kill it (3 HP)
+local main_routine_zp = find_main_routine_zp()
+step(20, {left = true})
+tap("B", 2, 15)
+tap("B", 2, 15)
+tap("B", 2, 35)
+check_state(memory.readbyte(main_routine_zp) == 8, "Expected mrLevelUpMain (8), got " .. memory.readbyte(main_routine_zp))
+checkpoint("levelup_screen")
+
+-- Wait for LevelUpMain fanfare timer (13 * 12 = 156 frames) to return to Area2DMain
+step(170)
+check_state(memory.readbyte(main_routine_zp) == 4, "Expected mrArea2DMain (4), got " .. memory.readbyte(main_routine_zp))
+checkpoint("levelup_done")
+
+-- ============================================================================
+-- Scenario 10: Game Over & Continue (Die at 1 HP -> GameOver -> Continue)
+-- ============================================================================
+emu.softreset()
+step(90)
+write_wram_slot(0, 0, 0, 18, 0, {health = 1, flags = {[0] = 0x02}})
+
+tap("start", 2, 120)
+tap("start", 2, 30)
+tap("start", 2, 120)
+
+-- Walk left into room 47's AcidZombie at 1 HP to trigger PlayerDead -> GameOverInit
+step(95, {left = true})
+step(240)
+check_state(memory.readbyte(main_routine_zp) == 10, "Expected mrGameOverMain (10), got " .. memory.readbyte(main_routine_zp))
+checkpoint("gameover_screen")
+
+-- Toggle cursor to QUIT and back to CONTINUE, then press Start to respawn
+tap("down", 2, 20)
+checkpoint("gameover_cursor")
+tap("up", 2, 20)
+tap("start", 2, 120)
+check_state(memory.readbyte(main_routine_zp) == 4, "Expected mrArea2DMain (4), got " .. memory.readbyte(main_routine_zp))
+checkpoint("gameover_continue")
+
+-- ============================================================================
+-- Scenario 11: Saving at a Save Point (building_save0 -> SaveScript -> Reload)
+-- ============================================================================
+emu.softreset()
+step(90)
+-- Area 3 (Building), Section 23 ($17 = building_save0), Warp 0 ($A5)
+write_wram_slot(0, 3, 23, 0, 0)
+
+tap("start", 2, 120)
+tap("start", 2, 30)
+tap("start", 2, 120)
+checkpoint("save_point_spawn")
+
+-- Switch weapon to ProjectileType 1, then walk right into save terminal ($AA)
+tap("select", 2, 10)
+step(50, {right = true})
+step(80)
+-- Advance past String 3 ("Interfacing with NTX2NES adapter...") to MultChoice ("Save your data?")
+for i = 1, 10 do
+    tap("A", 2, 8)
+end
+step(30)
+checkpoint("save_point_prompt")
+
+-- Choose "Yes, please" (choice 0) -> WriteSaveGame + String 10
+tap("A", 2, 40)
+checkpoint("save_point_saved")
+for i = 1, 25 do
+    tap("A", 2, 8)
+end
+step(80)
+checkpoint("save_point_done")
+
+-- Soft-reset and reload Slot 0 to verify the saved game loads cleanly
+emu.softreset()
+step(90)
+tap("start", 2, 120)
+tap("start", 2, 30)
+tap("start", 2, 120)
+checkpoint("save_point_reload")
+
+-- ============================================================================
+-- Scenario 12: End Credits Scroller (mrCreditsInit / mrCreditsMain)
+-- ============================================================================
+-- Enter Select Game first so Bank 0 (containing CreditsInit/CreditsMain) is mapped
+-- at $8000-$BFFF and IRQCount is 0.
+emu.softreset()
+step(90)
+tap("start", 2, 120)
+memory.writebyte(main_routine_zp, 18) -- mrCreditsInit
+step(200)
+check_state(memory.readbyte(main_routine_zp) == 19, "Expected mrCreditsMain (19), got " .. memory.readbyte(main_routine_zp))
+checkpoint("credits_scroll_1")
+step(400)
+check_state(memory.readbyte(main_routine_zp) == 19, "Expected mrCreditsMain (19), got " .. memory.readbyte(main_routine_zp))
+checkpoint("credits_scroll_2")
+
+-- ============================================================================
 -- Record or Verify Checkpoints
 -- ============================================================================
 if MODE == "record" then
@@ -301,15 +525,13 @@ if MODE == "record" then
     end
     ef:close()
     log(string.format("PASS: recorded %d checkpoints to %s", #checkpoints, EXPECTED_PATH))
-    if out then out:close() end
-    os.exit(0)
+    finish()
 else
     local expected = {}
     local ef = io.open(EXPECTED_PATH, "r")
     if not ef then
         log("FAIL: missing " .. EXPECTED_PATH)
-        if out then out:close() end
-        os.exit(1)
+        finish()
     end
     for line in ef:lines() do
         local id, h = line:match("^(%S+)%s+(%S+)$")
@@ -331,11 +553,9 @@ else
     end
     if failures == 0 then
         log(string.format("PASS: all %d checkpoints matched", #checkpoints))
-        if out then out:close() end
-        os.exit(0)
+        finish()
     else
         log(string.format("FAIL: %d/%d checkpoints mismatched", failures, #checkpoints))
-        if out then out:close() end
-        os.exit(1)
+        finish()
     end
 end
