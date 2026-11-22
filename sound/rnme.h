@@ -3,93 +3,140 @@
 
 ; -------------------------------[ Defines ]----------------------------------
 
-RNME_RAM                EQU     $C0 ; - $D3
-
-; global variables
-
-RNME_pSong              EQU     RNME_RAM
-RNME_pPattern           EQU     RNME_RAM+2
-RNME_pOrder             EQU     RNME_RAM+4
-RNME_pEnvelope          EQU     RNME_RAM+6
-RNME_pPatPtrTable       EQU     RNME_RAM+8
-RNME_Status             EQU     RNME_RAM+10
-RNME_LoadTune           EQU     RNME_RAM+11
-RNME_Trigger            EQU     RNME_RAM+12
-RNME_LastTune           EQU     RNME_RAM+13
-RNME_SFXStatus          EQU     RNME_RAM+14
-RNME_pSFX               EQU     RNME_RAM+15
-RNME_Temp1              EQU     RNME_RAM+17
-RNME_Temp2              EQU     RNME_RAM+18
-RNME_Temp3              EQU     RNME_RAM+19
+; Zero page state (sound/sequencer.asm)
+.extrn RNME_pSong:word
+.extrn RNME_pPattern:word
+.extrn RNME_pOrder:word
+.extrn RNME_pEnvelope:word
+.extrn RNME_pPatPtrTable:word
+.extrn RNME_Status:byte
+.extrn RNME_LoadTune:byte
+.extrn RNME_Trigger:byte
+.extrn RNME_LastTune:byte
+.extrn RNME_SFXStatus:byte
+.extrn RNME_pSFX:word
+.extrn RNME_Temp1:byte
+.extrn RNME_Temp2:byte
+.extrn RNME_Temp3:byte
 
 ; general channel variables
 
-CHN_OrderPos            EQU     $0700
-CHN_Pattern             EQU     $0705
-CHN_PatPos              EQU     $070A
-CHN_Row                 EQU     $070F
-CHN_EndRow              EQU     $0714
-CHN_RowStatus           EQU     $0719
-CHN_PatLoopCount        EQU     $071E
-CHN_Speed               EQU     $0723
-CHN_Tick                EQU     $0728
-CHN_Transpose           EQU     $072D
-CHN_pPatternLo          EQU     $0732
-CHN_pPatternHi          EQU     $0737
-CHN_pOrderLo            EQU     $073C
-CHN_pOrderHi            EQU     $0741
-CHN_OrderRepPos         EQU     $0746
-CHN_OrderRepCount       EQU     $074B
+; All music and sound effect state outside zero page. RNME_InitSong clears
+; the whole of rnme_ram, so these arrays are kept together in one struct.
+.struc rnme_ram
+CHN_OrderPos            .byte[5]
+CHN_Pattern             .byte[5]
+CHN_PatPos              .byte[5]
+CHN_Row                 .byte[5]
+CHN_EndRow              .byte[5]
+CHN_RowStatus           .byte[5]
+CHN_PatLoopCount        .byte[5]
+CHN_Speed               .byte[5]
+CHN_Tick                .byte[5]
+CHN_Transpose           .byte[5]
+CHN_pPatternLo          .byte[5]
+CHN_pPatternHi          .byte[5]
+CHN_pOrderLo            .byte[5]
+CHN_pOrderHi            .byte[5]
+CHN_OrderRepPos         .byte[5]
+CHN_OrderRepCount       .byte[5]
+unused0               .byte[6]   ; unused, keeps the original layout
+CHN_Note                .byte[3]
+CHN_FreqHi              .byte[3]
+CHN_ResVib              .byte[3]
+CHN_VibDelay            .byte[3]
+CHN_VibratoPos          .byte[3]
+CHN_SlFreqLo            .byte[3]
+CHN_SlFreqHi            .byte[3]
+CHN_Effect              .byte[3]
+CHN_EffParam            .byte[3]
+CHN_EffInfo             .byte[3]
+unused1               .byte[8]   ; unused, keeps the original layout
+ENV_Index               .byte[4]
+ENV_StepLo              .byte[4]
+ENV_StepHi              .byte[4]
+ENV_Fraction            .byte[4]
+ENV_CurrentVol          .byte[4]
+ENV_DestVol             .byte[4]
+ENV_pLopeLo             .byte[4]
+ENV_pLopeHi             .byte[4]
+ENV_HoldLength          .byte[4]
+ENV_WaveInfo            .byte[4]
+ENV_Phase               .byte[4]
+ENV_MasterVol           .byte[4]
+CHN_Reg0                .byte[4]
+CHN_Reg1                .byte[4]
+CHN_Reg2                .byte[4]
+CHN_Reg3                .byte[4]
+CHN_OldReg0             .byte[4]
+CHN_OldReg1             .byte[4]
+CHN_OldReg2             .byte[4]
+CHN_OldReg3             .byte[4]
+SQR_DutyDelay           .byte[2]
+SQR_DutyCycle           .byte[2]
+SFX_Number              .byte[5]
+SFX_pDataHi             .byte[5]
+SFX_pDataLo             .byte[5]
+SFX_Index               .byte[5]
+SFX_HoldLength          .byte[5]
+.ends
 
-; chn0-2 only
+.extrn RNME:rnme_ram          ; sound/sequencer.asm
 
-CHN_Note                EQU     $0756
-CHN_FreqHi              EQU     $0759
-CHN_ResVib              EQU     $075C
-CHN_VibDelay            EQU     $075F
-CHN_VibratoPos          EQU     $0762
-CHN_SlFreqLo            EQU     $0765
-CHN_SlFreqHi            EQU     $0768
-CHN_Effect              EQU     $076B
-CHN_EffParam            EQU     $076E
-CHN_EffInfo             EQU     $0771
-
-; volume envelope info (chn0-3 only)
-
-ENV_Index               EQU     $077C
-ENV_StepLo              EQU     $0780
-ENV_StepHi              EQU     $0784
-ENV_Fraction            EQU     $0788
-ENV_CurrentVol          EQU     $078C
-ENV_DestVol             EQU     $0790
-ENV_pLopeLo             EQU     $0794
-ENV_pLopeHi             EQU     $0798
-ENV_HoldLength          EQU     $079C
-ENV_WaveInfo            EQU     $07A0
-ENV_Phase               EQU     $07A4
-ENV_MasterVol           EQU     $07A8
-
-; RAM copies of channel regs (chn0-3 only)
-
-CHN_Reg0                EQU     $07AC
-CHN_Reg1                EQU     $07B0
-CHN_Reg2                EQU     $07B4
-CHN_Reg3                EQU     $07B8
-CHN_OldReg0             EQU     $07BC
-CHN_OldReg1             EQU     $07C0
-CHN_OldReg2             EQU     $07C4
-CHN_OldReg3             EQU     $07C8
-
-SQR_DutyDelay           EQU     $07CC
-SQR_DutyCycle           EQU     $07CE
-
-; sfx info
-
-SFX_Number              EQU     $07D0
-SFX_pDataHi             EQU     $07D5
-SFX_pDataLo             EQU     $07DA
-SFX_Index               EQU     $07DF
-SFX_HoldLength          EQU     $07E4
+; Names used throughout the engine for the members of RNME.
+CHN_OrderPos            EQU     RNME.CHN_OrderPos
+CHN_Pattern             EQU     RNME.CHN_Pattern
+CHN_PatPos              EQU     RNME.CHN_PatPos
+CHN_Row                 EQU     RNME.CHN_Row
+CHN_EndRow              EQU     RNME.CHN_EndRow
+CHN_RowStatus           EQU     RNME.CHN_RowStatus
+CHN_PatLoopCount        EQU     RNME.CHN_PatLoopCount
+CHN_Speed               EQU     RNME.CHN_Speed
+CHN_Tick                EQU     RNME.CHN_Tick
+CHN_Transpose           EQU     RNME.CHN_Transpose
+CHN_pPatternLo          EQU     RNME.CHN_pPatternLo
+CHN_pPatternHi          EQU     RNME.CHN_pPatternHi
+CHN_pOrderLo            EQU     RNME.CHN_pOrderLo
+CHN_pOrderHi            EQU     RNME.CHN_pOrderHi
+CHN_OrderRepPos         EQU     RNME.CHN_OrderRepPos
+CHN_OrderRepCount       EQU     RNME.CHN_OrderRepCount
+CHN_Note                EQU     RNME.CHN_Note
+CHN_FreqHi              EQU     RNME.CHN_FreqHi
+CHN_ResVib              EQU     RNME.CHN_ResVib
+CHN_VibDelay            EQU     RNME.CHN_VibDelay
+CHN_VibratoPos          EQU     RNME.CHN_VibratoPos
+CHN_SlFreqLo            EQU     RNME.CHN_SlFreqLo
+CHN_SlFreqHi            EQU     RNME.CHN_SlFreqHi
+CHN_Effect              EQU     RNME.CHN_Effect
+CHN_EffParam            EQU     RNME.CHN_EffParam
+CHN_EffInfo             EQU     RNME.CHN_EffInfo
+ENV_Index               EQU     RNME.ENV_Index
+ENV_StepLo              EQU     RNME.ENV_StepLo
+ENV_StepHi              EQU     RNME.ENV_StepHi
+ENV_Fraction            EQU     RNME.ENV_Fraction
+ENV_CurrentVol          EQU     RNME.ENV_CurrentVol
+ENV_DestVol             EQU     RNME.ENV_DestVol
+ENV_pLopeLo             EQU     RNME.ENV_pLopeLo
+ENV_pLopeHi             EQU     RNME.ENV_pLopeHi
+ENV_HoldLength          EQU     RNME.ENV_HoldLength
+ENV_WaveInfo            EQU     RNME.ENV_WaveInfo
+ENV_Phase               EQU     RNME.ENV_Phase
+ENV_MasterVol           EQU     RNME.ENV_MasterVol
+CHN_Reg0                EQU     RNME.CHN_Reg0
+CHN_Reg1                EQU     RNME.CHN_Reg1
+CHN_Reg2                EQU     RNME.CHN_Reg2
+CHN_Reg3                EQU     RNME.CHN_Reg3
+CHN_OldReg0             EQU     RNME.CHN_OldReg0
+CHN_OldReg1             EQU     RNME.CHN_OldReg1
+CHN_OldReg2             EQU     RNME.CHN_OldReg2
+CHN_OldReg3             EQU     RNME.CHN_OldReg3
+SQR_DutyDelay           EQU     RNME.SQR_DutyDelay
+SQR_DutyCycle           EQU     RNME.SQR_DutyCycle
+SFX_Number              EQU     RNME.SFX_Number
+SFX_pDataHi             EQU     RNME.SFX_pDataHi
+SFX_pDataLo             EQU     RNME.SFX_pDataLo
+SFX_Index               EQU     RNME.SFX_Index
+SFX_HoldLength          EQU     RNME.SFX_HoldLength
 
 
 SFX_ROCKETLAUNCH    EQU 1

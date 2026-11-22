@@ -9,7 +9,33 @@
 .include "sound/sfxdata.h"
 .include "sound/songs.h"
 
+.dataseg zeropage
+
+RNME_pSong              .word
+RNME_pPattern           .word
+RNME_pOrder             .word
+RNME_pEnvelope          .word
+RNME_pPatPtrTable       .word
+RNME_Status             .byte
+RNME_LoadTune           .byte
+RNME_Trigger            .byte
+RNME_LastTune           .byte
+RNME_SFXStatus          .byte
+RNME_pSFX               .word
+RNME_Temp1              .byte
+RNME_Temp2              .byte
+RNME_Temp3              .byte
+
+.dataseg
+
+RNME                    .rnme_ram
+
 .codeseg
+
+.public RNME
+.public RNME_pSong, RNME_pPattern, RNME_pOrder, RNME_pEnvelope, RNME_pPatPtrTable
+.public RNME_Status, RNME_LoadTune, RNME_Trigger, RNME_LastTune, RNME_SFXStatus
+.public RNME_pSFX, RNME_Temp1, RNME_Temp2, RNME_Temp3
 
 .public RNME_PlaySong
 
@@ -30,9 +56,9 @@
 
 ; clear out entire music RAM
     lda     #0
-    tay
-  - sta     $0700,y
-    iny
+    ldy     #sizeof(rnme_ram)
+  - sta     RNME-1,y
+    dey
     bne     -
 
 ; set up ptr to order table for each channel

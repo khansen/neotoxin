@@ -93,13 +93,14 @@
     sbc     ENV_StepHi,x
     bmi     @@ENV_ReachedDest
     cmp     ENV_DestVol,x
-    beq     @@ENV_ReachedDest+3
+    beq     @@ENV_SetCurrentVol      ; A already holds DestVol
     bcc     @@ENV_ReachedDest
     sta     ENV_CurrentVol,x
     rts
 
     @@ENV_ReachedDest:
     lda     ENV_DestVol,x
+    @@ENV_SetCurrentVol:
     sta     ENV_CurrentVol,x
     lda     ENV_HoldLength,x
     beq     @@ENV_NextPoint

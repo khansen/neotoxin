@@ -4,6 +4,10 @@
 #   5:   $10 (16 x 8K CHR-ROM banks = 128K)
 #   6:   $43 (Mapper = 4 / MMC3, Mirroring = 1 / vertical, WRAM = yes)
 #   7-15: $00
+# RAM the linker may assign to .dataseg variables. Only ranges that no
+# hard-coded RAM (game.h, engine headers) uses are listed; end is exclusive.
+ram{start=$C0,end=$D4}      # zero page
+ram{start=$0700,end=$0800}
 copy{file=ines.hdr}
 # Bank 0
 bank{size=$4000,origin=$8000}
