@@ -5,12 +5,8 @@
 ; [V]ertically [S]crolling [T]ext [E]ngine
 ;
 
-; Variables used by scroller.
-
-pScrollPPU      EQU     $50
-pScroller       EQU     $52
-pAttribPPU      EQU     $54
-pWorkPPU        EQU     $56
+; Scroller state is in Scratch.Vste (engine/scratch.h).
+.include "engine/scratch.h"
 
 ; Exported symbols.
 .extrn CreditsInit:proc

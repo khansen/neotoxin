@@ -2,6 +2,7 @@
 .define RENDERER_H
 
 ; Exported symbols.
+.extrn ObjMapOfs:byte
 .extrn HSGE_DeleteFarObjects:proc
 .extrn ExecObjConstr:proc
 .extrn LoadObject:proc

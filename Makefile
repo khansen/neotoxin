@@ -44,6 +44,7 @@ OBJS = $(addprefix $(BUILD_DIR)/, \
     sfxdata.o \
     bgcollision.o \
     objcollision.o \
+    scratch.o \
     movement.o \
     scroller.o \
     nametable.o \

@@ -13,6 +13,12 @@
 .include "common/mmc3.h"
 .include "sound/sfx.h"
 
+.dataseg
+
+LetterCol       .byte       ; cursor position in the letter grid
+LetterRow       .byte
+NamePos         .byte       ; cursor position in the name
+
 .codeseg
 
 .public FlashCursorPal

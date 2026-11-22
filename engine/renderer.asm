@@ -8,8 +8,13 @@
 .include "engine/renderer.h"
 .include "engine/scroller.h"
 
+.dataseg zeropage
+
+ObjMapOfs       .byte
+
 .codeseg
 
+.public ObjMapOfs
 .public HSGE_DeleteFarObjects
 .public ExecObjConstr
 .public LoadObject

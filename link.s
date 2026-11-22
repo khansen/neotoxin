@@ -6,8 +6,11 @@
 #   7-15: $00
 # RAM the linker may assign to .dataseg variables. Only ranges that no
 # hard-coded RAM (game.h, engine headers) uses are listed; end is exclusive.
-ram{start=$67,end=$97}      # zero page
+# xlnk places the smallest variables first, each in the first block that
+# fits. The small zero page block is listed first so that they fill it and
+# leave the large one in one piece for the structs.
 ram{start=$C0,end=$D4}      # zero page
+ram{start=$4C,end=$97}      # zero page
 ram{start=$0180,end=$01A0}
 ram{start=$0700,end=$0800}
 copy{file=ines.hdr}
@@ -51,6 +54,7 @@ link{file=build/sfxdata.o}
 bank{size=$4000,origin=$C000}
 link{file=build/bgcollision.o}
 link{file=build/objcollision.o}
+link{file=build/scratch.o}
 link{file=build/movement.o}
 link{file=build/scroller.o}
 link{file=build/nametable.o}

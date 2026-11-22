@@ -2,6 +2,14 @@
 .include "engine/obj.h"
 .include "engine/objcollision.h"
 
+.dataseg zeropage
+
+; Bounding box of the object being checked (OBJ2_* is the other object).
+OBJ1_Left       .byte
+OBJ1_Top        .byte
+OBJ1_Right      .byte
+OBJ1_Bottom     .byte
+
 .codeseg
 
 .public CheckIfCollided
@@ -51,7 +59,7 @@
     lda     OBJ_Type,x
     sta     CollObjTypes,y
     iny
-    cpy     #8  ; max. 8 objects can be crashed with
+    cpy     #MAX_COLLISIONS
     bcs     ++
   + dex
     bpl     @@CheckOneObj

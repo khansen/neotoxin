@@ -76,22 +76,9 @@ SaveSlot                EQU     $49
 MenuSelect              EQU     $4A
 MenuItemCount           EQU     $4B
 
-OBJ1_Left               EQU     $4C
-OBJ1_Top                EQU     $4D
-OBJ1_Right              EQU     $4E
-OBJ1_Bottom             EQU     $4F
-OBJ2_Left               EQU     $50
-OBJ2_Top                EQU     $51
-OBJ2_Right              EQU     $52
-OBJ2_Bottom             EQU     $53
-CollObjCount            EQU     $54
-CollObjNums             EQU     $55
-CollObjTypes            EQU     $5C ; 8 bytes
+; collision scratch (OBJ2_*, CollObjCount/Nums/Types)
+.include "engine/scratch.h"
 
-ObjMapOfs               EQU     $63
-LetterCol               EQU     $64
-LetterRow               EQU     $65
-NamePos                 EQU     $66
 
 ; current game status (Health, Level, CurrentArea, ..., NameStr, StatusFlags)
 .include "game/savedata.h"
