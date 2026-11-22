@@ -34,11 +34,29 @@ HEADERS = $(wildcard *.h)
 
 CHRFILES = $(wildcard chr/*.chr)
 
+# Generated assets. They are committed too, so a checkout builds without the
+# converters having run, but each is rebuilt whenever its source or tool
+# changes, and must come out identical to the committed copy.
+#
+# Sources that are kept as reference only, because the committed output was
+# edited by hand after conversion and is now the file to edit:
+#   music/*.xm except neox009.xm   patterns shortened to fit bank 6
+#   area/*/*.nga for every section not listed below (item IDs, script
+#   pointers and warps were added to the .inc by hand, and bsSect12.inc
+#   has one changed warp target)
 PLANT_GEN_SECTS = $(patsubst %,area/plant/plSect%.inc,1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)
 
 BASE_GEN_SECTS = $(patsubst %,area/base/bsSect%.inc,1 2 3 4 5 6 7 8 9 10 11 13 14 15)
 
+GEN_DATS = data/dialog.dat data/name2.dat data/select22.dat
+
+GEN_MUSIC = music/neox009.inc
+
 all: $(TOOLS) $(BINFILE)
+
+# Never leave a half-written generated file (e.g. a converter's error message
+# redirected into a tracked .inc) behind with a fresh timestamp.
+.DELETE_ON_ERROR:
 
 $(BINFILE): $(OBJS) $(HEADERFILE) $(SCRIPTFILE) $(CHRFILES)
 	$(XLNK) $(SCRIPTFILE) -o $@
@@ -50,22 +68,24 @@ $(BINFILE): $(OBJS) $(HEADERFILE) $(SCRIPTFILE) $(CHRFILES)
 # so every unit depends on every shared header.
 $(OBJS): $(HEADERS)
 
-# Additional inputs pulled in via .incsrc, .include, .incbin and .charmap
+# Additional inputs pulled in via .incsrc, .include, .incbin and .charmap.
+# Generated files are listed by name, not only through $(wildcard), so that
+# make can recreate one that is missing.
 ngsl.o: $(SCRIPTS) huff/strings.inc
 huff.o: huff/huffpuff.tab
-songs.o: $(wildcard music/*.inc)
+songs.o: $(wildcard music/*.inc) $(GEN_MUSIC)
 vste.o: font.tbl
-screendata.o: font.tbl $(wildcard data/*.dat) data/title.pal
+screendata.o: font.tbl $(wildcard data/*.dat) $(GEN_DATS) data/title.pal
 gamedata.o: data/demo.dat
 dmcdata.o: $(wildcard sound/*)
 
 ruins.o: area/ruins/rnMain.asm $(wildcard area/ruins/*.inc)
 	$(XASM) $< -o $@
 
-plant.o: area/plant/plMain.asm $(wildcard area/plant/*.inc)
+plant.o: area/plant/plMain.asm $(wildcard area/plant/*.inc) $(PLANT_GEN_SECTS)
 	$(XASM) $< -o $@
 
-base.o: area/base/bsMain.asm $(wildcard area/base/*.inc)
+base.o: area/base/bsMain.asm $(wildcard area/base/*.inc) $(BASE_GEN_SECTS)
 	$(XASM) $< -o $@
 
 building.o: area/building/bdMain.asm $(wildcard area/building/*.inc)
@@ -86,7 +106,11 @@ script/%.bin: script/%.asm script/script.h
 tools/%: tools/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-huff/huffpuff.tab huff/strings.inc: huff/strings.txt font.tbl
+# huffpuff (installed separately) writes both files in one run, so it is only
+# needed when strings.txt or font.tbl changes. A pattern rule with two targets is run
+# once for both (an explicit two-target rule would run twice under make -j, and
+# GNU make 3.81 has no &: grouped targets), hence the "huf%" stem.
+huf%/huffpuff.tab huf%/strings.inc: huf%/strings.txt font.tbl
 	huffpuff --character-map=font.tbl --table-output=huff/huffpuff.tab --data-output=huff/strings.inc --table-label= --generate-string-table --string-table-label= huff/strings.txt
 
 data/dialog.dat: data/dialog.nam tools/comp
@@ -104,7 +128,7 @@ $(PLANT_GEN_SECTS): area/plant/plSect%.inc: area/plant/plant_sect%.nga tools/nga
 $(BASE_GEN_SECTS): area/base/bsSect%.inc: area/base/base_sect%.nga tools/nga2asm
 	tools/nga2asm $< -r -w > $@
 
-music/neox009.inc: music/neox009.xm tools/xm2muz
+$(GEN_MUSIC): music/%.inc: music/%.xm tools/xm2muz
 	tools/xm2muz $< > $@
 
 test: $(BINFILE)

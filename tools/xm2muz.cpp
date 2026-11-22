@@ -103,27 +103,27 @@ int main(int argc, char *argv[])
                 fread(&pattern_byte, 1, 1, xmfp);
                 if (pattern_byte & 0x80) {
                     // compressed
-                    if (pattern_byte & 0x01) {
+                    if (pattern_byte & 0x01) {  // note follows
                         fread(&_note, 1, 1, xmfp);
                     } else {
                         _note = 0;
                     }
-                    if (pattern_byte & 0x02) {
+                    if (pattern_byte & 0x02) {  // instrument follows
                         fread(&instrument, 1, 1, xmfp);
                     } else {
                         instrument = 0;
                     }
-                    if (pattern_byte & 0x04) {
+                    if (pattern_byte & 0x04) {  // volume column byte follows
                         fread(&volume, 1, 1, xmfp);
                     } else {
                         volume = 0;
                     }
-                    if (pattern_byte & 0x08) {
+                    if (pattern_byte & 0x08) {  // effect follows
                         fread(&effect, 1, 1, xmfp);
                     } else {
                         effect = 0;
                     }
-                    if (pattern_byte & 0x10) {
+                    if (pattern_byte & 0x10) {  // effect param follows
                         fread(&effect_param, 1, 1, xmfp);
                     } else {
                         effect_param = 0;
@@ -157,72 +157,81 @@ int main(int argc, char *argv[])
         }
         for (int i = 0; i < pattern_count; i++) {
             pattern *pat = patterns[i];
+            // convert the channel data to a MUZ pattern
             column *c = &pat->columns[j];
-            unsigned char muz_pat[1024];
-            muz_pat[0] = (unsigned char)pat->row_count;
-            int pos = 1;
+            unsigned char muz_pat[1024];    // max size is 1024 bytes
+            muz_pat[0] = (unsigned char)pat->row_count;  // 1st byte = row count
+            int pos = 1;  // current position in MUZ pattern
             unsigned char lastinstr = 0xFF;
             unsigned char lastvol = 0xFF;
             unsigned char lasteff = 0x00;
             unsigned char lasteffparam = 0x00;
+            // process pattern in 8-row chunks
             for (int k = 0; k < pat->row_count; k += 8) {
-                unsigned char row_flags = 0;
+                unsigned char row_flags = 0;  // clear row-active flags
                 for (int l = 0; l < 8; l++) {
                     note *n = &c->notes[k + l];
                     if (n->note != 0) {
-                        row_flags |= 1 << l;
+                        row_flags |= 1 << l;  // non-zero note, mark row l as active
                     }
                 }
-                muz_pat[pos++] = row_flags;
-                for (int l = 0; l < 8; l++) {
+                muz_pat[pos++] = row_flags;  // put flags in pattern
+                // flags are then followed by the actual note/effect data for these 8 rows
+                for (int l = 0; l < 8; l++) {  // do one row
                     note *n = &c->notes[k + l];
                     if (n->note != 0) {
-                        switch (j) {
+                        switch (j) {  // channel #
+                            // square
                             case 0:
                             case 1:
                                 if ((n->volume >= 0x10) && (n->volume < 0x50)) {
-                                    if (n->volume != lastvol) {
-                                        muz_pat[pos++] = 0xEB;
+                                    // set new channel volume
+                                    if (n->volume != lastvol) {  // only if it is different from last value
+                                        muz_pat[pos++] = 0xEB;  // set volume
                                         muz_pat[pos++] = ((n->volume - 0x10) >> 2) << 4;
                                         lastvol = n->volume;
                                     }
                                 } else if (lastvol != 0x50) {
-                                    muz_pat[pos++] = 0xEB;
-                                    muz_pat[pos++] = 0xF0;
+                                    muz_pat[pos++] = 0xEB;  // initialize volume
+                                    muz_pat[pos++] = 0xF0;  // to max.
                                     lastvol = 0x50;
                                 }
                                 /* fall through */
+                            // square & tri
                             case 2:
                                 if (n->instrument != lastinstr) {
-                                    muz_pat[pos++] = 0xE8;
+                                    muz_pat[pos++] = 0xE8;  // set instrument
                                     muz_pat[pos++] = (n->instrument - 1) & 0x1F;
                                     lastinstr = n->instrument;
                                 }
                                 if ((n->effect != lasteff) ||
                                     ((n->effect == lasteff) && (n->effect_param != lasteffparam))) {
-                                    muz_pat[pos++] = 0xE0 | n->effect;
+                                    muz_pat[pos++] = 0xE0 | n->effect;  // set effect
                                     if (n->effect != 0) {
-                                        muz_pat[pos++] = n->effect_param;
+                                        muz_pat[pos++] = n->effect_param;  // set effect parameter
                                     }
                                     lasteff = n->effect;
                                     lasteffparam = n->effect_param;
                                 }
                                 muz_pat[pos++] = n->note - 15;
                                 break;
+                            // noise
                             case 3:
                                 if ((n->volume >= 0x10) && (n->volume < 0x50)) {
-                                    if (n->volume != lastvol) {
-                                        muz_pat[pos++] = 0xEB;
+                                    // set new channel volume
+                                    if (n->volume != lastvol) {  // only if it is different from last value
+                                        muz_pat[pos++] = 0xEB;  // set volume
                                         muz_pat[pos++] = ((n->volume - 0x10) >> 2) << 4;
                                         lastvol = n->volume;
                                     }
                                 } else if (lastvol != 0x50) {
-                                    muz_pat[pos++] = 0xEB;
-                                    muz_pat[pos++] = 0xF0;
+                                    muz_pat[pos++] = 0xEB;  // initialize volume
+                                    muz_pat[pos++] = 0xF0;  // to max.
                                     lastvol = 0x50;
                                 }
                                 muz_pat[pos++] = n->instrument - 0x31;
                                 break;
+                            // dpcm
                             case 4:
                                 if (n->instrument == 0x39) {
                                     muz_pat[pos++] = 0x1B;  // bassdrum
