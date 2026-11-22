@@ -10,7 +10,6 @@ building_save0_room0:
 .db $00,$00,$00,$00,$00,$00,$00,$00
 building_save0_room0_objects:
 .db $03,$AA
-;.db $05,$AA
 .db <SaveScript,>SaveScript
 .db $02,$A5,$00,$01
 .db $FF

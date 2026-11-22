@@ -29,10 +29,6 @@
 .extrn RemoveObject:proc
 
 
-ProjectileInfo:
-; speedx, speedxfrac, speedy, speedyfrac, accelx, accelxfrac, accely, accelyfrac
-; xofs, animmethod, animloop, anim, sfx, rangex, rangey, method
-
 ; PlayerInit
 ; ==========
 

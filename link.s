@@ -7,7 +7,6 @@
 copy{file=ines.hdr}
 # Bank 0
 bank{size=$4000,origin=$8000}
-link{file=blur.o}
 link{file=vste.o}
 link{file=ngsl.o}
 link{file=huff.o}

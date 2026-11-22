@@ -65,7 +65,6 @@
 
 AreaHdrTable:
 .dw ruins_header
-;.dw city_header
 .dw plant_header
 .dw base_header
 .dw building_header
@@ -86,17 +85,6 @@ ruins_header:
 .dw ruins_actionptrtable
 .dw ruins_loopptrtable
 
-;city_header:
-;.db 1
-;.dw city_maps
-;.dw city_macroptrtable
-;.dw city_macroattribs
-;.dw city_macrowalkabilities
-;.dw city_palette
-;.db CHR_RUINS, CHR_RUINS+2
-;.dw city_objconstructors
-;.dw city_actionptrtable
-;.dw city_loopptrtable
 
 plant_header:
 .db 2

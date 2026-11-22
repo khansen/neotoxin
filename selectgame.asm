@@ -34,7 +34,6 @@
     lda     #0
     sta     ScrollX
     sta     ScrollY
-;        sta     SaveSlot
     lda     ZPCtrl0
     and     #$FC        ; select nametable 0
     sta     ZPCtrl0
@@ -57,10 +56,8 @@
     sta     SPR_Attrib
     jsr     SetSlotCursor
 ; start "game select" music
-;        lda     #TUNE_GAME_SELECT
     lda     #15
     sta     RNME_LoadTune
-;
     inc     MainRoutine
     jsr     ScreenOn
     jmp     PAL_FadeFromBlack
@@ -142,7 +139,6 @@
     adc     #31
     sta     SPR_PosY
 
-    ShowSlotInfo:
     ldx     PPUStrIndex
     lda     #$20
     sta     PPUString,x

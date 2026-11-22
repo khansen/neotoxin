@@ -24,8 +24,6 @@ InitialSaveGame:
 .db 0   ; Minutes
 .db 0   ; Seconds
 .db 0   ; Clockticks
-;.db 1
-;.db 0
 .db 2   ; Area
 .db 0   ; Section
 .db 0   ; Warp #

@@ -128,8 +128,6 @@ TC_SLOT GameOverInit
 TC_SLOT GameOverMain
 TC_SLOT EnterNameInit
 TC_SLOT EnterNameMain
-;TC_SLOT BlurInit
-;TC_SLOT BlurMain
 TC_SLOT SelectGameInit
 TC_SLOT SelectGameMain
 TC_SLOT GameMenuMain

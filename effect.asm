@@ -158,10 +158,7 @@
 ;------------------------[ Arpeggio implementation ]--------------------------
 
     RNME_DoArpeggio:
-;        lda     CHN_ArpSpeed,x
-;        lsr
     lda     CHN_Tick,x
-;        bcc     +
     lsr
     sec
   - cmp     #$03

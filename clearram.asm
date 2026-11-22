@@ -38,7 +38,6 @@
     bne     -               ; if not, clear another
     dec     pData+1       ; decrement high byte of address
     ldx     pData+1
-;        cpx     #$60
     cpx     #$70
     bcs     -               ; clear another page if >= $60
     rts

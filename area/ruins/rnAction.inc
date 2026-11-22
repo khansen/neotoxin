@@ -101,7 +101,6 @@ OE_BIGBIRDMAIN      EQU 21
     lda     OBJ_Var1,x  ; mode
     beq     BigBirdFly
 
-    BigBirdStandStill:
     dec     OBJ_Var0,x
     bne     +
     ; start flying

@@ -56,12 +56,7 @@
 
     lda     #0
     jsr     SetBank
-;        lda     #mrScriptInit
-;    lda     #mrSelectGameInit
     lda     #mrTitleInit
-;    lda     #mrCreditsInit
-;    lda     #mrMusicPlayerInit
-;        lda     #mrGameInfoInit
     sta     MainRoutine
     jmp     +
 
@@ -71,8 +66,6 @@
     jsr     UpdateTimers
     jsr     GoMainHandler
   + ; lda     ZPCtrl1
-    ; ora     #$C0
-    ; sta     $2001
     jsr     WaitNMIPass
     jmp     MainLoop
 

@@ -103,27 +103,6 @@
 
 ;-----------------------------------------------------------------------------
 
-; OBJ_SetWorldPos
-; ===============
-; A = map X page
-; Y = map Y page
-
-    OBJ_SetWorldPos:
-    sta     OBJ_WorldXHi,x
-    pha
-    tya
-    sta     OBJ_WorldYHi,x
-    pla
-    clc
-  - dey
-    bmi     +
-    adc     MapWidth
-    bcc     -           ; branch always
-  + sta     OBJ_MapOfs,x
-    rts
-
-;-----------------------------------------------------------------------------
-
 ; Add amount to object's X position.
 ; In: A = amount to add
 

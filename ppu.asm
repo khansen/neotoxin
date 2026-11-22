@@ -62,19 +62,6 @@
 ; ==========
 
 ;    AnimateCHR:
-;    lda     CHRAnimStat
-;    beq     +
-;    dec     CHRAnimDelay
-;    bpl     +
-;    lda     #CHRANIM_SPEED-1
-;    sta     CHRAnimDelay
-;    inc     CHRAnimFrame
-;    lda     CHRAnimFrame
-;    and     #$07
-;    clc
-;    adc     CHRAnimStat
-;    sta     SelectedCHR+5
-;  + rts
 
 ; ScreenOff
 ; =========
@@ -193,8 +180,6 @@
 ; byte 0: high byte of PPU address
 ; byte 1: low byte of PPU address
 ; byte 2: bits 0-5 length of data string (repeat count if RLE)
-;         bit 6 is data RLE? (1 = yes)
-;         bit 7 PPU address increment (0 = 1, 1 = 32)
 ; byte 3-..: data. Only 1 byte if string is RLE
 ; -------------
 ; When byte 0 is zero, it means that no more strings remain to be written.

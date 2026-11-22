@@ -77,6 +77,4 @@ OT_ENERGYWAVE   EQU 11
     jsr     ANIM_SetLoop
     lda     #OE_ENERGYWAVEMAIN
     sta     OBJ_Action,x
-;    lda     #SFX_ENERGYWAVE
-;    sta     SFX_Number+1
     rts

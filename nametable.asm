@@ -67,15 +67,11 @@
     lda     [HSGE_pRoom],y   ; macro #
     asl
     tay
-;    bcc     +
-;    inc     ah_pMacroPtrTable+1
     lda     [ah_pMacroPtrTable],y
     sta     HSGE_pMacro
     iny
     lda     [ah_pMacroPtrTable],y
     sta     HSGE_pMacro+1
-;    bcc     +
-;    dec     ah_pMacroPtrTable+1
     ldy     Index2
 --- lda     [HSGE_pMacro],y
     sta     PPUString,x

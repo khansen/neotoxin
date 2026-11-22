@@ -48,14 +48,6 @@
     sta     OBJ_SpeedXFrac,x
     lda     OBJ_SpeedX,x
     adc     OBJ_AccelX,x
-;        bmi     +
-;        cmp     #6  ; X speed must be < 6 pixels per frame
-;        bcc     ++
-;        lda     #5  ; set speed to 5 pixels
-;        bne     ++  ; branch always
-;      + cmp     #$FA    ; same check for negative values...
-;        bcs     ++
-;        lda     #$FA
     sta     OBJ_SpeedX,x
 ; y speed
     lda     OBJ_SpeedYFrac,x

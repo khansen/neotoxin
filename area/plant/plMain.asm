@@ -7,7 +7,6 @@
 
 .codeseg
 
-.public LOOP_MOVINGFIELD
 .public plant_maps
 .public plant_macroptrtable
 .public plant_macroattribs

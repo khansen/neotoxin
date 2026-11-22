@@ -316,16 +316,7 @@
     ldy     Index
     lda     [HSGE_pObject],y
     bmi     HSGE_ObjSpecial
-;;;;;;;;
-;    cmp     #4
-;    bcc     +
-;    iny
-;    iny
-;    sty     Index
-;    jmp     HSGE_LoadOneObj
-;;;;;;;;
     sta     Temp2               ; object type
-    HSGE_ReallyLoadIt:
     lda     ObjCount
     cmp     #21                 ; no slots available?
     bcs     HSGE_ObjectOverflow
@@ -352,8 +343,6 @@
     bmi     +
     cmp     #4
     bcc     +
-;        lda     OBJ_State,x
-;        bpl     +
     jsr     RemoveObject
     jmp     HSGE_FoundNewSlot
   + dex
@@ -430,14 +419,5 @@
     lda     [ah_pObjConstructors],y
     sta     pCode+1
     jmp     [pCode]
-
-; HSGE_GetObjectByte
-; ==================
-
-    HSGE_GetObjectByte:
-    ldy     Index
-    inc     Index
-    lda     [HSGE_pObject],y
-    rts
 
 .end

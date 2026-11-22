@@ -18,8 +18,6 @@
 .public base_actionptrtable
 .public base_loopptrtable
 
-.extrn LOOP_MOVINGFIELD:label
-
 ; "Base" - Main source
 
 base_palette:

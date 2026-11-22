@@ -169,7 +169,6 @@
     jsr     NGSL_ClearText
     lda     #$22
     sta     NGSL_LineAddr ; high vram address
-;    jsr     NGSL_GetDataItemByte
     lda     #$64
     sta     NGSL_LineAddr+1
     sta     NGSL_Temp
@@ -260,12 +259,6 @@
     sta     SPR_Tile
     lda     #216
     sta     SPR_PosX
-;    lda     PPUString+1
-;    and     #$E0
-;    lsr
-;    lsr
-;    clc
-;    adc     #127+8
     lda     #199
     sta     SPR_PosY
     lda     #0

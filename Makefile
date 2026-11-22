@@ -8,7 +8,7 @@ XLNK = xlnk $(LFLAGS)
 
 SCRIPTS = script/introscript.bin script/npc6script.bin
 
-OBJS = blur.o vste.o ngsl.o huff.o titlescreen.o gameinfo.o selectgame.o \
+OBJS = vste.o ngsl.o huff.o titlescreen.o gameinfo.o selectgame.o \
 entername.o musicplayer.o screendata.o ruins.o plant.o base.o building.o \
 boss0.o boss1.o boss2.o sequencer.o envelope.o effect.o rnmedata.o songs.o \
 sfxdata.o bgcollision.o objcollision.o movement.o scroller.o nametable.o \
@@ -23,8 +23,6 @@ HEADERFILE = ines.hdr
 SCRIPTFILE = link.s
 
 BINFILE = neotoxin.nes
-
-BINFILE_SHA1 = f0139b8e0f211074e41a20255930f12a72f328d7
 
 HEADERS = $(wildcard *.h)
 
@@ -75,13 +73,10 @@ boss2.o: area/boss2/b2Main.asm $(wildcard area/boss2/*.inc)
 script/%.bin: script/%.asm script/script.h
 	$(XASM) --pure-binary -Iscript $< -o $@
 
-check: $(BINFILE)
-	echo "$(BINFILE_SHA1)  $(BINFILE)" | shasum -c -
-
 test: $(BINFILE)
 	./test/run_test.sh $(BINFILE)
 
-.PHONY: all check clean test
+.PHONY: all clean test
 
 clean:
 	rm -f $(BINFILE) $(OBJS) $(SCRIPTS)

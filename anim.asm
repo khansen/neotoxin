@@ -245,10 +245,4 @@
     pla
     jmp     ANIM_SetCel
 
-; SetSpeed
-; ========
-
-    ANIM_SetSpeed:
-    rts
-
 .end

@@ -75,7 +75,6 @@
     lda     FrameCount
     and     #7
     bne     +
-;    jsr     ToggleDirection
   + jsr     TestPlayerCollide
     bne     -
     ; player picked up the item
@@ -166,7 +165,6 @@ ItemPickupScriptPtrs:
 
 ; Standard enemy discard handler.
 ; Spawns a health item if this is an odd frame
-; and player doesn't have max health.
 
     DiscardEnemy:
     lda     FrameCount
@@ -189,7 +187,6 @@ ItemPickupScriptPtrs:
     cmp     #amNoCycling
     bne     +
     ; set next action as current action
-    GoNextAction:
     lda     OBJ_NextAction,x
     sta     OBJ_Action,x
   + rts
@@ -293,11 +290,6 @@ ItemPickupScriptPtrs:
     lda     OBJ_Action
     sta     $7FFE       ; !!! store player's current action
     ldy     #0
-
-; SetObjectIdle
-; =============
-
-    SetObjectIdle:
     lda     #OE_IDLE
     sta     OBJ_Action,y
     rts

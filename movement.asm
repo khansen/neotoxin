@@ -157,41 +157,11 @@
     adc     #0
     rts
 
-    AbsXSpeed:
-    lda     OBJ_SpeedX,x
-    bmi     InvertXSpeed
-    ldy     OBJ_SpeedXFrac,x
-    rts
-
     InvertYSpeed:
     lda     OBJ_SpeedYFrac,x
     jsr     XSIGN
     tay
     lda     OBJ_SpeedY,x
-    eor     #$FF
-    adc     #0
-    rts
-
-    AbsYSpeed:
-    lda     OBJ_SpeedY,x
-    bmi     InvertYSpeed
-    ldy     OBJ_SpeedYFrac,x
-    rts
-    
-    InvertXAccel:
-    lda     OBJ_AccelXFrac,x
-    jsr     XSIGN
-    tay
-    lda     OBJ_AccelX,x
-    eor     #$FF
-    adc     #0
-    rts
-    
-    InvertYAccel:
-    lda     OBJ_AccelYFrac,x
-    jsr     XSIGN
-    tay
-    lda     OBJ_AccelY,x
     eor     #$FF
     adc     #0
     rts

@@ -39,4 +39,3 @@ Boss2Startup:
 
 Boss2Main:
 
-Boss2Destroyed:

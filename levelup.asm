@@ -47,8 +47,6 @@
     tax                     ; X is now ready to index next sprite
   + dey
     bpl     -
-;        lda     #TUNE_LEVEL_UP
-;        sta     RNME_LoadTune  ; play "Level Up" music
     lda     #13     ; fanfare lasts about this many time units
     sta     Timer
     lda     #1      ; time units per blink (see LevelUpMain below)

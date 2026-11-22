@@ -162,80 +162,8 @@
         inx
         bne     -
       + jmp     EndPPUString
-      - rts
 
 ;-----------------------------------------------------------------------------
-
-        UpdateAttrib:
-        lda     ScrollY
-        and     #$0F
-        cmp     #$01
-        bne     -
-
-        lda     pAttribPPU+1
-        sta     pWorkPPU+1
-        lda     pAttribPPU
-        sta     pWorkPPU
-
-        lda     ScrollY
-        and     #$10
-        lsr
-        tay
-        ldx     PPUStrIndex
-
-      - lda     pWorkPPU+1
-        sta     PPUString+0,x
-        lda     pWorkPPU
-        sta     PPUString+1,x
-        lda     #$48
-        sta     PPUString+2,x
-
-        lda     AttribData,y
-        sta     PPUString+3,x
-
-        lda     pWorkPPU
-        clc
-        adc     #$08
-        bcc     +
-
-        lda     pWorkPPU+1
-        eor     #$08
-        sta     pWorkPPU+1
-        lda     #$C0
-      + sta     pWorkPPU
-
-        inx
-        inx
-        inx
-        inx
-        iny
-        tya
-        and     #$07
-        bne     -
-        jsr     EndPPUString
-
-        lda     ScrollY
-        and     #$10
-        beq     ++
-
-        lda     pAttribPPU
-        clc
-        adc     #$08            ; next row on attrib table
-        bcc     +
-
-; end of attrib table reached
-        lda     pAttribPPU+1
-        eor     #$08
-        sta     pAttribPPU+1
-        lda     #$C0
-      + sta     pAttribPPU
-     ++ rts
-
-;-----------------------------------------------------------------------------
-
-AttribData:
-.db $05,$AF,$FF,$FF,$FF,$FF,$A5,$00
-.db $00,$5A,$FF,$FF,$FF,$FF,$FA,$50
 
 ScrollData:
 .db 13 : .asc "Staff*"

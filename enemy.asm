@@ -176,7 +176,6 @@
     jsr     AdjustExpGain
     jsr     AddExpPoints
     jsr     CheckLevelAdvance
-    ExplodeAndDiscardEnemy:
     jsr     SetBigExplodeAnim
     lda     #SFX_ENEMYEXPLODE
     sta     SFX_Number+1

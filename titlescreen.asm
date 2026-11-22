@@ -24,58 +24,6 @@
 .extrn PAL_FadeToWhite:proc
 .extrn PAL_FadeFromWhite:proc
 
-    TitleFallDown:
-    lda     ScrollY
-    sec
-    sbc     CurrentSpeed
-    bcs     ++
-
-    lda     #$00
-    sta     ScrollY
-    dec     MaxSpeed
-    bne     +
-
-    inc     MainRoutine
-    inc     MainRoutine
-    rts
-
-  + lda     MaxSpeed
-    sta     CurrentSpeed
-    inc     MainRoutine
-    rts
-
- ++ sta     ScrollY
-    lda     FrameCount
-    and     #$03
-    bne     +
-    lda     CurrentSpeed
-    cmp     MaxSpeed
-    beq     +
-    inc     CurrentSpeed
-  + rts
-
-;-----------------------------------------------------------------------------
-
-    TitleBounceUp:
-    lda     ScrollY
-    clc
-    adc     CurrentSpeed
-    sta     ScrollY
-
-    lda     CurrentSpeed
-    bne     +
-
-    dec     MainRoutine
-    rts
-
-  + lda     FrameCount
-    and     #$03
-    bne     +
-    dec     CurrentSpeed
-  + rts
-
-;-----------------------------------------------------------------------------
-
     TitleInit:
     jsr     ScreenOff
     lda     ZPCtrl0
@@ -141,8 +89,6 @@
     beq     +   ; nope
     jsr     PAL_FadeToBlack
     lda     DemoNumber
-;        inc     DemoNumber ; not yet, only have one demo...
-;        and     #$03
     asl
     tax
     lda     GameDemos,x
@@ -200,35 +146,6 @@
     sta     DemoMode
     lda     #mrSelectGameInit
     sta     MainRoutine
-  - rts
-
-    CheckButtonCombo:
-    lda     JoyFirst
-    beq     -               ; exit if no buttons pressed
-    ldy     ComboPos
-    lda     JoyFirst
-    and     ButtonCombo,y
-    bne     +
-  - lda     #$00
-    sta     ComboPos
     rts
-  + lda     ButtonCombo,y
-    eor     #$FF
-    sta     Temp
-    lda     JoyFirst
-    and     Temp
-    bne     -
-    inc     ComboPos
-    lda     ComboPos
-    cmp     #$0C
-    beq     +
-    rts
-  + ; YIPPI!!!!
-
-ButtonCombo:
-.db btnUP,btnUP,btnDOWN,btnDOWN
-.db btnLEFT,btnRIGHT,btnLEFT,btnRIGHT
-.db btnA,btnB,btnA,btnB
-
 
 .end

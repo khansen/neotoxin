@@ -255,17 +255,6 @@
     iny     ; =1
     sty     JoyCount
 .endif  ; DEMOREC
-;    lda     WarpType
-;    and     #$0F
-;    beq     +
-;    cmp     #$03
-;    bcc     ++
-;    lda     OBJ_WorldXLo
-;    sec
-;    sbc     #$08
-;    sta     OBJ_WorldXLo
-;    jmp     +
-; ++ jsr     PlayerStartClimb
 
     lda     #0
     sta     ProjectileCount

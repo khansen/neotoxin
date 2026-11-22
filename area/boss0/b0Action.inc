@@ -140,5 +140,4 @@ OE_BOSS0MAIN            EQU 22
     sta     RNME_LoadTune
     lda     #0
     sta     RoomFlags
-;    jsr     DeleteObjectType
   + rts

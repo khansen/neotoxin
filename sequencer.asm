@@ -259,7 +259,6 @@
     inc     CHN_PatLoopCount,x      ; prepare to play pattern once
 
     RNME_LoadPattern:
-;        sta     CHN_Pattern,x
     asl
     tay
     lda     [RNME_pPatPtrTable],y    ; get low pointer to pattern

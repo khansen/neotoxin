@@ -165,11 +165,3 @@ Boss1EyePals:
     ldy     #OT_ENERGYWAVE
     jmp     SpawnObject
   + rts
-
-; Boss1Destroyed
-; ==============
-; The boss has been destroyed.
-; Flash/shake screen or something.
-
-    Boss1Destroyed:
-    rts

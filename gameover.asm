@@ -57,8 +57,6 @@
     lda     #0
     sta     SPR_Attrib
 ; start "game over" music
-;        lda     #TUNE_GAME_OVER
-;        sta     RNME_LoadTune
 ;
     inc     MainRoutine
     jsr     ScreenOn

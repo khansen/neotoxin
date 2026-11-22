@@ -73,30 +73,6 @@ OT_LASERRAY     EQU $10
     lda     #OE_LANDMINEMAIN
     sta     OBJ_Action,x
     rts
-    
-;-----------------------------------------------------------------------------
-
-    UpAndDownFlyerInit:
-    ldy     #LOOP_MOVINGFIELD
-    lda     #0
-    jsr     ANIM_SetLoop
-    lda     #amNoCycling
-    sta     ANIM_Method,x
-    lda     #3
-    sta     OBJ_RangeX,x
-    lda     #15
-    sta     OBJ_RangeY,x
-    lda     #5
-    sta     OBJ_Health,x
-    lda     #OE_UPANDDOWNFLYERMAIN
-    sta     OBJ_Action,x
-    lda     #2
-    sta     OBJ_SpeedY,x
-    lda     #2
-    sta     OBJ_SpeedX,x
-    lda     #4  ; ignore BG collision
-    sta     OBJ_State,x
-    rts
 
 ;-----------------------------------------------------------------------------
 

@@ -113,7 +113,6 @@
     and     #btnDOWN
     beq     -
 ; duck
-    SetDucking:
     lda     #OE_PLAYERDUCK
     sta     OBJ_Action
     lda     #17
@@ -310,7 +309,6 @@
   + lda     CollStat
     and     #COLL_LEFT
     bne     SetStanding     ; player crashed into something
-    CheckRunSpeed:
     lda     #btnLEFT
     and     JoyStat
     beq     StopRunningLeft ; player released left button

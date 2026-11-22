@@ -100,7 +100,6 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
 ; explode and dispose of bomb
     lda     #OE_DISCARDOBJECT
     jsr     SetAnimWaitAction
-;    jmp     SetBigExplodeAnim
     jmp     SetExplodeAnim
 
 ;-----------------------------------------------------------------------------
