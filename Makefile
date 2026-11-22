@@ -78,7 +78,10 @@ script/%.bin: script/%.asm script/script.h
 check: $(BINFILE)
 	echo "$(BINFILE_SHA1)  $(BINFILE)" | shasum -c -
 
-.PHONY: all check clean
+test: $(BINFILE)
+	./test/run_test.sh $(BINFILE)
+
+.PHONY: all check clean test
 
 clean:
 	rm -f $(BINFILE) $(OBJS) $(SCRIPTS)
