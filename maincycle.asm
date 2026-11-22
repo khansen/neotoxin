@@ -106,6 +106,9 @@ TC_SLOT IRQSwitchBGCHR
     iny
     stx     MMC3_CTRL_REG
     sty     MMC3_PAGE_REG
+    lda     MMC3Ctrl
+    ora     #$80
+    sta     MMC3_CTRL_REG
     rts
 
 ; GoMainHandler

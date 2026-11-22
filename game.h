@@ -20,6 +20,8 @@ MainRoutine             EQU     $04
 IRQRoutine              EQU     $05
 FrameStat               EQU     $06
 FrameCount              EQU     $07
+pDemo                   EQU     $08
+OldStat                 EQU     $0A
 JoyStat                 EQU     $0B
 JoyFirst                EQU     $0C
 FlashPos                EQU     $0D
@@ -40,12 +42,10 @@ Count                   EQU     $22
 Count2                  EQU     $23
 Count3                  EQU     $24
 Count4                  EQU     $25
-ComboPos                EQU     $26
+JoyCount                EQU     $26
 AllowDblJmp             EQU     $27
 RoomFlags               EQU     $28
-;CHRAnimStat             EQU     $27
-;CHRAnimFrame            EQU     $28
-;CHRAnimDelay            EQU     $29
+MMC3Ctrl                EQU     $29
 CurrentBank             EQU     $2A
 NextRoutine             EQU     $2B
 SelectedCHR             EQU     $2C     ; 6 bytes
@@ -190,9 +190,5 @@ AUX0   EQU $F8  ; divisor
 AUX1   EQU $F9
 AUX2   EQU $FA
 TMP0   EQU $FB
-
-pDemo       EQU     $75
-OldStat     EQU     $77
-JoyCount    EQU     $78
 
 .endif

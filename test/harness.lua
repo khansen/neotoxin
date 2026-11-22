@@ -33,10 +33,11 @@ local function hash_gd(s, mode)
         if not (mode == "title_static" and y >= 175 and y <= 214) then
             local row_off = 12 + y * 1024
             for x = 0, 255 do
-                -- On title_boot, TitleWaveLoop writes PPUScroll ($2005) mid-scanline
-                -- around X=120..135 on scanlines 175..214 after a 7-cycle $2002 poll loop,
-                -- so the exact transition dot within X=115..140 jitters with CPU page crossings.
-                if not (mode == "title_wave" and y >= 175 and y <= 214 and x >= 115 and x <= 140) then
+                -- On title_boot, TitleWaveLoop (114 CPU cycles = 342 PPU dots/scanline)
+                -- writes PPUScroll ($2005) mid-scanline around X=115..155 on scanlines 175..214
+                -- after a 7-cycle $2002 poll loop, so the exact transition dot within X=110..160
+                -- jitters with sub-scanline CPU phase.
+                if not (mode == "title_wave" and y >= 175 and y <= 214 and x >= 110 and x <= 160) then
                     local i = row_off + x * 4
                     local r, g, b = s:byte(i + 1, i + 3)
                     local v = r * 65536 + g * 256 + b + 1

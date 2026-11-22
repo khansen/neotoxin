@@ -111,8 +111,9 @@ SaveGameInfo:
     bcc     +
     inc     Temp+1
   + iny
-    cpy     #60
+    cpy     #59
     bne     -
+    iny
     rts
 
 

@@ -25,7 +25,7 @@
 
 ; ClearWRAM
 ; =========
-; Clears WRAM at $6000-$7FFF
+; Clears WRAM at $7000-$7FFF (preserving save slots at $6000-$6FFF)
 
     ClearWRAM:
     lda     #$7F            ; high byte of last WRAM page
@@ -39,7 +39,7 @@
     dec     pData+1       ; decrement high byte of address
     ldx     pData+1
     cpx     #$70
-    bcs     -               ; clear another page if >= $60
+    bcs     -               ; clear another page if >= $70
     rts
 
 

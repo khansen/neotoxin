@@ -62,10 +62,15 @@
 ; read da friggin joypad
     jsr     ReadJoypad0
 ; update sound
+    lda     MMC3Ctrl
+    pha
     lda     #6
     jsr     SwapBank        ; switch to Music Bank
     jsr     RNME_PlaySong
     jsr     ResetBank
+    pla
+    sta     MMC3Ctrl
+    sta     MMC3_CTRL_REG
     NoNMIProcessing:
     pla
     tay                     ; restore Y

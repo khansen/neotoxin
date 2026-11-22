@@ -19,10 +19,12 @@
         asl
         tay                     ; Y = 8K bank #
         ldx     #$06            ; command = swap 1st 8K bank
+        stx     MMC3Ctrl
         stx     MMC3_CTRL_REG
         sty     MMC3_PAGE_REG
         inx                     ; command = swap 2nd 8K bank
         iny
+        stx     MMC3Ctrl
         stx     MMC3_CTRL_REG
         sty     MMC3_PAGE_REG
         rts
