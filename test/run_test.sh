@@ -125,5 +125,8 @@ if grep -q "^PASS:" "$LOG_FILE" 2>/dev/null; then
     rm -rf "$CFG_DIR"
     exit 0
 fi
+if [ -s "$LOG_FILE.progress" ]; then
+    echo "Last progress: $(tail -1 "$LOG_FILE.progress")"
+fi
 echo "Harness log and FCEUX output kept in $CFG_DIR"
 exit 1

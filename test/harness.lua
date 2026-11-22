@@ -13,6 +13,14 @@
 
 emu.speedmode("turbo")
 
+-- Advances one emulated frame. Turbo is requested again on every frame: a run
+-- has occasionally timed out with no progress logged, consistent with FCEUX
+-- resetting the speed after the first request while it finishes starting up.
+local function advance()
+    emu.speedmode("turbo")
+    emu.frameadvance()
+end
+
 local script_path = debug.getinfo(1, "S").source:sub(2)
 local test_dir = script_path:match("^(.*)/[^/]+$") or "."
 local root_dir = test_dir:match("^(.*)/[^/]+$") or "."
@@ -30,6 +38,17 @@ local function log(s)
         out:flush()
     end
 end
+
+-- One line per checkpoint as it is taken, with the emulated frame number and
+-- the wall-clock time, so a run that stalls or slows down shows where.
+local progress = io.open(LOG_PATH .. ".progress", "w")
+local function note_progress(what)
+    if progress then
+        progress:write(string.format("%s frame=%d time=%d\n", what, emu.framecount(), os.time()))
+        progress:flush()
+    end
+end
+note_progress("start")
 
 local function finish()
     if out then
@@ -120,6 +139,7 @@ local function checkpoint(id)
     end
     local hash = hash_gd(gd, mode)
     table.insert(checkpoints, {id = id, hash = hash})
+    note_progress(id)
     if SHOT_DIR then
         save_ppm(gd, SHOT_DIR .. "/" .. id .. ".ppm")
     end
@@ -199,7 +219,7 @@ local function step(n, btns)
         else
             joypad.set(1, {})
         end
-        emu.frameadvance()
+        advance()
     end
 end
 
@@ -234,7 +254,7 @@ local function replay_demo_file(path)
         local btns = byte_to_buttons(stat)
         for i = 1, count do
             joypad.set(1, btns)
-            emu.frameadvance()
+            advance()
             total = total + 1
             if total == 250 then
                 checkpoint("demo_replay_f250")
