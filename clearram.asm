@@ -1,4 +1,5 @@
 .include "game.h"
+.include "clearram.h"
 
 .codeseg
 
@@ -9,7 +10,7 @@
 ; ========
 ; Clears RAM at $0000-$07FF
 
-    ClearRAM:
+.proc ClearRAM
     lda     #$00
     tax
   - sta     $00,x
@@ -22,12 +23,13 @@
     inx
     bne     -
     rts
+.endp
 
 ; ClearWRAM
 ; =========
 ; Clears WRAM at $7000-$7FFF (preserving save slots at $6000-$6FFF)
 
-    ClearWRAM:
+.proc ClearWRAM
     lda     #$7F            ; high byte of last WRAM page
     sta     pData+1
     lda     #$00            ; low byte of last WRAM page
@@ -41,6 +43,7 @@
     cpx     #$70
     bcs     -               ; clear another page if >= $70
     rts
+.endp
 
 
 .end

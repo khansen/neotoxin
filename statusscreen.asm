@@ -1,6 +1,13 @@
 .include "game.h"
 .include "hsge.h"
 .include "nes.h"
+.include "fade.h"
+.include "gamedata.h"
+.include "mmc3.h"
+.include "palette.h"
+.include "ppu.h"
+.include "screendata.h"
+.include "statusscreen.h"
 
 .codeseg
 
@@ -8,28 +15,10 @@
 .public UpdateClock
 .public CheckPause
 
-.extrn WritePPUString:proc
-.extrn EndPPUString:proc
-.extrn WaitNMIPass:proc
-.extrn PAL_FadeToBlack:proc
-.extrn ScreenOff:proc
-.extrn SetBank:proc
-.extrn ClearDisplay:proc
-.extrn StatusScreenData:label
-.extrn WriteROMPPUString:proc
-.extrn StatusScreenPal:label
-.extrn PAL_LoadPalette:proc
-.extrn StatusScreenCHR:label
-.extrn LoadCHR:proc
-.extrn CheckPPUWrite:proc
-.extrn ExpPtsLevelTable:label
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-
 ; UpdateClock
 ; ===========
 
-    UpdateClock:
+.proc UpdateClock
     inc     ClockTicks
     lda     ClockTicks
     cmp     #60
@@ -48,12 +37,13 @@
     sty     Minutes
     inc     Hours
   + rts
+.endp
 
 ; ShowClock
 ; =========
 ; Print the clock on the screen, in format HH:MM:SS
 
-    ShowClock:
+.proc ShowClock
     lda     #$21
     sta     PPUString
     lda     #$0B
@@ -91,6 +81,7 @@
     lda     #<PPUString
     sta     pData
     jmp     WritePPUString
+.endp
 
 ; PrintValue
 ; ==========
@@ -99,7 +90,7 @@
 ; A = PPU high address
 ; Y = PPU low address
 
-    PrintValue:
+.proc PrintValue
     stx     Count
     ldx     PPUStrIndex
     sta     PPUString,x
@@ -144,6 +135,7 @@
     cpy     Count
     bne     -
     jmp     EndPPUString
+.endp
 
 DecPos0:
 .db $0A,$64,$E8,$10,$A0,$40
@@ -152,7 +144,7 @@ DecPos1:
 DecPos2:
 .db $00,$00,$00,$00,$01,$0F
 
-    Divide:
+.proc Divide
     txa
     pha
     tya
@@ -190,6 +182,7 @@ DecPos2:
     pla
     tax
     rts
+.endp
 
 ; HexToDec
 ; ========
@@ -197,7 +190,7 @@ DecPos2:
 ;     Y = # of digits out
 ; pData = where to store result
 
-    HexToDec:
+.proc HexToDec
     sty     Count2
   - jsr     DivBy10
     pha
@@ -211,6 +204,7 @@ DecPos2:
     cpy     Count2
     bne     -
     rts
+.endp
 
 ; DivBy10
 ; =======
@@ -219,7 +213,7 @@ DecPos2:
 ; Out: X = Quotient
 ;      A = Remainder
 
-    DivBy10:
+.proc DivBy10
     ldx     #0  ; clear quotient
   - cmp     #10
     bcc     +
@@ -227,18 +221,19 @@ DecPos2:
     inx
     bne     -
   + rts
+.endp
 
 ; CheckPause
 ; ==========
 ; Checks if START has been pressed, and if so, loads status screen.
 
-    CheckPause:
+.proc CheckPause
     lda     JoyFirst
     and     #btnSTART
-    bne     GoStatusScreen
+    bne     @@GoStatusScreen
     rts
 ; enter status screen
-    GoStatusScreen:
+    @@GoStatusScreen:
     jsr     WaitNMIPass
     lda     #0
     sta     HSGE_QueueSize
@@ -336,6 +331,6 @@ DecPos2:
     lda     #mrStatusMain
     sta     MainRoutine
     rts
-
+.endp
 
 .end

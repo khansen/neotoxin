@@ -1,31 +1,24 @@
 .include "game.h"
 .include "nes.h"
 .include "rnme.h"
+.include "fade.h"
+.include "gameover.h"
+.include "mmc3.h"
+.include "palette.h"
+.include "ppu.h"
+.include "savegame.h"
+.include "screendata.h"
+.include "warp.h"
 
 .codeseg
 
 .public GameOverInit
 .public GameOverMain
 
-.extrn PAL_FadeToBlack:proc
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn SetBank:proc
-.extrn GameOverData:label
-.extrn WriteROMPPUString:proc
-.extrn GameOverPal:label
-.extrn PAL_LoadPalette:proc
-.extrn GameOverCHR:label
-.extrn LoadCHR:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn LoadSaveGame:proc
-.extrn ExecWarp:proc
-
 ; GameOverInit
 ; ============
 
-    GameOverInit:
+.proc GameOverInit
     jsr     PAL_FadeToBlack
     jsr     ScreenOff
     jsr     ClearDisplay
@@ -61,21 +54,22 @@
     inc     MainRoutine
     jsr     ScreenOn
     jmp     PAL_FadeFromBlack
+.endp
 
 ; GameOverMain
 ; ============
 
-    GameOverMain:
+.proc GameOverMain
     lda     JoyFirst
     and     #(btnSTART+btnA)
-    bne     GameOverChoose
+    bne     @@GameOverChoose
     lda     JoyFirst
     and     #(btnSELECT+btnDOWN+btnUP)
-    beq     GameOverShowCursor
+    beq     @@GameOverShowCursor
     lda     MenuSelect
     eor     #$01    ; toggle choice
     sta     MenuSelect
-    GameOverShowCursor:
+    @@GameOverShowCursor:
     lda     MenuSelect
     asl
     asl
@@ -84,18 +78,18 @@
     adc     #94
     sta     SPR_PosY
     rts
-    GameOverChoose:
+    @@GameOverChoose:
     jsr     PAL_FadeToBlack
     lda     MenuSelect
-    beq     GameOverContinue
+    beq     @@GameOverContinue
     lda     #mrTitleInit
     sta     MainRoutine
     rts
-    GameOverContinue:
+    @@GameOverContinue:
     lda     #0
     sta     RNME_LastTune
     jsr     LoadSaveGame
     jmp     ExecWarp
-
+.endp
 
 .end

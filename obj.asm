@@ -6,6 +6,9 @@
 .include "hsge.h"
 .include "nes.h"
 .include "obj.h"
+.include "flags.h"
+.include "math.h"
+.include "renderer.h"
 
 .codeseg
 
@@ -32,17 +35,12 @@
 .public DestroyAllObjects
 .public OBJ_PerformAction
 
-.extrn XSIGN:proc
-.extrn SetStatusFlag:proc
-.extrn ExecObjConstr:proc
-.extrn ANIM_SetLoop:proc
-
 ;-----------------------------[ Sprite stuff ]--------------------------------
 
 ; Destroy all sprites
 ; ===================
 
-    DestroyAllSprites:
+.proc DestroyAllSprites
     ldx     #$00
     lda     #$F4
   - sta     SPR_PosY,x     ; Set Y coord to below visible screen
@@ -52,6 +50,7 @@
     inx
     bne     -
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -59,7 +58,7 @@
 ; ==================
 ; Convert from world coordinates to screen coordinates.
 
-    OBJ_CoordsToScreen:
+.proc OBJ_CoordsToScreen
     lda     OBJ_WorldYLo,x
     sec
     sbc     HSGE_WorldViewY
@@ -83,13 +82,14 @@
     and     #$7F            ; clear offscreen flag
     sta     OBJ_State,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; OBJ_PerformAction
 ; =================
 
-    OBJ_PerformAction:
+.proc OBJ_PerformAction
     lda     OBJ_Action,x
     asl
     tay
@@ -98,15 +98,17 @@
     iny
     lda     [ah_pActionPtrTable],y
     sta     pCode+1
-    GoCodePtr:
+.endp
+.proc GoCodePtr
     jmp     [pCode]
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; Add amount to object's X position.
 ; In: A = amount to add
 
-    OBJ_IncX:
+.proc OBJ_IncX
     clc
     adc     OBJ_WorldXLo,x
     sta     OBJ_WorldXLo,x
@@ -114,11 +116,12 @@
     inc     OBJ_WorldXHi,x
     inc     OBJ_MapOfs,x
   + rts
+.endp
 
 ; Subtract amount from object's X position.
 ; In: A = amount to subtract
 
-    OBJ_DecX:
+.proc OBJ_DecX
     jsr     XSIGN
     adc     OBJ_WorldXLo,x
     sta     OBJ_WorldXLo,x
@@ -126,11 +129,12 @@
     dec     OBJ_WorldXHi,x
     dec     OBJ_MapOfs,x
   + rts
+.endp
 
 ; Add amount to object's Y position.
 ; In: A = amount to add
 
-    OBJ_IncY:
+.proc OBJ_IncY
     clc
     adc     OBJ_WorldYLo,x
     sta     OBJ_WorldYLo,x
@@ -141,11 +145,12 @@
     adc     MapWidth
     sta     OBJ_MapOfs,x
   + rts
+.endp
 
 ; Subtract amount from object's Y position.
 ; In: A = amount to subtract
 
-    OBJ_DecY:
+.proc OBJ_DecY
     jsr     XSIGN
     adc     OBJ_WorldYLo,x
     sta     OBJ_WorldYLo,x
@@ -156,6 +161,7 @@
     sbc     MapWidth
     sta     OBJ_MapOfs,x
   + rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -164,13 +170,14 @@
 ; A = map X page
 ; Y = map Y page
 
-    OBJ_CalcMapOfs:
+.proc OBJ_CalcMapOfs
     clc
   - dey
     bmi     +
     adc     MapWidth
     bcc     -           ; branch always
   + rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -178,7 +185,7 @@
 ; ===========
 ; Find 1st available object slot.
 
-    FindObjSlot:
+.proc FindObjSlot
     pha     ; don't want to destroy Acc
     ldx     #23
   - lda     OBJ_Type,x
@@ -188,10 +195,11 @@
     ; no slots left!!! CRISIS
   + pla
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    DestroyAllObjects:
+.proc DestroyAllObjects
     ldx     #23
   - jsr     KillObject
     dex
@@ -199,26 +207,31 @@
     inx
     stx     ObjCount    ; = 0
   - rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; If object flag is non-zero, set it.
 
-    TestSetObjFlag:
+.proc TestSetObjFlag
     lda     OBJ_Flag,x
     beq     -
     jmp     SetStatusFlag
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    RemoveProjectile:
+.proc RemoveProjectile
     dec     ProjectileCount
     bpl     RemoveObject    ; branch always, hopefully
-    DiscardObject:
+.endp
+.proc DiscardObject
     jsr     TestSetObjFlag
-    RemoveObject:
+.endp
+.proc RemoveObject
     dec     ObjCount
-    KillObject:
+.endp
+.proc KillObject
     lda     #$80
     sta     OBJ_Type,x  ; invalid
     sta     OBJ_State,x ; offscreen
@@ -233,7 +246,8 @@
     sta     OBJ_WorldYFrac,x
     sta     OBJ_ScreenX,x
     sta     OBJ_ScreenY,x
-    ResetMotion:
+.endp
+.proc ResetMotion
     sta     OBJ_SpeedX,x
     sta     OBJ_SpeedY,x
     sta     OBJ_SpeedXFrac,x
@@ -243,33 +257,38 @@
     sta     OBJ_AccelXFrac,x
     sta     OBJ_AccelYFrac,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    ToggleDirection:
+.proc ToggleDirection
     lda     OBJ_State,x
     eor     #1
     sta     OBJ_State,x
     rts
+.endp
     
-    FaceLeft:
+.proc FaceLeft
     lda     OBJ_State,x
     ora     #1
     sta     OBJ_State,x
     rts
+.endp
 
-    FaceRight:
+.proc FaceRight
     lda     OBJ_State,x
     and     #$FE
     sta     OBJ_State,x
     rts
+.endp
 
-    FacePlayer:
+.proc FacePlayer
     lda     OBJ_ScreenX,x
     cmp     OBJ_ScreenX
     bcc     +
     jmp     FaceLeft
   + jmp     FaceRight
+.endp
   
 ;-----------------------------------------------------------------------------
 
@@ -277,7 +296,7 @@
 ; =============
 ; Copies coordinates from object at index Y to object at index X.
 
-    CopyObjCoords:
+.proc CopyObjCoords
     lda     OBJ_MapOfs,y
     sta     OBJ_MapOfs,x
     lda     OBJ_WorldXHi,y
@@ -289,6 +308,7 @@
     lda     OBJ_WorldYLo,y
     sta     OBJ_WorldYLo,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -300,7 +320,7 @@
 ; In: Y = object type to spawn
 ;     X = spawning object
 
-    SpawnObject:
+.proc SpawnObject
     txa
     pha     ; save spawning object
     jsr     FindObjSlot
@@ -316,6 +336,7 @@
     pla
     tax     ; restore
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -324,7 +345,7 @@
 ; Turns an object into a health item.
 ; In: X = object index
 
-    ObjectToHealthItem:
+.proc ObjectToHealthItem
     lda     #OT_ITEM
     sta     OBJ_Type,x
     lda     #0  ; item type
@@ -347,5 +368,6 @@
     ldy     #LOOP_HEALTHITEM
     lda     #0
     jmp     ANIM_SetLoop
+.endp
 
 .end

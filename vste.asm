@@ -2,6 +2,11 @@
 .include "mmc3.h"
 .include "rnme.h"
 .include "vste.h"
+.include "area2d.h"
+.include "fade.h"
+.include "palette.h"
+.include "ppu.h"
+.include "screendata.h"
 
 .charmap "font.tbl"
 
@@ -10,24 +15,13 @@
 .public CreditsInit
 .public CreditsMain
 
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn StatusScreenPal:label
-.extrn PAL_LoadPalette:proc
-.extrn StatusScreenCHR:label
-.extrn LoadCHR:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn SetTimer:proc
-.extrn EndPPUString:proc
-
 ; End credits vertical scroller, movie-style.
 
 ; CreditsInit
 ; ===========
 ; Call once to initialize the scroller.
 
-        CreditsInit:
+.proc CreditsInit
         jsr     ScreenOff
         lda     #H_MIRROR
         sta     MMC3_MIRROR_REG           ; horizontal mirroring
@@ -69,12 +63,13 @@
         jsr     PAL_FadeFromBlack
         inc     MainRoutine
       - rts
+.endp
 
 ; CreditsMain
 ; ===========
 ; Call every frame to update the scroller.
 
-        CreditsMain:
+.proc CreditsMain
         lda     FrameCount
         and     #$03            ; only update every 4th frame
         bne     -               ; (we don't want it to scroll too fast :-) )
@@ -162,6 +157,7 @@
         inx
         bne     -
       + jmp     EndPPUString
+.endp
 
 ;-----------------------------------------------------------------------------
 

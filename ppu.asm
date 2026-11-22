@@ -1,5 +1,8 @@
 .include "game.h"
 .include "nes.h"
+.include "areahdrs.h"
+.include "obj.h"
+.include "ppu.h"
 
 .codeseg
 
@@ -18,9 +21,6 @@
 .public Load2DAreaHdr
 .public WritePPUString
 
-.extrn AreaHdrTable:label
-.extrn DestroyAllSprites:proc
-
 ; PPU / VRAM helper routines, plus Load2DAreaHdr and UpdateTimers
 ; (kept in this unit to preserve the original Bank 7 routine order).
 
@@ -28,7 +28,7 @@
 ; =============
 ; In: A = Area to load
 
-    Load2DAreaHdr:
+.proc Load2DAreaHdr
     asl
     tax
     lda     AreaHdrTable,x
@@ -41,6 +41,7 @@
     dey
     bpl     -
     rts
+.endp
 
 ; LoadCHR
 ; =======
@@ -48,7 +49,7 @@
 ; In: A = low data address.
 ;     Y = high data address.
 
-    LoadCHR:
+.proc LoadCHR
     sta     pData
     sty     pData+1
     ldy     #$05
@@ -57,6 +58,7 @@
     dey
     bpl     -
     rts
+.endp
 
 ; AnimateCHR
 ; ==========
@@ -68,10 +70,11 @@
 ; Turns off both background and sprites, so that VRAM can safely be written
 ; to.
 
-    ScreenOff:
+.proc ScreenOff
     lda     ZPCtrl1
     and     #%11100111      ; bg & sprite visibility = false
     sta     ZPCtrl1
+.endp
 
 ; WaitNMIPass
 ; ===========
@@ -79,39 +82,42 @@
 ; NMI *must* be enabled when this routine is called, otherwise it will go
 ; into an infinite loop.
 
-    WaitNMIPass:
+.proc WaitNMIPass
     lda     #$00
     sta     FrameStat
   - lda     FrameStat
     beq     -
     rts
+.endp
 
 ; FrameDelay
 ; ==========
 ; Y = # of frames to delay
 
-    FrameDelay:
+.proc FrameDelay
   - jsr     WaitNMIPass
     dey
     bne     -
     rts
+.endp
 
 ; ScreenOn
 ; ========
 ; Enables both background and sprites.
 
-    ScreenOn:
+.proc ScreenOn
     lda     ZPCtrl1
     ora     #%00011000      ; bg & sprite visibility = true
     sta     ZPCtrl1
     bne     WaitNMIPass
+.endp
 
 ; UpdateTimers
 ; ============
 ; Decrements Timer every (1/60)*TIMER_SPEED seconds (AKA every TIMER_SPEEDth
 ; frame), if it isn't already zero.
 
-    UpdateTimers:
+.proc UpdateTimers
     dec     TimerDelay
     bpl     ++
     lda     #TIMER_SPEED-1
@@ -123,12 +129,13 @@
   + dex                     ; next timer
     bpl     -
  ++ rts
+.endp
 
 ; ClearDisplay
 ; ============
 ; Clears both nametables and destroys all sprites.
 
-    ClearDisplay:
+.proc ClearDisplay
     ldx     #$00            ; nametable 0
     jsr     FillNameTable
     ldx     #$01            ; nametable 1
@@ -136,6 +143,7 @@
     ldx     #$02            ; nametable 2
     jsr     FillNameTable
     jmp     DestroyAllSprites
+.endp
 
 ; FillNameTable
 ; =============
@@ -143,7 +151,7 @@
 ; is filled with 00s.
 ; X = name table # (0..3)
 
-    FillNameTable:
+.proc FillNameTable
     lda     ZPCtrl0
     and     #%11111011      ; PPU increment = 1
     sta     ZPCtrl0
@@ -205,20 +213,20 @@
     lda     [pData],y       ; string info byte again
     and     #$3F            ; data length in lower 6 bits
     tax                     ; use as loop counter
-    bcc     PPUWriteLoop    ; branch if string isn't RLE
+    bcc     @@PPUWriteLoop    ; branch if string isn't RLE
     iny
     lda     [pData],y       ; fetch the RLE data byte
-    PPURepeatLoop:
+    @@PPURepeatLoop:
     sta     PPUIOReg
     dex
-    bne     PPURepeatLoop
+    bne     @@PPURepeatLoop
     beq     +
-    PPUWriteLoop:
+    @@PPUWriteLoop:
     iny
     lda     [pData],y       ; fetch the next data byte
     sta     PPUIOReg        ; write to PPU
     dex
-    bne     PPUWriteLoop
+    bne     @@PPUWriteLoop
   + pla                     ; restore PPU hi address
     cmp     #$3F            ; was the data written to page $3F?
     bne     +               ; branch if not
@@ -232,50 +240,56 @@
     sta     pData           ; pData now points to the next string
     bcc     WritePPUString
     inc     pData+1
-    WritePPUString:
+.endp
+.proc WritePPUString
     ldy     #$00
     lda     [pData],y
     bne     -               ; non-zero = valid string, write it
   - rts
+.endp
 
 ; CheckPPUWrite
 ; =============
 ; Writes any data waiting to be written to VRAM.
 
-    CheckPPUWrite:
+.proc CheckPPUWrite
     ldy     PPUDataPending
     beq     -               ; exit if no data pending
     dey                     ; Y = 0
     sty     PPUStrIndex
     sty     PPUDataPending
-    WriteRAMPPUString:
+.endp
+.proc WriteRAMPPUString
     lda     #<PPUString
     sta     pData
     lda     #>PPUString
     sta     pData+1
     jmp     WritePPUString
+.endp
 
 ; WriteROMPPUString
 ; =================
 ; In: A = low address.
 ;     Y = high address.
 
-    WriteROMPPUString:
+.proc WriteROMPPUString
     sta     pData
     sty     pData+1
     jmp     WritePPUString
+.endp
 
 ; EndPPUString
 ; ============
 
-    EndPPUString:
+.proc EndPPUString
     stx     PPUStrIndex
     lda     #$00
     sta     PPUString,x
     lda     #$01
     sta     PPUDataPending
-    Return:
+.endp
+.proc Return
     rts
-
+.endp
 
 .end

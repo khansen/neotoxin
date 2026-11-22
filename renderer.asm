@@ -1,6 +1,12 @@
 .include "game.h"
 .include "hsge.h"
 .include "obj.h"
+.include "attribtable.h"
+.include "flags.h"
+.include "nametable.h"
+.include "ppu.h"
+.include "renderer.h"
+.include "scroller.h"
 
 .codeseg
 
@@ -11,25 +17,12 @@
 .public HSGE_LoadObjects
 .public HSGE_CheckScreenWrite
 
-.extrn HSGE_SetRoomPtr:proc
-.extrn HSGE_CalcRoomOfs:proc
-.extrn HSGE_WriteNameTableCol:proc
-.extrn HSGE_WriteAttribTableCol:proc
-.extrn HSGE_WriteNameTableRow:proc
-.extrn HSGE_WriteAttribTableRow:proc
-.extrn CheckPPUWrite:proc
-.extrn RemoveObject:proc
-.extrn OBJ_CalcMapOfs:proc
-.extrn FindObjSlot:proc
-.extrn GetStatusFlag:proc
-.extrn GoCodePtr:proc
-
 ; HSGE_CheckScreenWrite
 ; =====================
 
-    HSGE_CheckScreenWrite:
+.proc HSGE_CheckScreenWrite
     lda     HSGE_QueueSize
-    beq     HSGE_NoScrollWrite
+    beq     @@HSGE_NoScrollWrite
     lda     HSGE_ScrollQueue    ; get top item
     sta     HSGE_QueueItem
     ; dequeue
@@ -44,7 +37,7 @@
     lda     HSGE_QueueItem
     lsr
     bcc     +
-    jmp     HSGE_WriteScreenRight
+    jmp     @@HSGE_WriteScreenRight
   + lsr
     bcc     +
     jmp     HSGE_WriteScreenLeft
@@ -52,13 +45,13 @@
     bcc     +
     jmp     HSGE_WriteScreenDown
   + jmp     HSGE_WriteScreenUp
-    HSGE_NoScrollWrite:
+    @@HSGE_NoScrollWrite:
     rts
 
 ; WriteScreenRight
 ; ================
 
-    HSGE_WriteScreenRight:
+    @@HSGE_WriteScreenRight:
     ldy     HSGE_MapOfs
     iny
     sty     Temp4
@@ -79,12 +72,13 @@
     bne     +
     inc     HSGE_MapOfs
   + rts
+.endp
 
 ;;;;;;;;;;;;;;;;;; TEMP
 ; WriteScreenRightX
 ; =================
 
-    HSGE_WriteScreenRightX:
+.proc HSGE_WriteScreenRightX
     ldy     HSGE_MapOfs
     iny
     sty     Temp4
@@ -239,11 +233,12 @@
     ldy     HSGE_ScreenTable
     jsr     HSGE_WriteAttribTableRow
   + rts
+.endp
 
 ; HSGE_RenderScreen
 ; =================
 
-    HSGE_RenderScreen:
+.proc HSGE_RenderScreen
     lda     #32
   - pha
     ldy     #%00000001
@@ -259,6 +254,7 @@
     sbc     #1
     bne     -
  -- rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -268,7 +264,7 @@
 ; In: A = map pos X
 ;     Y = map pos Y
 
-    HSGE_DeleteFarObjects:
+.proc HSGE_DeleteFarObjects
     cmp     MapWidth
     bcs     --
     cpy     MapHeight
@@ -288,13 +284,14 @@
   + dex
     bne     -
   - rts
+.endp
 
 ; HSGE_LoadObjects
 ; ================
 ; A = Map pos X
 ; Y = Map pos Y
 
-    HSGE_LoadObjects:
+.proc HSGE_LoadObjects
     cmp     MapWidth
     bcs     -
     cpy     MapHeight
@@ -312,31 +309,31 @@
     sta     HSGE_pObject+1
     ldy     #64                 ; object data begins after room data
     sty     Index
-    HSGE_LoadOneObj:
+    @@HSGE_LoadOneObj:
     ldy     Index
     lda     [HSGE_pObject],y
-    bmi     HSGE_ObjSpecial
+    bmi     @@HSGE_ObjSpecial
     sta     Temp2               ; object type
     lda     ObjCount
     cmp     #21                 ; no slots available?
-    bcs     HSGE_ObjectOverflow
+    bcs     @@HSGE_ObjectOverflow
     jsr     FindObjSlot         ; find available object slot
-    HSGE_FoundNewSlot:
+    @@HSGE_FoundNewSlot:
     iny
     lda     [HSGE_pObject],y    ; position
     iny
     sty     Index
     ldy     Temp2               ; type
     jsr     LoadObject
-    jmp     HSGE_LoadOneObj
-    HSGE_ObjectOverflow:        ; make room for object
+    jmp     @@HSGE_LoadOneObj
+    @@HSGE_ObjectOverflow:        ; make room for object
     lda     Temp2
     cmp     #4
     bcc     +
     iny
     iny
     sty     Index
-    bne     HSGE_LoadOneObj
+    bne     @@HSGE_LoadOneObj
     ; attempt to find an enemy that can be squeezed out
   + ldx     #23
   - lda     OBJ_Type,x
@@ -344,17 +341,17 @@
     cmp     #4
     bcc     +
     jsr     RemoveObject
-    jmp     HSGE_FoundNewSlot
+    jmp     @@HSGE_FoundNewSlot
   + dex
     bne -
     ; no slots available!!
     rts     ; no option but to stop loading objects
-    HSGE_ObjSpecial:
+    @@HSGE_ObjSpecial:
     cmp     #$FE
-    beq     HSGE_RunObjCode
-    bcc     HSGE_CheckObjFlag
+    beq     @@HSGE_RunObjCode
+    bcc     @@HSGE_CheckObjFlag
     rts                         ; $FF = end of object data
-    HSGE_CheckObjFlag:
+    @@HSGE_CheckObjFlag:
     and     #$7F
     sta     Temp2               ; type
     iny
@@ -364,13 +361,13 @@
     beq     +   ; load object only if flag is zero
     inc     Index
     inc     Index
-    jmp     HSGE_LoadOneObj
+    jmp     @@HSGE_LoadOneObj
   + jsr     FindObjSlot
     ldy     Index
     lda     [HSGE_pObject],y
     sta     OBJ_Flag,x
-    jmp     HSGE_FoundNewSlot
-    HSGE_RunObjCode:
+    jmp     @@HSGE_FoundNewSlot
+    @@HSGE_RunObjCode:
     iny
     lda     [HSGE_pObject],y
     sta     pCode+1
@@ -380,14 +377,15 @@
     iny
     sty     Index
     jsr     GoCodePtr
-    jmp     HSGE_LoadOneObj
+    jmp     @@HSGE_LoadOneObj
+.endp
 
 ; LoadObject
 ; ==========
 ; A = Position: $YX
 ; Y = Object type
 
-    LoadObject:
+.proc LoadObject
     inc     ObjCount
 ; set starting position
     pha
@@ -409,7 +407,8 @@
 ;
     tya
     sta     OBJ_Type,x
-    ExecObjConstr:
+.endp
+.proc ExecObjConstr
 ; execute object constructor
     asl
     tay
@@ -419,5 +418,6 @@
     lda     [ah_pObjConstructors],y
     sta     pCode+1
     jmp     [pCode]
+.endp
 
 .end

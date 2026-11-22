@@ -1,18 +1,18 @@
 .include "game.h"
 .include "hsge.h"
+.include "attribtable.h"
+.include "ppu.h"
+.include "scroller.h"
 
 .codeseg
 
 .public HSGE_WriteAttribTableCol
 .public HSGE_WriteAttribTableRow
 
-.extrn HSGE_SetRoomPtr:proc
-.extrn EndPPUString:proc
-
 ; HSGE_WriteAttribTableCol
 ; ========================
 
-    HSGE_WriteAttribTableCol:
+.proc HSGE_WriteAttribTableCol
     lda     HSGE_RoomOfs
     sta     Index
     lda     HSGE_ScreenTable    ; 0 or 1
@@ -169,6 +169,7 @@
     ldy     Index2
     jmp     --
   + jmp     EndPPUString
+.endp
 
 AttribLookupShift:
 .db 0,1,-1,0,0,1,-1,0
@@ -180,7 +181,7 @@ AttribLookupMaskInv:
 ; HSGE_WriteAttribTableRow
 ; ========================
 
-    HSGE_WriteAttribTableRow:
+.proc HSGE_WriteAttribTableRow
     lda     HSGE_RoomOfs
     sta     Index
     tya
@@ -303,5 +304,6 @@ AttribLookupMaskInv:
     ldy     Index2
     jmp     --
   + jmp     EndPPUString
+.endp
 
 .end

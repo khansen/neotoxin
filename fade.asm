@@ -1,4 +1,6 @@
 .include "game.h"
+.include "fade.h"
+.include "ppu.h"
 
 .codeseg
 
@@ -8,14 +10,11 @@
 .public PAL_FadeFromWhite
 .public PAL_StrSetup
 
-.extrn WaitNMIPass:proc
-.extrn FrameDelay:proc
-
 ; PAL_FadeFromBlack
 ; =================
 ; Fades in the currently loaded palette.
 
-        PAL_FadeFromBlack:
+.proc PAL_FadeFromBlack
         jsr     PAL_StrSetup
         ldx     #$1F
       - lda     RAMPalette,x
@@ -33,8 +32,9 @@
         jsr     PAL_FadeDelay
         jsr     PAL_FadeFromBlackStep
         jmp     WaitNMIPass
+.endp
 
-        PAL_FadeFromBlackStep:
+.proc PAL_FadeFromBlackStep
         ldx     #$1F
       - lda     PPUString+3,x
         cmp     RAMPalette,x    ; has color reached full intensity?
@@ -44,6 +44,7 @@
       + dex
         bpl     -
         rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -51,7 +52,7 @@
 ; =================
 ; Fades in the currently loaded palette.
 
-        PAL_FadeFromWhite:
+.proc PAL_FadeFromWhite
         jsr     PAL_StrSetup
         ldx     #$1F
       - lda     RAMPalette,x
@@ -72,8 +73,9 @@
         jsr     PAL_FadeDelay
         jsr     PAL_FadeFromWhiteStep
         jmp     PAL_FadeDelay
+.endp
 
-        PAL_FadeFromWhiteStep:
+.proc PAL_FadeFromWhiteStep
         ldx     #$1F
       - lda     PPUString+3,x
         cmp     RAMPalette,x    ; has color reached full intensity?
@@ -88,6 +90,7 @@
         dex
         bpl     -
         rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -95,7 +98,7 @@
 ; ===============
 ; Fades the currently loaded palette to all black.
 
-        PAL_FadeToBlack:
+.proc PAL_FadeToBlack
         jsr     PAL_StrSetup
         ldx     #$1F
       - lda     RAMPalette,x
@@ -111,8 +114,9 @@
         jsr     PAL_FadeDelay
         jsr     PAL_FadeToBlackStep
         jmp     PAL_FadeDelay
+.endp
 
-        PAL_FadeToBlackStep:
+.proc PAL_FadeToBlackStep
         ldx     #$1F
       - lda     PPUString+3,x
         sec
@@ -123,6 +127,7 @@
         dex
         bpl     -
         rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -130,7 +135,7 @@
 ; ===============
 ; Fades the currently loaded palette to all white.
 
-        PAL_FadeToWhite:
+.proc PAL_FadeToWhite
         jsr     PAL_StrSetup
         ldx     #$1F
       - lda     RAMPalette,x
@@ -149,8 +154,9 @@
         jsr     PAL_FadeDelay
         jsr     PAL_FadeToWhiteStep
         jmp     PAL_FadeDelay
+.endp
 
-        PAL_FadeToWhiteStep:
+.proc PAL_FadeToWhiteStep
         ldx     #$1F
       - lda     PPUString+3,x
         clc
@@ -162,10 +168,11 @@
         dex
         bpl     -
         rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-        PAL_StrSetup:
+.proc PAL_StrSetup
         lda     #$20
         sta     PPUString+2
         lda     #$3F
@@ -174,11 +181,13 @@
         sta     PPUString+1
         sta     PPUString+35
         rts
+.endp
 
-        PAL_FadeDelay:
+.proc PAL_FadeDelay
         lda     #$01
         sta     PPUDataPending
         ldy     #$06
         jmp     FrameDelay
+.endp
 
 .end

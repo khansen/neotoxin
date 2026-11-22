@@ -38,4 +38,21 @@ SO_SAVE             EQU     22
 SO_PLAYSFX          EQU     23
 
 
+; Exported symbols.
+.extrn IntroScript:label
+.extrn ZombieScript:label
+.extrn NPC6Script:label
+.extrn SaveScript:label
+.extrn Boss0IntroScript:label
+.extrn Boss1IntroScript:label
+.extrn Item0PickupScript:label
+.extrn Item1PickupScript:label
+.extrn Item2PickupScript:label
+.extrn Item3PickupScript:label
+.extrn Item4PickupScript:label
+.extrn Item5PickupScript:label
+.extrn Item6PickupScript:label
+.extrn Item7PickupScript:label
+.extrn NGSL_ExecScript:proc
+
 .endif

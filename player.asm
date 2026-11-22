@@ -7,6 +7,11 @@
 .include "obj.h"
 .include "player.h"
 .include "rnme.h"
+.include "bgcollision.h"
+.include "flags.h"
+.include "movement.h"
+.include "objcollision.h"
+.include "warp.h"
 
 .codeseg
 
@@ -22,39 +27,24 @@
 .public PlayerStartFall
 .public PlayerStandUp
 
-.extrn ANIM_SetCel:proc
-.extrn SpawnObject:proc
-.extrn ANIM_SetLoop:proc
-.extrn OBJ_CoordsToScreen:proc
-.extrn OBJ_CheckMoveLeft:proc
-.extrn FaceLeft:proc
-.extrn OBJ_CheckMoveRight:proc
-.extrn FaceRight:proc
-.extrn OBJ_CheckMoveDown:proc
-.extrn OBJ_GetCenterAttrib:proc
-.extrn CheckIfCollided:proc
-.extrn SetupWarp:proc
-.extrn InvertXSpeed:proc
-.extrn GetStatusFlag:proc
-.extrn OBJ_CheckMoveUp:proc
-
 ;-----------------------------------------------------------------------------
 
 ; PlayerStand
 ; ===========
 
-    PlayerStand:
+.proc PlayerStand
     jsr     CheckFire
     jsr     CheckJump
     jsr     CheckDuck
     jsr     CheckManualWarp
     jsr     CheckLadder
     jmp     CheckBeginRun
+.endp
     
 ; CheckFire
 ; =========
 
-    CheckFire:
+.proc CheckFire
     lda     #btnB
     and     JoyFirst
     beq     +
@@ -74,11 +64,12 @@
     ldy     #OT_PROJECTILE
     jmp     SpawnObject
   + rts
+.endp
 
 ; CheckJump
 ; =========
 
-    CheckJump:
+.proc CheckJump
     lda     #btnA
     and     JoyFirst
     beq     NoJump
@@ -104,11 +95,12 @@
     jmp     ANIM_SetLoop
     NoJump:
   - rts
+.endp
     
 ; CheckDuck
 ; =========
 
-    CheckDuck:
+.proc CheckDuck
     lda     JoyStat
     and     #btnDOWN
     beq     -
@@ -188,20 +180,21 @@
     jsr     FaceRight
     jmp     SetRunAnim
     rts
+.endp
 
 ; CheckLadder
 ; ===========
 
-    CheckLadder:
+.proc CheckLadder
     lda     JoyFirst
     and     #btnUP
-    bne     CheckClimbUp
+    bne     @@CheckClimbUp
     lda     JoyFirst
     and     #btnDOWN
-    bne     CheckClimbDown
+    bne     @@CheckClimbDown
   - rts
 
-    CheckClimbDown:
+    @@CheckClimbDown:
     jsr     OBJ_CheckMoveDown
     lda     Temp
     cmp     #TA_LADDERBELOW
@@ -215,13 +208,13 @@
     clc
     adc     #$1F
     sta     OBJ_WorldYLo
-    jmp     PlayerStartClimb
+    jmp     @@PlayerStartClimb
 
-    CheckClimbUp:
+    @@CheckClimbUp:
     jsr     OBJ_GetCenterAttrib
     cmp     #TA_LADDER
     bne     -
-    PlayerStartClimb:
+    @@PlayerStartClimb:
     lda     #$00
     sta     OBJ_SpeedX
     lda     OBJ_WorldXLo
@@ -231,11 +224,12 @@
     lda     #OE_PLAYERLADDER
     sta     OBJ_Action
   - rts
+.endp
 
 ; CheckManualWarp
 ; ===============
 
-    CheckManualWarp:
+.proc CheckManualWarp
     lda     JoyFirst
     and     #btnUP
     beq     -
@@ -253,29 +247,31 @@
     jsr     SetupWarp
     ldx     Index
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; PlayerRun
 ; =========
 
-    PlayerRun:
+.proc PlayerRun
     jsr     CheckRunning
     jsr     CheckFire
     jsr     CheckDuck
     jsr     CheckManualWarp
     jsr     CheckLadder
     jsr     CheckJump
-    jmp     CheckBeginFall
+    jmp     @@CheckBeginFall
     
 ; CheckBeginFall
 ; ==============
 
-    CheckBeginFall:
+    @@CheckBeginFall:
     jsr     OBJ_CheckMoveDown
     bcs     +
+.endp
 ; no ground under player, start falling
-    PlayerStartFall:
+.proc PlayerStartFall
     lda     #0
     sta     OBJ_SpeedY
     lda     #0
@@ -286,12 +282,13 @@
     sta     OBJ_Action
     jmp     SetJumpAnim
   + rts
+.endp
 
 ; CheckRunning
 ; ============
 ; update speed and such
 
-    CheckRunning:
+.proc CheckRunning
     lda     OBJ_SpeedX
     ora     OBJ_SpeedXFrac
     beq     SetStanding
@@ -311,37 +308,38 @@
     bne     SetStanding     ; player crashed into something
     lda     #btnLEFT
     and     JoyStat
-    beq     StopRunningLeft ; player released left button
+    beq     @@StopRunningLeft ; player released left button
     jsr     InvertXSpeed
     cmp     #$01
-    bcc     KeepRunningLeft
+    bcc     @@KeepRunningLeft
     cpy     #$E0
-    bcc     KeepRunningLeft
+    bcc     @@KeepRunningLeft
 ; reached max speed
     lda     #$00
     sta     OBJ_AccelX
     sta     OBJ_AccelXFrac
     rts
 
-    KeepRunningLeft:
+    @@KeepRunningLeft:
     lda     #$FF
     sta     OBJ_AccelX
     lda     #$D0
     sta     OBJ_AccelXFrac
     rts
     
-    StopRunningLeft:
+    @@StopRunningLeft:
     jsr     FaceLeft
     lda     #$00
     sta     OBJ_AccelX
     lda     #$10
     sta     OBJ_AccelXFrac
     rts
+.endp
 
 ; SetStanding
 ; ===========
 
-    SetStanding:
+.proc SetStanding
     lda     #23
     sta     OBJ_RangeY
     lda     #6
@@ -374,40 +372,41 @@
     bne     SetStanding
     lda     #btnRIGHT
     and     JoyStat
-    beq     StopRunningRight
+    beq     @@StopRunningRight
     lda     OBJ_SpeedX
     cmp     #$01
-    bcc     KeepRunningRight
+    bcc     @@KeepRunningRight
     lda     OBJ_SpeedXFrac
     cmp     #$E0
-    bcc     KeepRunningRight
+    bcc     @@KeepRunningRight
 ; reached max speed
     lda     #$00
     sta     OBJ_AccelX
     sta     OBJ_AccelXFrac
     rts
 
-    KeepRunningRight:
+    @@KeepRunningRight:
     lda     #$00
     sta     OBJ_AccelX
     lda     #$30
     sta     OBJ_AccelXFrac
     rts
 
-    StopRunningRight:
+    @@StopRunningRight:
     jsr     FaceRight
     lda     #$FF
     sta     OBJ_AccelX
     lda     #$F0
     sta     OBJ_AccelXFrac
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; PlayerJump
 ; ==========
 
-    PlayerJump:
+.proc PlayerJump
     jsr     CheckGravityApply
     jsr     CheckFire
     jsr     CheckJumpRelease
@@ -417,22 +416,24 @@
     bmi     +
     jmp     PlayerStartFall
   + rts
+.endp
   
 ; CheckCeilingCollide
 ; ===================
 
-    CheckCeilingCollide:
+.proc CheckCeilingCollide
     lda     CollStat
     and     #COLL_UP
     beq     +
 ; collided with ceiling
     jmp     PlayerStartFall
   + rts
+.endp
     
 ; CheckGravityApply
 ; =================
 
-    CheckGravityApply:
+.proc CheckGravityApply
     lda     OBJ_Var3
     beq     +
     dec     OBJ_Var3
@@ -440,11 +441,12 @@
     lda     #$50
     sta     OBJ_AccelYFrac
   + rts
+.endp
     
 ; CheckJumpRelease
 ; ================
 
-    CheckJumpRelease:
+.proc CheckJumpRelease
 ; check if jump button is being held
     lda     JoyStat
     and     #btnA
@@ -452,17 +454,18 @@
     lda     #1
     sta     OBJ_Var3
   + rts
+.endp
     
 ; CheckMoveJump
 ; =============
 ; move left/right if requested
 
-    CheckMoveJump:
+.proc CheckMoveJump
     lda     #(btnLEFT | btnRIGHT)
     and     JoyStat
-    beq     ResetXAccel
+    beq     @@ResetXAccel
     lsr     ; CF = status of btnRIGHT (1=pressed)
-    bcs     JumpAccelRight
+    bcs     @@JumpAccelRight
 ; accelerate left
     lda     OBJ_SpeedX
     bmi     +
@@ -474,9 +477,9 @@
     sta     OBJ_AccelX
     lda     #$D0
     sta     OBJ_AccelXFrac
-    bne     CheckJumpSpeed
+    bne     @@CheckJumpSpeed
 ; accelerate right
-    JumpAccelRight:
+    @@JumpAccelRight:
     lda     OBJ_SpeedX
     bpl     +
     lda     #0
@@ -491,10 +494,10 @@
 ; CheckJumpSpeed
 ; ==============
 
-    CheckJumpSpeed:
+    @@CheckJumpSpeed:
     lda     OBJ_SpeedX
     beq     +
-    bpl     MovingRight
+    bpl     @@MovingRight
 ; moving to the left
     jsr     InvertXSpeed
     cmp     #$01
@@ -504,13 +507,13 @@
     lda     OBJ_AccelX
     bpl     +
 ; stop accelerating
-    ResetXAccel:
+    @@ResetXAccel:
     lda     #0
     sta     OBJ_AccelX
     sta     OBJ_AccelXFrac
   + rts
 
-    MovingRight:
+    @@MovingRight:
 ; moving to the right
     lda     OBJ_SpeedX
     cmp     #$01
@@ -519,15 +522,16 @@
     cmp     #$E0
     bcc     +
     lda     OBJ_AccelX
-    bpl     ResetXAccel
+    bpl     @@ResetXAccel
   + rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; PlayerFall
 ; ==========
 
-    PlayerFall:
+.proc PlayerFall
     jsr     CheckFallSpeed
     jsr     CheckFire
 ; check for double jump
@@ -546,11 +550,12 @@
   + jsr     CheckMoveJump
     jsr     CheckFloorCollide
     jmp     CheckLadder
+.endp
 
 ; CheckFallSpeed
 ; ==============
 
-    CheckFallSpeed:
+.proc CheckFallSpeed
     lda     OBJ_SpeedY
     bmi     +
     cmp     #4
@@ -560,11 +565,12 @@
     lda     #0
     sta     OBJ_SpeedYFrac
   + rts
+.endp
     
 ; CheckFloorCollide
 ; =================
 
-    CheckFloorCollide:
+.proc CheckFloorCollide
     lda     CollStat
     and     #COLL_DOWN
     beq     NoFloorCollide
@@ -597,19 +603,21 @@
     jmp     SetRunAnim
     NoFloorCollide:
   - rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; PlayerDuck
 ; ==========
 
-    PlayerDuck:
+.proc PlayerDuck
     jsr     CheckFire
     lda     JoyStat
     and     #btnDOWN
     bne     -
+.endp
 ; DOWN button released, stand up
-    PlayerStandUp:
+.proc PlayerStandUp
     lda     OBJ_WorldYLo
     sec
     sbc     #6
@@ -622,24 +630,25 @@
     sta     OBJ_MapOfs
   + jsr     OBJ_CoordsToScreen
     jmp     SetStanding
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; PlayerLadder
 ; ============
 
-    PlayerLadder:
+.proc PlayerLadder
     lda     #(btnLEFT | btnRIGHT)
     and     JoyFirst
     beq     +
     jmp     PlayerStartFall
   + lda     #btnDOWN
     and     JoyStat
-    bne     ClimbLadderDown
+    bne     @@ClimbLadderDown
     lda     #btnUP
     and     JoyStat
-    bne     ClimbLadderUp
-    NoLadderClimb:
+    bne     @@ClimbLadderUp
+    @@NoLadderClimb:
     lda     #$00
     sta     OBJ_SpeedY
     sta     OBJ_SpeedYFrac
@@ -647,30 +656,30 @@
     sta     ANIM_Method
     rts
 
-    ClimbLadderDown:
+    @@ClimbLadderDown:
     lda     CollStat
     and     #COLL_DOWN
-    beq     ContinueClimbDown
+    beq     @@ContinueClimbDown
     jmp     PlayerFloorCollide
-    ContinueClimbDown:
+    @@ContinueClimbDown:
     lda     #$01
     sta     OBJ_SpeedY
     lda     #amForwardLoop
     sta     ANIM_Method
     rts
 
-    ClimbLadderUp:
+    @@ClimbLadderUp:
     lda     CollStat
     and     #COLL_UP
-    bne     NoLadderClimb
+    bne     @@NoLadderClimb
     lda     OBJ_WorldYLo
     cmp     #$11
-    bcs     ContinueClimbUp
-    ContinueClimbUp:
+    bcs     @@ContinueClimbUp
+    @@ContinueClimbUp:
     jsr     OBJ_CheckMoveUp
     lda     Temp
     cmp     #TA_AIR
-    beq     ClimbOffLadder
+    beq     @@ClimbOffLadder
 
     lda     #$FF
     sta     OBJ_SpeedY
@@ -678,19 +687,20 @@
     sta     ANIM_Method
     rts
 
-    ClimbOffLadder:
+    @@ClimbOffLadder:
     lda     OBJ_WorldYLo
     sec
     sbc     #$1F
     sta     OBJ_WorldYLo
     jmp     PlayerFloorCollide
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; PlayerHurt
 ; ==========
 
-    PlayerHurt:
+.proc PlayerHurt
     lda     CollStat
     and     #COLL_UP
     beq     +
@@ -705,13 +715,14 @@
     lda     #OE_PLAYERFALL
     sta     OBJ_Action
   + rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; PlayerDead
 ; ==========
 
-    PlayerDead:
+.proc PlayerDead
     lda     ANIM_Method
     cmp     #amNoCycling
     bne     +
@@ -724,5 +735,6 @@
     lda     #mrGameOverInit
     sta     MainRoutine
   + rts
+.endp
 
 .end

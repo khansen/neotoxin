@@ -6,6 +6,12 @@
 .include "obj.h"
 .include "player.h"
 .include "rnme.h"
+.include "area2d.h"
+.include "enemy.h"
+.include "gamedata.h"
+.include "levelup.h"
+.include "objcollision.h"
+.include "renderer.h"
 
 .codeseg
 
@@ -22,26 +28,10 @@
 .public ExplodeProjectile2
 .public LoadObjectsFromQueue
 
-.extrn HSGE_LoadObjects:proc
-.extrn EnemyDamageTable:label
-.extrn ProjectileDamageTable:label
-.extrn ExpTable:label
-.extrn AdjustExpGain:proc
-.extrn AddExpPoints:proc
-.extrn CheckLevelAdvance:proc
-.extrn CheckIfCollided:proc
-.extrn ExplodeProjectile:proc
-.extrn SetHealthPal:proc
-.extrn PlayerStandUp:proc
-.extrn ANIM_SetLoop:proc
-.extrn ResetMotion:proc
-.extrn FindObjSlot:proc
-.extrn LoadObject:proc
-
 ; LoadObjectsFromQueue
 ; ====================
 
-    LoadObjectsFromQueue:
+.proc LoadObjectsFromQueue
     lda     ObjLoadQueueXSize
     beq     ++
     lda     ObjLoadQueueX
@@ -74,12 +64,13 @@
     cpy     ObjLoadQueueYSize
     bcc     -
   + rts
+.endp
     
 ; RND
 ; ===
 ; "Random" number generator. (BAD!)
 
-    RND:
+.proc RND
     lda     #39
     adc     FrameCount
     eor     FrameCount
@@ -88,21 +79,23 @@
     sbc     FrameCount
     eor     Random
     rts
+.endp
     
 ; SetAnimWaitAction
 ; =================
 
-    SetAnimWaitAction:
+.proc SetAnimWaitAction
     sta     OBJ_NextAction,x
     lda     #OE_WAITANIMEND
     sta     OBJ_Action,x
     rts
+.endp
 
 ; IsPlayerHitAndWoundable
 ; =======================
 ; Returns: CF = 1 if the current object collided with player and player can be wounded
 
-    IsPlayerHitAndWoundable:
+.proc IsPlayerHitAndWoundable
     lda     OBJ_Blink
     bne     +
     jsr     TestPlayerCollide
@@ -115,13 +108,14 @@
     rts
   + clc     ; player can't be hurt
   - rts
+.endp
 
 ; CheckPlayerHit
 ; ==============
 ; Checks if the player has been hit by an enemy.
 ; If so, the player is damaged appropriately.
 
-    CheckPlayerHit:
+.proc CheckPlayerHit
     jsr     IsPlayerHitAndWoundable
     bcc     -
 ; figure out how much damage to inflict on player
@@ -144,13 +138,14 @@
     lda     Count
     jsr     HurtPlayer
   - rts
+.endp
 
 ; CheckEnemyHit
 ; =============
 ; Checks if enemy has been hit by projectile.
 ; If so, the enemy is damaged appropriately.
 
-    CheckEnemyHit:
+.proc CheckEnemyHit
     jsr     TestProjectileCollide
     bne     -
 ; enemy hit by projectile
@@ -163,13 +158,13 @@
     bpl     +
     lda     #0
   + sta     OBJ_Health,x
-    beq     EnemyDead
+    beq     @@EnemyDead
     lda     #30     ; blink for 30 frames (half a second)
     sta     OBJ_Blink,x
     lda     #SFX_ENEMYHIT
     sta     SFX_Number+1
     rts
-    EnemyDead:
+    @@EnemyDead:
 ; calc experience points gained
     ldy     OBJ_Type,x
     lda     ExpTable-8,y    ; !!!
@@ -183,16 +178,19 @@
     sta     SFX_Number+3
     lda     #OE_DISCARDENEMY
     jmp     SetAnimWaitAction
+.endp
 
-    TestProjectileCollide:
+.proc TestProjectileCollide
     lda     #OT_PROJECTILE
     jmp     CheckIfCollided
+.endp
 
-    TestPlayerCollide:
+.proc TestPlayerCollide
     lda     #OT_PLAYER
     jmp     CheckIfCollided
+.endp
 
-    ExplodeProjectile2:
+.proc ExplodeProjectile2
     txa
     pha
     ldx     CollObjNums,y
@@ -200,12 +198,13 @@
     pla
     tax
     rts
+.endp
 
 ; HurtPlayer
 ; ==========
 ; In: A = amount to hurt him
 
-    HurtPlayer:
+.proc HurtPlayer
 ; subtract from health
     eor     #$FF
     sec
@@ -232,7 +231,7 @@
     sta     $4015
 ; check if player is dead or should merely start blinking
     lda     Health
-    bne     StartPlayerBlink
+    bne     @@StartPlayerBlink
 ; player DEAD! ... make him burst into flames
     txa
     pha
@@ -250,7 +249,7 @@
     tax
     rts
 ; player is hit but not dead... make him blink
-    StartPlayerBlink:
+    @@StartPlayerBlink:
     lda     #75
     sta     OBJ_Blink       ; blink for 75 frames
     stx     Index
@@ -290,18 +289,20 @@
     sta     OBJ_SpeedXFrac
     ldx     Index
     rts
+.endp
 
 ; SetBigExplodeAnim
 ; =================
 
-    SetBigExplodeAnim:
+.proc SetBigExplodeAnim
     ldy     #LOOP_OBJECTBIGEXPLODE
     jmp     SetExplodeAnim+2
+.endp
 
 ; SetExplodeAnim
 ; ==============
 
-    SetExplodeAnim:
+.proc SetExplodeAnim
     ldy     #LOOP_OBJECTEXPLODE
     lda     #0
     jsr     ANIM_SetLoop
@@ -310,13 +311,14 @@
     lda     #amForward
     sta     ANIM_Method,x
     rts
+.endp
 
 ; LoadBlockingDoor
 ; ================
 ; In: A = %yyyyxxxx (map)
 ;     Y = %yyyyxxxx (room)
 
-    LoadBlockingDoor:
+.proc LoadBlockingDoor
     pha
     and     #$0F
     sta     ObjPageX
@@ -335,6 +337,6 @@
     pla
     tax
     rts
-
+.endp
 
 .end

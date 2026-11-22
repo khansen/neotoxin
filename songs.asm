@@ -1,3 +1,4 @@
+.include "songs.h"
 .codeseg
 
 .public RNME_SongPtrTable

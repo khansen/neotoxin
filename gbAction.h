@@ -14,4 +14,21 @@ OE_HEALTHITEMMAIN   EQU 17
 OE_WAITANIMEND      EQU 18
 OE_DISCARDENEMY     EQU 19
 
+; Exported symbols.
+.extrn ProjectileMain:proc
+.extrn ManualWarpMain:proc
+.extrn InstantWarpMain:proc
+.extrn ItemMain:proc
+.extrn NPCMain:proc
+.extrn NeoDoorMain:proc
+.extrn BlockingDoorMain:proc
+.extrn HealthItemMain:proc
+.extrn WaitAnimEnd:proc
+.extrn DiscardEnemy:proc
+.extrn EnemyMain:proc
+.extrn CheckHealthItemBounce:proc
+.extrn ProgramControl:proc
+.extrn PlayerControl:proc
+.extrn ExplodeProjectile:proc
+
 .endif

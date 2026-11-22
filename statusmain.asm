@@ -4,32 +4,29 @@
 .include "hsge.h"
 .include "nes.h"
 .include "obj.h"
+.include "area2d.h"
+.include "fade.h"
+.include "palette.h"
+.include "ppu.h"
+.include "renderer.h"
+.include "statusmain.h"
+.include "warp.h"
 
 .codeseg
 
 .public ExitStatusScreen
 .public StatusMain
 
-.extrn PAL_FadeToBlack:proc
-.extrn ScreenOff:proc
-.extrn Load2DArea:proc
-.extrn Area2DMain:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn ANIM_SetCel:proc
-.extrn PAL_LoadPalette:proc
-.extrn SetHealthPal:proc
-.extrn HSGE_RenderScreen:proc
-
 ; StatusMain
 ; ==========
 
-    StatusMain:
+.proc StatusMain
     lda     JoyFirst
     and     #btnSTART
     bne     ExitStatusScreen
     rts
-    ExitStatusScreen:
+.endp
+.proc ExitStatusScreen
     jsr     PAL_FadeToBlack
     jsr     ScreenOff
     jsr     Load2DArea
@@ -42,11 +39,12 @@
     lda     #mrArea2DMain
     sta     MainRoutine
     rts
+.endp
 
 ; RestoreAreaScreen
 ; =================
 
-    RestoreAreaScreen:
+.proc RestoreAreaScreen
 ; restore Area CHR
     lda     ah_AreaCHR
     sta     SelectedCHR
@@ -73,5 +71,6 @@
 ; restore Area screen
     dec     HSGE_MapOfs
     jmp     HSGE_RenderScreen
+.endp
 
 .end

@@ -35,7 +35,7 @@ OE_BOSS0MAIN            EQU 22
 ; =========
 ; Waits for the player to approach.
 
-    Boss0Wait:
+.proc Boss0Wait
     lda     OBJ_State,x
     bmi     +           ; exit if not visible
     lda     OBJ_Var0,x
@@ -61,13 +61,14 @@ OE_BOSS0MAIN            EQU 22
     lda     #<Boss0IntroScript
     ldy     #>Boss0IntroScript
     jmp     LoadScript  ; initiate the boss intro cutscene
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; Boss0Startup
 ; ============
 
-    Boss0Startup:
+.proc Boss0Startup
     ; load left door
     lda     #$10
     ldy     #$61
@@ -90,13 +91,14 @@ OE_BOSS0MAIN            EQU 22
     lda     #OE_BOSS0MAIN
     sta     OBJ_Action,x
     jmp     PlayerControl
+.endp
     
 ;-----------------------------------------------------------------------------
 
 ; Boss0Main
 ; =========
 
-    Boss0Main:
+.proc Boss0Main
     lda     OBJ_State,x
     bpl     +
     jsr     MoveXDir
@@ -141,3 +143,4 @@ OE_BOSS0MAIN            EQU 22
     lda     #0
     sta     RoomFlags
   + rts
+.endp

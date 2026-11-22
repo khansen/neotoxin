@@ -14,7 +14,7 @@ boss0_objconstructors:
 ; Boss0Init
 ; =========
 
-    Boss0Init:
+.proc Boss0Init
     ldy     #LOOP_BOSS0
     lda     #0
     jsr     ANIM_SetLoop
@@ -33,3 +33,4 @@ boss0_objconstructors:
     lda     #1
     sta     RoomFlags   ; boss alive
     rts
+.endp

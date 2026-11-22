@@ -30,7 +30,7 @@ SCRIPTFILE = link.s
 
 BINFILE = neotoxin.nes
 
-HEADERS = $(wildcard *.h)
+HEADERS = $(wildcard *.h) $(wildcard area/*/*.h)
 
 CHRFILES = $(wildcard chr/*.chr)
 

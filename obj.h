@@ -38,4 +38,28 @@ OBJ_Var2                EQU     $06C0
 OBJ_Var3                EQU     $06D8
 
 
+; Exported symbols.
+.extrn DiscardObject:proc
+.extrn ToggleDirection:proc
+.extrn FaceLeft:proc
+.extrn FaceRight:proc
+.extrn ResetMotion:proc
+.extrn FacePlayer:proc
+.extrn SpawnObject:proc
+.extrn RemoveObject:proc
+.extrn OBJ_CalcMapOfs:proc
+.extrn FindObjSlot:proc
+.extrn GoCodePtr:proc
+.extrn OBJ_IncY:proc
+.extrn OBJ_DecY:proc
+.extrn OBJ_DecX:proc
+.extrn OBJ_IncX:proc
+.extrn TestSetObjFlag:proc
+.extrn RemoveProjectile:proc
+.extrn ObjectToHealthItem:proc
+.extrn OBJ_CoordsToScreen:proc
+.extrn DestroyAllSprites:proc
+.extrn DestroyAllObjects:proc
+.extrn OBJ_PerformAction:proc
+
 .endif

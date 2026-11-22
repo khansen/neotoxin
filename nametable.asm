@@ -1,18 +1,18 @@
 .include "game.h"
 .include "hsge.h"
+.include "nametable.h"
+.include "ppu.h"
+.include "scroller.h"
 
 .codeseg
 
 .public HSGE_WriteNameTableCol
 .public HSGE_WriteNameTableRow
 
-.extrn HSGE_SetRoomPtr:proc
-.extrn EndPPUString:proc
-
 ; HSGE_WriteNameTableCol
 ; ======================
 
-    HSGE_WriteNameTableCol:
+.proc HSGE_WriteNameTableCol
     lda     HSGE_RoomOfs
     sta     Index
     lda     #1
@@ -119,11 +119,12 @@
     sta     HSGE_VRAMAddr+1
     jmp     -
   + jmp     EndPPUString
+.endp
 
 ; HSGE_WriteNameTableRow
 ; ======================
 
-    HSGE_WriteNameTableRow:
+.proc HSGE_WriteNameTableRow
     lda     HSGE_RoomOfs
     sta     Index
     lda     #1
@@ -219,5 +220,6 @@
     jsr     HSGE_SetRoomPtr
     jmp     -
   + jmp     EndPPUString
+.endp
 
 .end

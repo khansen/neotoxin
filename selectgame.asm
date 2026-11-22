@@ -1,6 +1,14 @@
 .include "game.h"
 .include "nes.h"
 .include "rnme.h"
+.include "entername.h"
+.include "fade.h"
+.include "palette.h"
+.include "ppu.h"
+.include "savegame.h"
+.include "screendata.h"
+.include "selectgame.h"
+.include "warp.h"
 
 .codeseg
 
@@ -8,27 +16,10 @@
 .public SelectGameMain
 .public GameMenuMain
 
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn SelectGameData:label
-.extrn WriteROMPPUString:proc
-.extrn StatusScreenPal:label
-.extrn PAL_LoadPalette:proc
-.extrn StatusScreenCHR:label
-.extrn LoadCHR:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn FlashCursorPal:proc
-.extrn SetSavePtr:proc
-.extrn PAL_FadeToBlack:proc
-.extrn NewGameString:label
-.extrn EndPPUString:proc
-.extrn LoadSaveGame:proc
-
 ; SelectGameInit
 ; ==============
 
-    SelectGameInit:
+.proc SelectGameInit
     jsr     ScreenOff
     jsr     ClearDisplay
     lda     #0
@@ -61,22 +52,23 @@
     inc     MainRoutine
     jsr     ScreenOn
     jmp     PAL_FadeFromBlack
+.endp
 
 ; SelectGameMain
 ; ==============
 
-    SelectGameMain:
+.proc SelectGameMain
     jsr     FlashCursorPal
     lda     #(btnSTART + btnA)
     and     JoyFirst
-    beq     NoSlotSelect
+    beq     @@NoSlotSelect
 ; select current slot
     jsr     SetSavePtr
     ldy     #60
     lda     [pData],y
     iny
     ora     [pData],y
-    bne     EnterGameMenu
+    bne     @@EnterGameMenu
 ; start a new game in current slot
     lda     #mrStartNewGame
     sta     NextRoutine
@@ -86,7 +78,7 @@
     sta     SFX_Number+1
     jmp     PAL_FadeToBlack
 
-    EnterGameMenu:
+    @@EnterGameMenu:
     lda     #3
     sta     SFX_Number+1
     lda     #0
@@ -101,19 +93,19 @@
     sta     MainRoutine
     jmp     SetMenuCursor
 
-    NoSlotSelect:
+    @@NoSlotSelect:
     lda     #(btnUP + btnDOWN + btnSELECT)
     and     JoyFirst
-    beq     NoSlotChange
+    beq     @@NoSlotChange
     ldy     #3
     sty     SFX_Number+1
     and     #(btnDOWN + btnSELECT)
-    bne     NextSaveSlot
+    bne     @@NextSaveSlot
 ; move to previous slot
     dec     SaveSlot
     jmp     SetSlotCursor
 
-    NoSlotChange:
+    @@NoSlotChange:
     lda     #btnB
     and     JoyFirst
     beq     +
@@ -123,10 +115,11 @@
     sta     MainRoutine
   + rts
 
-    NextSaveSlot:
+    @@NextSaveSlot:
     inc     SaveSlot
+.endp
 
-    SetSlotCursor:
+.proc SetSlotCursor
     lda     SaveSlot
     and     #$07
     sta     SaveSlot
@@ -161,27 +154,28 @@
     lda     #>NewGameString
     sta     pData+1
     ldy     #0
-    beq     CopyNameString
+    beq     @@CopyNameString
   + ldy     #49
-    CopyNameString:
+    @@CopyNameString:
     lda     [pData],y
     iny
     sta     PPUString,x
     inx
     dec     Count
-    bne     CopyNameString
+    bne     @@CopyNameString
     jmp     EndPPUString
+.endp
 
 ; GameMenuMain
 ; ============
 
-    GameMenuMain:
+.proc GameMenuMain
     jsr     FlashCursorPal
     lda     #btnB
     and     JoyFirst
     beq     +
 ; exit menu
-    ExitGameMenu:
+    @@ExitGameMenu:
     lda     #3
     sta     SFX_Number+1
     lda     #$03    ; square
@@ -196,16 +190,16 @@
 
   + lda     #(btnA + btnSTART)
     and     JoyFirst
-    beq     NoMenuConfirm
+    beq     @@NoMenuConfirm
 ; perform selected command
     ldy     #5
     sty     SFX_Number+1
     ldy     MenuSelect
-    beq     LoadSelectedSlot
+    beq     @@LoadSelectedSlot
     dey
-    beq     CopySelectedSlot
+    beq     @@CopySelectedSlot
     dey
-    beq     DeleteSelectedSlot
+    beq     @@DeleteSelectedSlot
 ; change name
     lda     #mrPerformNameChange
     sta     NextRoutine
@@ -213,25 +207,25 @@
     sta     MainRoutine
     jmp     PAL_FadeToBlack
 
-    LoadSelectedSlot:
+    @@LoadSelectedSlot:
     jsr     LoadSaveGame
     lda     #mrExecWarp
     sta     MainRoutine
     jmp     PAL_FadeToBlack
 
-    CopySelectedSlot:
+    @@CopySelectedSlot:
     rts
 
-    DeleteSelectedSlot:
+    @@DeleteSelectedSlot:
     jsr     SetSavePtr
     ldy     #63
     lda     #0
   - sta     [pData],y
     dey
     bpl     -
-    jmp     ExitGameMenu
+    jmp     @@ExitGameMenu
 
-    NoMenuConfirm:
+    @@NoMenuConfirm:
     lda     #(btnUP + btnDOWN + btnSELECT)
     and     JoyFirst
     bne     +
@@ -239,11 +233,11 @@
   + ldy     #3
     sty     SFX_Number+1
     and     #(btnDOWN + btnSELECT)
-    bne     NextMenuItem
+    bne     @@NextMenuItem
 ; previous menu item
     dec     MenuSelect
     jmp     SetMenuCursor
-    NextMenuItem:
+    @@NextMenuItem:
     inc     MenuSelect
 
     SetMenuCursor:
@@ -256,6 +250,6 @@
     adc     #167
     sta     SPR_PosY
     rts
-
+.endp
 
 .end

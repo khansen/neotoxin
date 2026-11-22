@@ -1,20 +1,18 @@
 .include "game.h"
 .include "mmc3.h"
 .include "nes.h"
+.include "joypad.h"
+.include "nmi.h"
+.include "ppu.h"
+.include "sequencer.h"
 
 .codeseg
 
 .public NMI
 
-.extrn CheckPPUWrite:proc
-.extrn ReadJoypad0:proc
-.extrn SwapBank:proc
-.extrn RNME_PlaySong:proc
-.extrn ResetBank:proc
-
 ;------------------------[ Non Maskable Interrupt ]---------------------------
 
-    NMI:
+.proc NMI
     sei
     pha                     ; preserve A
     txa
@@ -25,7 +23,7 @@
     lda     ZPCtrl1
     sta     PPUCtrl1
     ldy     FrameStat
-    bne     NoNMIProcessing ; skip the next part if the frame couldn't
+    bne     @@NoNMIProcessing ; skip the next part if the frame couldn't
                             ; finish before the NMI was triggered
     iny
     sty     FrameStat
@@ -54,11 +52,11 @@
     bpl     -
 ; set up IRQ if requested
     lda     IRQCount
-    beq     NoIRQ
+    beq     @@NoIRQ
     sta     MMC3_IRQ_COUNTER_REG
     sta     MMC3_IRQ_LATCH_REG
     sta     MMC3_IRQ_ENABLE_REG
-    NoIRQ:
+    @@NoIRQ:
 ; read da friggin joypad
     jsr     ReadJoypad0
 ; update sound
@@ -71,13 +69,13 @@
     pla
     sta     MMC3Ctrl
     sta     MMC3_CTRL_REG
-    NoNMIProcessing:
+    @@NoNMIProcessing:
     pla
     tay                     ; restore Y
     pla
     tax                     ; restore X
     pla                     ; restore A
     rti
-
+.endp
 
 .end

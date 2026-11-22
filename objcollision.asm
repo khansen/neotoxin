@@ -1,5 +1,6 @@
 .include "game.h"
 .include "obj.h"
+.include "objcollision.h"
 
 .codeseg
 
@@ -12,7 +13,7 @@
 ; ============
 ; Detects collisions between object in X and other visible objects.
 
-    CheckObjColl:
+.proc CheckObjColl
     lda     OBJ_Type,x
     jsr     MakeObjRect
     sta     OBJ2_Right
@@ -25,7 +26,7 @@
     stx     Index
     ldx     #23
     ldy     #0
-    CheckOneObj:
+    @@CheckOneObj:
     cpx     Index
     beq     +   ; don't test object with itself!
     lda     OBJ_Type,x
@@ -53,15 +54,16 @@
     cpy     #8  ; max. 8 objects can be crashed with
     bcs     ++
   + dex
-    bpl     CheckOneObj
+    bpl     @@CheckOneObj
  ++ sty     CollObjCount
     ldx     Index
     rts
+.endp
 
 ; MakeObjRect
 ; ===========
 
-    MakeObjRect:
+.proc MakeObjRect
     lda     OBJ_ScreenY,x
     sec
     sbc     OBJ_RangeY,x
@@ -90,6 +92,7 @@
     lda     #255
   + sta     OBJ1_Right
     rts
+.endp
 
 ; CheckIfCollided
 ; ===============
@@ -98,12 +101,13 @@
 ; Out: ZF = 1 if collision, else 0
 ;      Y = object index if collision, else $FF
 
-    CheckIfCollided:
+.proc CheckIfCollided
     ldy     CollObjCount
   - dey
     bmi     +
     cmp     CollObjTypes,y
     bne     -
   + rts
+.endp
 
 .end

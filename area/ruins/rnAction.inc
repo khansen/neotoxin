@@ -30,7 +30,7 @@ OE_BIGBIRDMAIN      EQU 21
 ;-----------------------------------------------------------------------------
 
   - rts
-    AcidZombieMain:
+.proc AcidZombieMain
     lda     OBJ_State,x
     bmi     -
     lda     OBJ_Var0,x
@@ -38,11 +38,11 @@ OE_BIGBIRDMAIN      EQU 21
     dec     OBJ_Var0,x
     lda     #8  ; HACK!!!
     jsr     CheckIfCollided ; bumped into another zombie?
-    beq     acidzombieturnaround
+    beq     @@acidzombieturnaround
     lda     CollStat
     and     #(COLL_LEFT + COLL_RIGHT)
     beq     ++
-    acidzombieturnaround:
+    @@acidzombieturnaround:
     jsr     ToggleDirection
     jsr     InvertXSpeed
     sta     OBJ_SpeedX,x
@@ -65,8 +65,8 @@ OE_BIGBIRDMAIN      EQU 21
     sta     OBJ_Var0,x  ; chase him for at least 100 frames
     lda     OBJ_ScreenX
     cmp     OBJ_ScreenX,x
-    bcc     AcidZombieWalkLeft
-    bcs     AcidZombieWalkRight
+    bcc     @@AcidZombieWalkLeft
+    bcs     @@AcidZombieWalkRight
  ++ jmp     EnemyMain
     ; timer is zero, time to do something
   + jsr     RND
@@ -77,15 +77,15 @@ OE_BIGBIRDMAIN      EQU 21
     sta     OBJ_SpeedXFrac,x
     pla
     lsr
-    bcc     AcidZombieWalkRight
+    bcc     @@AcidZombieWalkRight
     ; walk left
-    AcidZombieWalkLeft:
+    @@AcidZombieWalkLeft:
     lda     #$FF
     sta     OBJ_SpeedX,x
     jsr     FaceLeft
     jmp     EnemyMain
     ; walk right
-    AcidZombieWalkRight:
+    @@AcidZombieWalkRight:
     lda     #$00
     sta     OBJ_SpeedX,x
     jsr     FaceRight
@@ -94,12 +94,13 @@ OE_BIGBIRDMAIN      EQU 21
 ;-----------------------------------------------------------------------------
 
   - rts
-    BigBirdMain:
+.endp
+.proc BigBirdMain
     lda     OBJ_State,x
     bmi     -
 
     lda     OBJ_Var1,x  ; mode
-    beq     BigBirdFly
+    beq     @@BigBirdFly
 
     dec     OBJ_Var0,x
     bne     +
@@ -120,7 +121,7 @@ OE_BIGBIRDMAIN      EQU 21
     bne     -
   + jmp     EnemyMain
 
-    BigBirdFly:
+    @@BigBirdFly:
     dec     OBJ_Var0,x
     bne     +
     ; stop flying
@@ -136,7 +137,7 @@ OE_BIGBIRDMAIN      EQU 21
     ; X movement
   + lda     OBJ_ScreenX
     cmp     OBJ_ScreenX,x
-    bcs     BirdPlayerRight
+    bcs     @@BirdPlayerRight
     ; player to the left
     lda     OBJ_ScreenX,x
     sec
@@ -147,9 +148,9 @@ OE_BIGBIRDMAIN      EQU 21
     sta     OBJ_AccelXFrac,x
     lda     #$FF
     sta     OBJ_AccelX,x
-    bmi     BirdY
+    bmi     @@BirdY
     ; player to the right
-    BirdPlayerRight:
+    @@BirdPlayerRight:
     lda     OBJ_ScreenX
     sec
     sbc     OBJ_ScreenX,x
@@ -159,10 +160,10 @@ OE_BIGBIRDMAIN      EQU 21
     lda     #$00
     sta     OBJ_AccelX,x
     ; Y movement
-    BirdY:
+    @@BirdY:
     lda     OBJ_ScreenY
     cmp     OBJ_ScreenY,x
-    bcs     BirdPlayerDown
+    bcs     @@BirdPlayerDown
     ; player up
     lda     OBJ_ScreenY,x
     sec
@@ -175,7 +176,7 @@ OE_BIGBIRDMAIN      EQU 21
     sta     OBJ_AccelY,x
     bmi     +
     ; player down
-    BirdPlayerDown:
+    @@BirdPlayerDown:
     lda     OBJ_ScreenY
     sec
     sbc     OBJ_ScreenY,x
@@ -216,3 +217,4 @@ OE_BIGBIRDMAIN      EQU 21
  ++ sta     OBJ_SpeedY,x
     ;
     jmp     EnemyMain
+.endp

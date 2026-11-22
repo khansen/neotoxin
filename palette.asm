@@ -1,4 +1,7 @@
 .include "game.h"
+.include "fade.h"
+.include "palette.h"
+.include "ppu.h"
 
 .codeseg
 
@@ -6,13 +9,10 @@
 .public PAL_SetPalette
 .public PAL_SetBlackPalette
 
-.extrn PAL_StrSetup:proc
-.extrn WaitNMIPass:proc
-
 ; PAL_LoadPalette
 ; ===============
 
-        PAL_LoadPalette:
+.proc PAL_LoadPalette
         sta     pData
         sty     pData+1
         ldy     #$1F
@@ -21,11 +21,12 @@
         dey
         bpl     -
         rts
+.endp
 
 ; PAL_SetPalette
 ; ==============
 
-        PAL_SetPalette:
+.proc PAL_SetPalette
         jsr     PAL_StrSetup
         ldx     #$1F
       - lda     RAMPalette,x
@@ -35,17 +36,18 @@
         lda     #$01
         sta     PPUDataPending
         jmp     WaitNMIPass
+.endp
 
 ; PAL_SetBlackPalette
 ; ===================
 
-        PAL_SetBlackPalette:
+.proc PAL_SetBlackPalette
         ldx     #$1F
       - lda     #$0F    ; color black
         sta     RAMPalette,x
         dex
         bpl     -
         bmi     PAL_SetPalette
-
+.endp
 
 .end

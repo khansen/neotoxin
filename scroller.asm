@@ -1,5 +1,7 @@
 .include "game.h"
 .include "hsge.h"
+.include "renderer.h"
+.include "scroller.h"
 
 .codeseg
 
@@ -10,15 +12,12 @@
 .public HSGE_ScrollDown
 .public HSGE_ScrollUp
 
-.extrn HSGE_DeleteFarObjects:proc
-
-
 ; SetRoomPtr
 ; ==========
 ; Sets the room pointer.
 ; In: A = map index
 
-    HSGE_SetRoomPtr:
+.proc HSGE_SetRoomPtr
     asl
     tay
     lda     [pMap],y    ; pMap is defined in game.asm
@@ -27,13 +26,14 @@
     lda     [pMap],y
     sta     HSGE_pRoom+1
     rts
+.endp
 
 ; HSGE_CalcRoomOfs
 ; ================
 ; Calculates room data (macro) offset from column and row.
 ; ofs = ((row/4)*8) + (col/4)
 
-    HSGE_CalcRoomOfs:
+.proc HSGE_CalcRoomOfs
     lda     HSGE_RoomCol
     lsr
     lsr
@@ -44,13 +44,14 @@
     ora     Temp
     sta     HSGE_RoomOfs
     rts
+.endp
 
 ; HSGE_ScrollRight
 ; ================
 ; Attempts to scroll the display one pixel right.
 ; Out: CF=0 if scroll was performed, 1 otherwise
 
-    HSGE_ScrollRight:
+.proc HSGE_ScrollRight
     lda     HSGE_WorldViewX
     bne     +
     ; at a room border
@@ -129,13 +130,14 @@
   + inc     HSGE_QueueSize
     clc     ; scroll OK
     rts
+.endp
 
 ; HSGE_ScrollLeft
 ; ===============
 ; Attempts to scroll the display one pixel right.
 ; Out: CF=0 if scroll was performed, 1 otherwise
 
-    HSGE_ScrollLeft:
+.proc HSGE_ScrollLeft
     lda     HSGE_WorldViewX
     bne     +
     ; horizontal page wrap - check if allowed to scroll any further
@@ -209,13 +211,14 @@
   + inc     HSGE_QueueSize
     clc
     rts
+.endp
 
 ; HSGE_ScrollDown
 ; ===============
 ; Attempts to scroll the display one pixel down.
 ; Out: CF=0 if scroll was performed, 1 otherwise
 
-    HSGE_ScrollDown:
+.proc HSGE_ScrollDown
     lda     HSGE_WorldViewY
     cmp     #16
     bne     +
@@ -310,13 +313,14 @@
   + inc     HSGE_QueueSize
     clc
     rts
+.endp
 
 ; HSGE_ScrollUp
 ; =============
 ; Attempts to scroll the display one pixel up.
 ; Out: CF=0 if scroll was performed, 1 otherwise
 
-    HSGE_ScrollUp:
+.proc HSGE_ScrollUp
     lda     HSGE_WorldViewY
     bne     +
     ; vertical page wrap - check if allowed to scroll any further
@@ -407,5 +411,6 @@
   + inc     HSGE_QueueSize
     clc
     rts
+.endp
 
 .end

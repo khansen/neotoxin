@@ -1,5 +1,20 @@
-.include "area.h"
-
+.include "anim.h"
+.include "area/building/building.h"
+.include "area2d.h"
+.include "bgcollision.h"
+.include "enemy.h"
+.include "flags.h"
+.include "gbAction.h"
+.include "gbLoop.h"
+.include "gbObj.h"
+.include "maincycle.h"
+.include "math.h"
+.include "movement.h"
+.include "ngsl.h"
+.include "obj.h"
+.include "objcollision.h"
+.include "player.h"
+.include "ppu.h"
 .codeseg
 
 .public building_maps

@@ -38,7 +38,7 @@ OE_ENERGYWAVEMAIN       EQU $18
 ; =======================
 ; Waits for the player to approach.
 
-    Boss1WaitPlayerApproach:
+.proc Boss1WaitPlayerApproach
     lda     OBJ_State,x
     bmi     +   ; exit if not visible
     ; check if player is close enough
@@ -57,12 +57,13 @@ OE_ENERGYWAVEMAIN       EQU $18
     sta     OBJ_Var1,x  ; eye palette index
     ; maybe start some tense music?
   + rts
+.endp
 
 ; Boss1Activate
 ; =============
 ; Fades in and out the boss's eye a couple of times.
 
-    Boss1Activate:
+.proc Boss1Activate
     lda     FrameCount
     and     #7
     bne     +           ; only do something every 8th frame
@@ -84,12 +85,13 @@ OE_ENERGYWAVEMAIN       EQU $18
     lda     #<Boss1IntroScript
     ldy     #>Boss1IntroScript
     jmp     LoadScript  ; initiate the boss intro cutscene
+.endp
 
 ; Boss1SetEyePalette
 ; ==================
 ; In: A = palette (0..7)
 
-    Boss1SetEyePalette:
+.proc Boss1SetEyePalette
     asl
     asl
     tay
@@ -118,6 +120,7 @@ OE_ENERGYWAVEMAIN       EQU $18
     pla
     tax
     rts
+.endp
 
 Boss1EyePals:
 .db $0F,$0F,$0F,$0F
@@ -133,7 +136,7 @@ Boss1EyePals:
 ; ============
 ; 
 
-    Boss1Startup:
+.proc Boss1Startup
     ; load blocking door
     lda     #$11
     ldy     #$8E
@@ -143,6 +146,7 @@ Boss1EyePals:
     sta     OBJ_Action,x
     ;
     jmp     PlayerControl
+.endp
 
 ; Boss1Main
 ; =========
@@ -151,7 +155,7 @@ Boss1EyePals:
 ; At this stage, the core has not been destroyed, so
 ; the player can't kill the boss.
 
-    Boss1Main:
+.proc Boss1Main
     jsr     TestProjectileCollide
     bne     +
     ; boss hit by player's weapon
@@ -165,3 +169,4 @@ Boss1EyePals:
     ldy     #OT_ENERGYWAVE
     jmp     SpawnObject
   + rts
+.endp

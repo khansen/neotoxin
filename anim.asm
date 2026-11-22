@@ -15,7 +15,7 @@
 ; DrawCel
 ; =======
 
-    ANIM_DrawCel:
+.proc ANIM_DrawCel
     lda     OBJ_ScreenX,x
     sta     ScreenX
     lda     OBJ_WorldXFrac,x
@@ -45,7 +45,7 @@
 ; ... this should be as FAST as possible, since it might be executed
 ; up to 64 times per frame!! (not very likely though)
 
-    ANIM_DrawOneSprite:
+    @@ANIM_DrawOneSprite:
 ; 1st byte [Y coord]
     lda     [ANIM_pCel],y   ; signed Y coord relative to obj's center
     php
@@ -55,10 +55,10 @@
     plp
     bmi     +               ; branch if relative Y coord was negative
     cmp     ScreenY         ; RelY was positive: ScreenY+RelY should be >= ScreenY
-    bcc     ANIM_SkipSprite ; otherwise, it wrapped around, don't display
+    bcc     @@ANIM_SkipSprite ; otherwise, it wrapped around, don't display
     bcs     ++
   + cmp     ScreenY         ; RelY was negative: ScreenY+RelY should be < ScreenY
-    bcs     ANIM_SkipSprite ; otherwise, it wrapped around, don't display
+    bcs     @@ANIM_SkipSprite ; otherwise, it wrapped around, don't display
  ++ sta     SPR_PosY,x
 ; 2nd byte [tile value]
     lda     [ANIM_pCel],y
@@ -84,60 +84,61 @@
     plp
     bmi     +
     cmp     ScreenX
-    bcc     ANIM_NextSprite
+    bcc     @@ANIM_NextSprite
     bcs     ++
   + cmp     ScreenX
-    bcs     ANIM_NextSprite
+    bcs     @@ANIM_NextSprite
  ++ sta     SPR_PosX,x
     txa
     clc
     adc     #15*4
     tax                     ; X is now ready to index next sprite
-    ANIM_NextSprite:
+    @@ANIM_NextSprite:
     dec     CelLength       ; done all sprites?
-    bne     ANIM_DrawOneSprite
+    bne     @@ANIM_DrawOneSprite
     plp                     ; fix stack
     stx     SpriteIndex     ; store new position in sprite RAM
     ldx     Temp            ; restore object #
     rts
 
-    ANIM_SkipSprite:
+    @@ANIM_SkipSprite:
     iny
     iny
     iny
-    bne     ANIM_NextSprite
+    bne     @@ANIM_NextSprite
+.endp
 
 ; GoMethod
 ; ========
 
-    ANIM_GoMethod:
+.proc ANIM_GoMethod
     lda     ANIM_Method,x
-    bmi     ANIM_NoCycling
+    bmi     @@ANIM_NoCycling
 
     dec     ANIM_Tick,x
-    bne     ANIM_NoCycling
+    bne     @@ANIM_NoCycling
 
     asl
-    bmi     ANIM_CycleForward
+    bmi     @@ANIM_CycleForward
     asl
-    bmi     ANIM_CycleForwardLoop
+    bmi     @@ANIM_CycleForwardLoop
     asl
-    bmi     ANIM_CycleReverse
+    bmi     @@ANIM_CycleReverse
     asl
-    bmi     ANIM_CycleReverseLoop
+    bmi     @@ANIM_CycleReverseLoop
 
 ; NoCycling
 ; =========
 ; Do nothing!
 
-    ANIM_NoCycling:
+    @@ANIM_NoCycling:
     rts
 
 ; CycleForward
 ; ============
 ; Plays the animation once.
 
-    ANIM_CycleForward:
+    @@ANIM_CycleForward:
     inc     ANIM_Cel,x              ; advance to next cel
     lda     ANIM_Cel,x
     cmp     ANIM_NumCels,x          ; reached end of animation?
@@ -151,7 +152,7 @@
 ; ================
 ; Plays the animation repeatedly.
 
-    ANIM_CycleForwardLoop:
+    @@ANIM_CycleForwardLoop:
     inc     ANIM_Cel,x              ; advance to next cel
     lda     ANIM_Cel,x
     cmp     ANIM_NumCels,x          ; reached end of animation?
@@ -163,7 +164,7 @@
 ; ============
 ; Plays the animation backwards once.
 
-    ANIM_CycleReverse:
+    @@ANIM_CycleReverse:
     dec     ANIM_Cel,x              ; next cel to show
     lda     ANIM_Cel,x
     bpl     ANIM_SetCel
@@ -176,18 +177,19 @@
 ; ================
 ; Plays the animation backwards repeatedly.
 
-    ANIM_CycleReverseLoop:
+    @@ANIM_CycleReverseLoop:
     dec     ANIM_Cel,x              ; next cel to show
     lda     ANIM_Cel,x
     bpl     ANIM_SetCel
     ldy     ANIM_NumCels,x
     dey
     tya
+.endp
 
 ; SetCel
 ; ======
 
-    ANIM_SetCel:
+.proc ANIM_SetCel
     sta     ANIM_Cel,x
     asl
     adc     #3
@@ -213,13 +215,14 @@
     ldy     ANIM_CHRPage,x
     sta     SelectedCHR+2,y
     rts
+.endp
 
 ; SetLoop
 ; =======
 ; Y = loop #
 ; A = cel #
 
-    ANIM_SetLoop:
+.proc ANIM_SetLoop
     pha
     tya
     sta     ANIM_Loop,x
@@ -244,5 +247,6 @@
     ;
     pla
     jmp     ANIM_SetCel
+.endp
 
 .end

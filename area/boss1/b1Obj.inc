@@ -23,7 +23,7 @@ OT_ENERGYWAVE   EQU 11
 ; =========
 ; Initialize boss 1.
 
-    Boss1Init:
+.proc Boss1Init
     ldy     #LOOP_BOSS1
     lda     #0
     jsr     ANIM_SetLoop
@@ -43,21 +43,24 @@ OT_ENERGYWAVE   EQU 11
     lda     #0
     jsr     Boss1SetEyePalette
     jmp     CheckPPUWrite
+.endp
 
 ; PowerCoreInit
 ; =============
 
-    PowerCoreInit:
+.proc PowerCoreInit
+.endp
 
 ; WallEyeInit
 ; =============
 
-    WallEyeInit:
+.proc WallEyeInit
+.endp
 
 ; EnergyWaveInit
 ; ==============
 
-    EnergyWaveInit:
+.proc EnergyWaveInit
     ; speed (TODO: should go in direction of player)
     lda     #$00
     sta     OBJ_SpeedXFrac,x
@@ -78,3 +81,4 @@ OT_ENERGYWAVE   EQU 11
     lda     #OE_ENERGYWAVEMAIN
     sta     OBJ_Action,x
     rts
+.endp

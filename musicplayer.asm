@@ -1,27 +1,22 @@
 .include "game.h"
 .include "nes.h"
 .include "rnme.h"
+.include "fade.h"
+.include "musicplayer.h"
+.include "palette.h"
+.include "ppu.h"
+.include "screendata.h"
+.include "statusscreen.h"
 
 .codeseg
 
 .public MusicPlayerInit
 .public MusicPlayerMain
 
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn StatusScreenPal:label
-.extrn PAL_LoadPalette:proc
-.extrn StatusScreenCHR:label
-.extrn LoadCHR:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn PAL_FadeToBlack:proc
-.extrn PrintValue:proc
-
 ; MusicPlayerInit
 ; ===============
 
-    MusicPlayerInit:
+.proc MusicPlayerInit
     jsr     ScreenOff
     jsr     ClearDisplay
     lda     #0
@@ -44,23 +39,24 @@
     inc     MainRoutine
     jsr     ScreenOn
     jmp     PAL_FadeFromBlack
+.endp
 
-    MusicPlayerMain:
+.proc MusicPlayerMain
     lda     JoyFirst
     and     #btnB
-    bne     ExitMusicPlayer
+    bne     @@ExitMusicPlayer
     lda     JoyFirst
     and     #btnLEFT
-    bne     PlayPrevSong
+    bne     @@PlayPrevSong
     lda     JoyFirst
     and     #(btnRIGHT|btnSELECT)
-    bne     PlayNextSong
+    bne     @@PlayNextSong
     rts
-    ExitMusicPlayer:
+    @@ExitMusicPlayer:
     lda     #mrTitleInit
     sta     MainRoutine
     jmp     PAL_FadeToBlack
-    PlayPrevSong:
+    @@PlayPrevSong:
     dec     $9D
     bne     +
     lda     #16
@@ -68,7 +64,7 @@
   + lda     $9D
     sta     RNME_LoadTune
     jmp     PrintSong
-    PlayNextSong:
+    @@PlayNextSong:
     inc     $9D
     lda     $9D
     cmp     #17
@@ -77,8 +73,9 @@
     sta     $9D
   + sta     RNME_LoadTune
     jmp     PrintSong
+.endp
 
-    PrintSong:
+.proc PrintSong
     lda     #$22
     ldy     #$0F
     ldx     $9D
@@ -88,6 +85,6 @@
     stx     AC2
     ldx     #2
     jmp     PrintValue
-
+.endp
 
 .end

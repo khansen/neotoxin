@@ -17,4 +17,21 @@ LOOP_ITEM               EQU 12
 LOOP_NEODOOR            EQU 13
 LOOP_BLOCKINGDOOR       EQU 14
 
+; Exported symbols.
+.extrn PlayerStandLoop:label
+.extrn PlayerRunLoop:label
+.extrn PlayerJumpLoop:label
+.extrn PlayerDuckLoop:label
+.extrn PlayerClimbLoop:label
+.extrn PlayerDeadLoop:label
+.extrn ObjectExplodeLoop:label
+.extrn ObjectBigExplodeLoop:label
+.extrn HealthItemLoop:label
+.extrn RocketLoop:label
+.extrn EnergyBulletLoop:label
+.extrn NPCLoop:label
+.extrn ItemLoop:label
+.extrn NeoDoorLoop:label
+.extrn BlockingDoorLoop:label
+
 .endif

@@ -1,4 +1,10 @@
 .include "game.h"
+.include "area2d.h"
+.include "fade.h"
+.include "gameinfo.h"
+.include "palette.h"
+.include "ppu.h"
+.include "screendata.h"
 
 .codeseg
 
@@ -6,24 +12,10 @@
 .public GameInfoInit2
 .public GameInfoMain
 
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn PAL_SetBlackPalette:proc
-.extrn GameInfoData:label
-.extrn WriteROMPPUString:proc
-.extrn StatusScreenPal:label
-.extrn PAL_LoadPalette:proc
-.extrn StatusScreenCHR:label
-.extrn LoadCHR:proc
-.extrn SetTimer:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn PAL_FadeToBlack:proc
-
 ; GameInfoInit
 ; ============
 
-    GameInfoInit:
+.proc GameInfoInit
     lda     #0
     sta     IRQCount
     sta     ScrollX
@@ -46,23 +38,25 @@
     ldx     #mrGameInfoInit2
     jsr     SetTimer
     jmp     ScreenOn
+.endp
 
-    GameInfoInit2:
+.proc GameInfoInit2
     lda     #16
     ldx     #mrGameInfoMain
     jsr     SetTimer
     jmp     PAL_FadeFromBlack
+.endp
 
 ; GameInfoMain
 ; ============
 
-    GameInfoMain:
+.proc GameInfoMain
     lda     Timer
     bne     +
     lda     #mrTitleInit
     sta     MainRoutine
     jmp     PAL_FadeToBlack
   + rts
-
+.endp
 
 .end

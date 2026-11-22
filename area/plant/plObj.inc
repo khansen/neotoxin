@@ -17,7 +17,7 @@ OT_MOVINGFIELD  EQU $09
 
 ;-----------------------------------------------------------------------------
 
-    ForceFieldInit:
+.proc ForceFieldInit
     ldy     #LOOP_FORCEFIELD
     lda     #0
     jsr     ANIM_SetLoop
@@ -36,10 +36,11 @@ OT_MOVINGFIELD  EQU $09
     lda     ForceFieldTimerTable
     sta     OBJ_Var1,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    MovingFieldInit:
+.proc MovingFieldInit
     ldy     #LOOP_MOVINGFIELD
     lda     #0
     jsr     ANIM_SetLoop
@@ -56,3 +57,4 @@ OT_MOVINGFIELD  EQU $09
     lda     #$FF
     sta     OBJ_SpeedY,x
     rts
+.endp

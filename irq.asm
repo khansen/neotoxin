@@ -1,14 +1,14 @@
 .include "mmc3.h"
+.include "irq.h"
+.include "maincycle.h"
 
 .codeseg
 
 .public IRQ
 
-.extrn GoIRQRoutine:proc
-
 ;-----------------------------------[ IRQ ]-----------------------------------
 
-    IRQ:
+.proc IRQ
     sei
     pha                     ; push A on stack
     txa
@@ -25,6 +25,6 @@
     tax                     ; restore X
     pla                     ; restore A
     rti
-
+.endp
 
 .end

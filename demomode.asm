@@ -1,13 +1,13 @@
 .include "game.h"
+.include "area2d.h"
+.include "demomode.h"
+.include "fade.h"
+.include "mmc3.h"
 
 .codeseg
 
 .public PlayDemo
 .public RecordDemo
-
-.extrn Area2DMain:proc
-.extrn PAL_FadeToBlack:proc
-.extrn SetBank:proc
 
 ; RecordDemo
 ; ==========
@@ -17,16 +17,16 @@
 ; Call every frame in the game loop.
 ; pDemo must point to a valid RAM address where the demo can be stored.
 
-    RecordDemo:
+.proc RecordDemo
     lda     OldStat
     cmp     JoyStat
-    bne     IsNewStat       ; joy status has changed
+    bne     @@IsNewStat       ; joy status has changed
 
     inc     JoyCount
-    beq     IsNewStat       ; max. 256 repeats of a certain status
+    beq     @@IsNewStat       ; max. 256 repeats of a certain status
     rts
 
-    IsNewStat:
+    @@IsNewStat:
     ldy     #$00
     sta     [pDemo],y       ; record joy status
     inc     pDemo
@@ -42,36 +42,37 @@
     iny     ; =1
     sty     JoyCount
     rts
+.endp
 
 ; PlayDemo
 ; ========
 ; Plays a demo.
 ; pDemo must point to valid key data, stored in the format described above.
 
-    PlayDemo:
+.proc PlayDemo
     lda     JoyFirst
-    bne     StopDemo        ; user pressed a button, stop demo
+    bne     @@StopDemo        ; user pressed a button, stop demo
 
     dec     JoyCount
-    beq     NextStat
+    beq     @@NextStat
 
     sta     JoyFirst        ; =0, only non-zero 1st frame of each stat
     lda     OldStat
     sta     JoyStat         ; use same stat as last frame
     jmp     Area2DMain      ; run the real game engine
 
-    StopDemo:
+    @@StopDemo:
     jsr     PAL_FadeToBlack
     lda     #mrTitleInit    ; return to title screen
     sta     MainRoutine
     lda     #0
     jmp     SetBank
 
-    NextStat:
+    @@NextStat:
     ldy     #$00
     lda     [pDemo],y
     cmp     #$FF            ; reached end of demo?
-    beq     StopDemo
+    beq     @@StopDemo
     sta     OldStat
     sta     JoyStat
     sta     JoyFirst
@@ -84,6 +85,6 @@
     bne     +
     inc     pDemo+1
   + jmp     Area2DMain
-
+.endp
 
 .end

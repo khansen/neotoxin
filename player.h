@@ -10,4 +10,17 @@ OE_PLAYERDUCK       EQU 5
 OE_PLAYERDEAD       EQU 6
 OE_PLAYERHURT       EQU 7
 
+; Exported symbols.
+.extrn PlayerStand:proc
+.extrn PlayerRun:proc
+.extrn PlayerJump:proc
+.extrn PlayerFall:proc
+.extrn PlayerLadder:proc
+.extrn PlayerDuck:proc
+.extrn PlayerDead:proc
+.extrn PlayerHurt:proc
+.extrn SetStanding:proc
+.extrn PlayerStartFall:proc
+.extrn PlayerStandUp:proc
+
 .endif

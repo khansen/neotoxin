@@ -1,3 +1,4 @@
+.include "rnmedata.h"
 .codeseg
 
 .public RNME_FreqTabLo

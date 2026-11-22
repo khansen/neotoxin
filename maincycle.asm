@@ -2,49 +2,29 @@
 .include "hsge.h"
 .include "mmc3.h"
 .include "nes.h"
+.include "area2d.h"
+.include "demomode.h"
+.include "entername.h"
+.include "gameinfo.h"
+.include "gameover.h"
+.include "levelup.h"
+.include "maincycle.h"
+.include "musicplayer.h"
+.include "ngsl.h"
+.include "palette.h"
+.include "ppu.h"
+.include "screendata.h"
+.include "selectgame.h"
+.include "statusmain.h"
+.include "titlescreen.h"
+.include "vste.h"
+.include "warp.h"
 
 .codeseg
 
 .public GoRoutine
 .public GoMainHandler
 .public GoIRQRoutine
-
-.extrn TitleInit:proc
-.extrn TitleMain:proc
-.extrn ExecWarp:proc
-.extrn Area2DInit:proc
-.extrn Area2DMain:proc
-.extrn PlayDemo:proc
-.extrn StatusMain:proc
-.extrn LevelUpInit:proc
-.extrn LevelUpMain:proc
-.extrn GameOverInit:proc
-.extrn GameOverMain:proc
-.extrn EnterNameInit:proc
-.extrn EnterNameMain:proc
-.extrn SelectGameInit:proc
-.extrn SelectGameMain:proc
-.extrn GameMenuMain:proc
-.extrn StartNewGame:proc
-.extrn PerformNameChange:proc
-.extrn CreditsInit:proc
-.extrn CreditsMain:proc
-.extrn GameInfoInit:proc
-.extrn GameInfoInit2:proc
-.extrn GameInfoMain:proc
-.extrn WaitTimer:proc
-.extrn NGSL_ExecScript:proc
-.extrn MusicPlayerInit:proc
-.extrn MusicPlayerMain:proc
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn SetBank:proc
-.extrn DialogScreenData:label
-.extrn WriteROMPPUString:proc
-.extrn StatusScreenPal:label
-.extrn PAL_LoadPalette:proc
-.extrn StatusScreenCHR:label
-.extrn LoadCHR:proc
 
 .macro TC_SLOT addr
     .db >(addr-1), <(addr-1)
@@ -58,7 +38,7 @@
 ; The jump table itself MUST be located directly after the JSR to this
 ; routine, so that its address can be popped from the stack.
 
-    GoRoutine:
+.proc GoRoutine
     asl                     ; each ptr is 2 bytes
     tay
     iny                     ; b/c stack holds jump table address MINUS 1
@@ -72,24 +52,27 @@
     lda     [pCode],y
     pha
     rts                     ; jump to routine
+.endp
 
 ; GoIRQRoutine
 ; ============
 
-    GoIRQRoutine:
+.proc GoIRQRoutine
     lda     IRQRoutine
     jsr     GoRoutine
 
 TC_SLOT IRQScreenOff
 TC_SLOT IRQSwitchBGCHR
+.endp
 
-    IRQScreenOff:
+.proc IRQScreenOff
     lda     ZPCtrl1
     and     #%11100111      ; bg & sprite visibility = false
     sta     PPUCtrl1
     rts
+.endp
 
-    IRQSwitchBGCHR:
+.proc IRQSwitchBGCHR
     ldx     #$82
     ldy     #0
     stx     MMC3_CTRL_REG
@@ -110,11 +93,12 @@ TC_SLOT IRQSwitchBGCHR
     ora     #$80
     sta     MMC3_CTRL_REG
     rts
+.endp
 
 ; GoMainHandler
 ; =============
 
-    GoMainHandler:
+.proc GoMainHandler
     lda     MainRoutine
     jsr     GoRoutine
 
@@ -146,11 +130,12 @@ TC_SLOT ScriptInit
 TC_SLOT NGSL_ExecScript
 TC_SLOT MusicPlayerInit
 TC_SLOT MusicPlayerMain
+.endp
 
 ; ScriptInit
 ; ==========
 
-    ScriptInit:
+.proc ScriptInit
     jsr     ScreenOff
     jsr     ClearDisplay
     lda     #0
@@ -174,6 +159,6 @@ TC_SLOT MusicPlayerMain
     jsr     LoadCHR
     inc     MainRoutine     ; mrExecScript
     rts
-
+.endp
 
 .end

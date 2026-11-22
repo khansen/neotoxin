@@ -1,4 +1,6 @@
 .include "rnme.h"
+.include "effect.h"
+.include "rnmedata.h"
 
 .codeseg
 
@@ -9,20 +11,16 @@
 .public RNME_DoVibrato
 .public RNME_DoArpeggio
 
-.extrn RNME_VibratoTable:label
-.extrn RNME_FreqTabLo:label
-.extrn RNME_FreqTabHi:label
-
 ;-------------------------[ Vibrato implementation ]--------------------------
 
-    RNME_DoVibrato:
+.proc RNME_DoVibrato
 ; check vibrato delay
     lda     CHN_VibDelay,x
-    beq     RNME_VibDelayEnded
+    beq     @@RNME_VibDelayEnded
     dec     CHN_VibDelay,x
     rts
 
-    RNME_VibDelayEnded:
+    @@RNME_VibDelayEnded:
 ; reset channel frequency
     lda     CHN_Note,x
     jsr     RNME_SetFreq
@@ -58,27 +56,27 @@
     rol     RNME_Temp3
 
     lda     CHN_VibratoPos,x
-    bpl     RNME_VibAdd
+    bpl     @@RNME_VibAdd
 
 ; VibratoPos negative --> SUBTRACT delta
     lda     CHN_Reg2,x
     sec
     sbc     RNME_Temp3
     sta     CHN_Reg2,x
-    bcs     RNME_VibDone
+    bcs     @@RNME_VibDone
     dec     CHN_FreqHi,x
-    bcc     RNME_VibDone
+    bcc     @@RNME_VibDone
 
 ; VibratoPos positive --> ADD delta
-    RNME_VibAdd:
+    @@RNME_VibAdd:
     lda     CHN_Reg2,x
     clc
     adc     RNME_Temp3
     sta     CHN_Reg2,x
-    bcc     RNME_VibDone
+    bcc     @@RNME_VibDone
     inc     CHN_FreqHi,x
 
-    RNME_VibDone:
+    @@RNME_VibDone:
     lda     CHN_EffParam,x
     lsr
     lsr
@@ -93,14 +91,15 @@
     sbc     #$40
   + sta     CHN_VibratoPos,x
     rts
+.endp
 
 ;----------------------[ Slide to note implementation ]-----------------------
 
-    RNME_DoSlideNote:
+.proc RNME_DoSlideNote
     lda     CHN_EffInfo,x
-    bpl     RNME_SlideExit
+    bpl     @@RNME_SlideExit
     lsr
-    bcc     RNME_SlideDown
+    bcc     @@RNME_SlideDown
 
     jsr     RNME_DoSlideUp
 ; check if slide frequency has been reached
@@ -108,9 +107,9 @@
     cmp     CHN_SlFreqLo,x
     lda     CHN_FreqHi,x
     sbc     CHN_SlFreqHi,x
-    bpl     RNME_SlideExit
+    bpl     @@RNME_SlideExit
 
-    RNME_SlideDone:
+    @@RNME_SlideDone:
     lda     CHN_SlFreqLo,x
     sta     CHN_Reg2,x
     lda     CHN_SlFreqHi,x
@@ -119,21 +118,22 @@
     sta     CHN_EffInfo,x
     rts
 
-    RNME_SlideDown:
+    @@RNME_SlideDown:
     jsr     RNME_DoSlideDown
 ; check if slide frequency has been reached
     lda     CHN_Reg2,x
     cmp     CHN_SlFreqLo,x
     lda     CHN_FreqHi,x
     sbc     CHN_SlFreqHi,x
-    bpl     RNME_SlideDone
+    bpl     @@RNME_SlideDone
 
-    RNME_SlideExit:
+    @@RNME_SlideExit:
     rts
+.endp
 
 ;-----------------------[ Slide down implementation ]-------------------------
 
-    RNME_DoSlideDown:
+.proc RNME_DoSlideDown
 ; slide down by adding slide amount to channel frequency
     lda     CHN_Reg2,x
     clc
@@ -142,10 +142,11 @@
     bcc     +
     inc     CHN_FreqHi,x
   + rts
+.endp
 
 ;------------------------[ Slide up implementation ]--------------------------
 
-    RNME_DoSlideUp:
+.proc RNME_DoSlideUp
 ; slide up by subtracting slide amount from channel frequency
     lda     CHN_Reg2,x
     sec
@@ -154,10 +155,11 @@
     bcs     +
     dec     CHN_FreqHi,x
   + rts
+.endp
 
 ;------------------------[ Arpeggio implementation ]--------------------------
 
-    RNME_DoArpeggio:
+.proc RNME_DoArpeggio
     lda     CHN_Tick,x
     lsr
     sec
@@ -168,12 +170,12 @@
 
     ; A = Tick % 3
   + cmp     #$01
-    beq     RNME_AddNote1
-    bcs     RNME_AddNote2
+    beq     @@RNME_AddNote1
+    bcs     @@RNME_AddNote2
     lda     CHN_Note,x
     bpl     RNME_SetFreq
 
-    RNME_AddNote1:
+    @@RNME_AddNote1:
     lda     CHN_EffParam,x
     lsr
     lsr
@@ -183,18 +185,20 @@
     adc     CHN_Note,x
     bpl     RNME_SetFreq
 
-    RNME_AddNote2:
+    @@RNME_AddNote2:
     lda     CHN_EffParam,x
     and     #$0F
     clc
     adc     CHN_Note,x
+.endp
 
-    RNME_SetFreq:
+.proc RNME_SetFreq
     tay
     lda     RNME_FreqTabLo,y
     sta     CHN_Reg2,x
     lda     RNME_FreqTabHi,y
     sta     CHN_FreqHi,x
     rts
+.endp
 
 .end

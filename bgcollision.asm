@@ -2,6 +2,10 @@
 .include "game.h"
 .include "hsge.h"
 .include "obj.h"
+.include "bgcollision.h"
+.include "math.h"
+.include "movement.h"
+.include "scroller.h"
 
 .codeseg
 
@@ -12,35 +16,32 @@
 .public OBJ_CheckMoveUp
 .public MoveObject
 
-.extrn XSIGN:proc
-.extrn SetCollMode:proc
-.extrn HSGE_SetRoomPtr:proc
-
-    MoveObject:
+.proc MoveObject
     lda     #$00
     sta     CollStat        ; reset collision flags
     lda     OBJ_State,x
     bpl     MoveXDir
     rts
-    MoveXDir:
+.endp
+.proc MoveXDir
     lda     OBJ_SpeedX,x
     ora     OBJ_SpeedXFrac,x
-    beq     MoveYDir
+    beq     @@MoveYDir
     lda     OBJ_SpeedX,x
     bmi     +               ; if (SpeedX > 0)
     jsr     OBJ_MoveRight   ;     MoveRight();
-    jmp     MoveYDir
+    jmp     @@MoveYDir
   + jsr     OBJ_MoveLeft    ; else MoveLeft();
-    MoveYDir:
+    @@MoveYDir:
     lda     OBJ_SpeedY,x
     ora     OBJ_SpeedYFrac,x
-    beq     UpdateSpeed
+    beq     @@UpdateSpeed
     lda     OBJ_SpeedY,x
     bmi     +               ; if (SpeedY > 0)
     jsr     OBJ_MoveDown    ;     MoveDown();
-    jmp     UpdateSpeed
+    jmp     @@UpdateSpeed
   + jsr     OBJ_MoveUp      ; else MoveUp();
-    UpdateSpeed:
+    @@UpdateSpeed:
 ; x speed
     lda     OBJ_SpeedXFrac,x
     clc
@@ -66,11 +67,12 @@
     lda     #$FB
  ++ sta     OBJ_SpeedY,x
     rts
+.endp
 
 ; OBJ_MoveLeft
 ; ============
 
-    OBJ_MoveLeft:
+.proc OBJ_MoveLeft
 ; invert speed, to get positive # of pixels
     lda     OBJ_SpeedXFrac,x
     jsr     XSIGN
@@ -92,17 +94,18 @@
     bcs     +
  ++ sta     OBJ_WorldXFrac,x
   + rts
+.endp
 
-    OBJ_MoveItLeft:
+.proc OBJ_MoveItLeft
     sta     Count           ; # of pixels to move
     lda     OBJ_State,x
     and     #$02            ; collision mode
-    bne     OBJ_PixLoopLeft
-    jmp     OBJ_MovePixelLeft
+    bne     @@OBJ_PixLoopLeft
+    jmp     @@OBJ_MovePixelLeft
 
 ; pixel-perfect collision
 
-    OBJ_PixLoopLeft:
+    @@OBJ_PixLoopLeft:
     lda     OBJ_State,x
     and     #$04            ; ignore collision?
     bne     ++              ; skip if yes
@@ -175,13 +178,13 @@
     jsr     SetCollMode
   + dec     Count
     beq     +
-    jmp     OBJ_PixLoopLeft
+    jmp     @@OBJ_PixLoopLeft
   + clc     ; move was OK
     rts
 
 ; non-pixel-perfect collision
 
-    OBJ_MovePixelLeft:
+    @@OBJ_MovePixelLeft:
     lda     OBJ_State,x
     and     #$04            ; ignore collision?
     bne     +               ; skip if yes
@@ -209,14 +212,15 @@
     bne     +
     jsr     SetCollMode
   + dec     Count           ; moved desired amount?
-    bne     OBJ_MovePixelLeft   ; if not, attempt to move another pixel
+    bne     @@OBJ_MovePixelLeft   ; if not, attempt to move another pixel
     clc     ; move was OK
     rts
+.endp
 
 ; OBJ_CheckMoveLeft
 ; =================
 
-    OBJ_CheckMoveLeft:
+.proc OBJ_CheckMoveLeft
     lda     OBJ_State,x
     and     #$02            ; collision mode
     beq     +               ; only perform crash detection if mode=per-tile
@@ -229,11 +233,12 @@
     bcs     +
     dey     ; horizontal room wrap
     jmp     +
+.endp
 
 ; OBJ_CheckMoveRight
 ; ==================
 
-    OBJ_CheckMoveRight:
+.proc OBJ_CheckMoveRight
     lda     OBJ_State,x
     and     #$02            ; collision mode
     beq     ++              ; only perform crash detection if mode=per-tile
@@ -339,6 +344,7 @@
     bpl     -           ; branch always
   + clc
     rts     ; exit with CF=0 (no crash)
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -359,7 +365,7 @@ HeightArray:
 ; OBJ_MoveRight
 ; =============
 
-    OBJ_MoveRight:
+.proc OBJ_MoveRight
     beq     ++
     jsr     OBJ_MoveItRight
     bcs     +
@@ -374,15 +380,16 @@ HeightArray:
     bcs     +
  ++ sta     OBJ_WorldXFrac,x
   + rts
+.endp
 
-    OBJ_MoveItRight:
+.proc OBJ_MoveItRight
     sta     Count
     lda     OBJ_State,x
     and     #$02
-    bne     OBJ_PixLoopRight
-    jmp     OBJ_MovePixelRight
+    bne     @@OBJ_PixLoopRight
+    jmp     @@OBJ_MovePixelRight
 
-    OBJ_PixLoopRight:
+    @@OBJ_PixLoopRight:
     lda     OBJ_State,x
     and     #$04            ; ignore collision?
     bne     ++              ; skip if yes
@@ -454,11 +461,11 @@ HeightArray:
     jsr     SetCollMode
   + dec     Count
     beq     +
-    jmp     OBJ_PixLoopRight
+    jmp     @@OBJ_PixLoopRight
   + clc     ; move was OK
     rts
 
-    OBJ_MovePixelRight:
+    @@OBJ_MovePixelRight:
     lda     OBJ_State,x
     and     #$04            ; ignore collision?
     bne     +               ; skip if yes
@@ -490,16 +497,17 @@ HeightArray:
     bne     +
     jsr     SetCollMode
   + dec     Count           ; moved desired amount?
-    bne     OBJ_MovePixelRight  ; if not, attempt to move another pixel
+    bne     @@OBJ_MovePixelRight  ; if not, attempt to move another pixel
     clc     ; move was OK
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; OBJ_MoveUp
 ; ==========
 
-    OBJ_MoveUp:
+.proc OBJ_MoveUp
     lda     OBJ_SpeedYFrac,x
     jsr     XSIGN
     lda     OBJ_SpeedY,x
@@ -519,10 +527,11 @@ HeightArray:
     bcs     +
  ++ sta     OBJ_WorldYFrac,x
   + rts
+.endp
 
-    OBJ_MoveItUp:
+.proc OBJ_MoveItUp
     sta     Count
-    MovePixelUp:
+    @@MovePixelUp:
     lda     OBJ_State,x
     and     #$04            ; ignore collision?
     bne     +               ; skip if yes
@@ -557,14 +566,15 @@ HeightArray:
     and     #$FD            ; collision mode = per-tile
     sta     OBJ_State,x
   + dec     Count           ; moved desired amount?
-    bne     MovePixelUp     ; if not, attempt to move another pixel
+    bne     @@MovePixelUp     ; if not, attempt to move another pixel
     clc     ; move was OK
     rts
+.endp
 
 ; OBJ_CheckMoveUp
 ; ===============
 
-    OBJ_CheckMoveUp:
+.proc OBJ_CheckMoveUp
     ldy     OBJ_MapOfs,x
     lda     OBJ_WorldXLo,x
     sec
@@ -662,13 +672,14 @@ HeightArray:
     bpl     -           ; branch always
   + clc
     rts     ; exit with CF=0 (no crash)
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; OBJ_MoveDown
 ; ============
 
-    OBJ_MoveDown:
+.proc OBJ_MoveDown
     beq     ++  ; skip if no full pixels to move
     jsr     OBJ_MoveItDown
     bcs     +   ; exit if can't move any further
@@ -683,10 +694,11 @@ HeightArray:
     bcs     +
  ++ sta     OBJ_WorldYFrac,x
   + rts
+.endp
 
-    OBJ_MoveItDown:
+.proc OBJ_MoveItDown
     sta     Count           ; desired # of pixels to move
-    OBJ_MovePixelDown:
+    @@OBJ_MovePixelDown:
     lda     OBJ_State,x
     and     #$04            ; ignore collision?
     bne     +               ; skip if yes
@@ -729,19 +741,21 @@ HeightArray:
     bne     +               ; skip if not
     jsr     SetCollMode
   + dec     Count           ; moved desired amount?
-    bne     OBJ_MovePixelDown ; if not, attempt to move another pixel
+    bne     @@OBJ_MovePixelDown ; if not, attempt to move another pixel
     clc     ; move was OK
     rts
+.endp
 
 ; OBJ_CheckMoveDown
 ; =================
 
-    OBJ_CheckMoveDown:
+.proc OBJ_CheckMoveDown
     lda     OBJ_State,x
     and     #$02        ; collision mode
     beq     +           ; jump if mode=per-tile
+.endp
 ; pixel-perfect collision detection
-    Pixxx:
+.proc Pixxx
     lda     OBJ_WorldXLo,x
     and     #$1F
     ora     OBJ_CollIndex,x
@@ -858,5 +872,6 @@ HeightArray:
     bpl     -           ; branch always
   + clc
     rts     ; exit with CF=0 (no crash)
+.endp
 
 .end

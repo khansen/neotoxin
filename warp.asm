@@ -1,6 +1,11 @@
 .include "game.h"
 .include "obj.h"
 .include "rnme.h"
+.include "area2d.h"
+.include "fade.h"
+.include "mmc3.h"
+.include "ppu.h"
+.include "warp.h"
 
 .codeseg
 
@@ -9,15 +14,10 @@
 .public ExecWarp
 .public Load2DArea
 
-.extrn LoadScript:proc
-.extrn PAL_FadeToBlack:proc
-.extrn Load2DAreaHdr:proc
-.extrn SetBank:proc
-
 ; SetSavePtr
 ; ==========
 
-    SetSavePtr:
+.proc SetSavePtr
     lda     SaveSlot
     asl
     asl
@@ -31,15 +31,16 @@
     ora     #$60
     sta     pData+1
     rts
+.endp
 
 ; SetupWarp
 ; =========
 
-    SetupWarp:
+.proc SetupWarp
     sta     WarpType
     lda     OBJ_Var0,x
     ldy     OBJ_Var1,x
-    bmi     WarpToScript
+    bmi     @@WarpToScript
     sty     CurrentWarp
     pha
     and     #$1F    ; section in lower 5 bits
@@ -54,17 +55,18 @@
     lda     #mrExecWarp
     sta     MainRoutine
     jmp     +
-    WarpToScript:
+    @@WarpToScript:
     jsr     LoadScript
   + stx     Index
     jsr     PAL_FadeToBlack
     ldx     Index
     rts
+.endp
 
 ; Load2DArea
 ; ==========
 
-    Load2DArea:
+.proc Load2DArea
 ; load the current Area's header
     lda     CurrentArea
     jsr     Load2DAreaHdr
@@ -74,11 +76,12 @@
 ; set the current area section
     lda     CurrentSection
     jmp     SetAreaSection
+.endp
 
 ; ExecWarp
 ; ========
 
-    ExecWarp:
+.proc ExecWarp
     ;;
     lda     OBJ_State
     and     #1
@@ -137,6 +140,6 @@
     beq     +   ; don't retrig tune if it's already playing
     sta     RNME_LoadTune
   + rts
-
+.endp
 
 .end

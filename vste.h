@@ -12,4 +12,8 @@ pScroller       EQU     $52
 pAttribPPU      EQU     $54
 pWorkPPU        EQU     $56
 
+; Exported symbols.
+.extrn CreditsInit:proc
+.extrn CreditsMain:proc
+
 .endif

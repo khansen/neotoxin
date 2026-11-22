@@ -4,6 +4,12 @@
 .include "gbAction.h"
 .include "obj.h"
 .include "rnme.h"
+.include "area2d.h"
+.include "enemy.h"
+.include "fade.h"
+.include "movement.h"
+.include "ngsl.h"
+.include "warp.h"
 
 .codeseg
 
@@ -23,44 +29,17 @@
 .public PlayerControl
 .public ExplodeProjectile
 
-.extrn TestPlayerCollide:proc
-.extrn SetupWarp:proc
-.extrn RemoveObject:proc
-.extrn TestSetObjFlag:proc
-.extrn LoadScript:proc
-.extrn PAL_FadeToBlack:proc
-.extrn Item0PickupScript:label
-.extrn Item1PickupScript:label
-.extrn Item2PickupScript:label
-.extrn Item3PickupScript:label
-.extrn Item4PickupScript:label
-.extrn Item5PickupScript:label
-.extrn Item6PickupScript:label
-.extrn Item7PickupScript:label
-.extrn FacePlayer:proc
-.extrn RemoveProjectile:proc
-.extrn SetAnimWaitAction:proc
-.extrn SetExplodeAnim:proc
-.extrn ObjectToHealthItem:proc
-.extrn DiscardObject:proc
-.extrn CheckPlayerHit:proc
-.extrn CheckEnemyHit:proc
-.extrn InvertYSpeed:proc
-.extrn SetHealthPal:proc
-.extrn TestProjectileCollide:proc
-.extrn ExplodeProjectile2:proc
-.extrn ANIM_SetCel:proc
-
 ;-----------------------------------------------------------------------------
 
-    ManualWarpMain:
+.proc ManualWarpMain
   - rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; Automatically initiates the warp if the player is touching the warp spot.
 
-    InstantWarpMain:
+.proc InstantWarpMain
     jsr     TestPlayerCollide
     bne     -
     ; initiate the warp
@@ -68,10 +47,11 @@
     jsr     SetupWarp
     ; remove the warp object, so it isn't triggered again and again
     jmp     RemoveObject
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    ItemMain:
+.proc ItemMain
     lda     FrameCount
     and     #7
     bne     +
@@ -93,6 +73,7 @@
     jsr     LoadScript
     jsr     RemoveObject    ; remove item
     jmp     PAL_FadeToBlack
+.endp
 
 ItemPickupScriptPtrs:
 .dw Item0PickupScript
@@ -106,20 +87,22 @@ ItemPickupScriptPtrs:
 
 ;-----------------------------------------------------------------------------
 
-    NPCMain:
+.proc NPCMain
     jmp     FacePlayer
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    ProjectileMain:
+.proc ProjectileMain
     lda     OBJ_State,x
     bpl     +
     ; projectile went offscreen, ditch it
     jmp     RemoveProjectile
   + lda     CollStat
     beq     +
+.endp
     ; projectile hit a solid background tile, explode it
-    ExplodeProjectile:
+.proc ExplodeProjectile
     dec     ProjectileCount
     lda     #$7F        ; HACK!!!
     sta     OBJ_Type,x
@@ -128,13 +111,13 @@ ItemPickupScriptPtrs:
     lda     #SFX_ROCKETEXPLODE
     sta     SFX_Number+1
     jmp     SetExplodeAnim
-  + jmp     UpAndDownFlyerMain
+  + jmp     @@UpAndDownFlyerMain
   
 ;-----------------------------------------------------------------------------
 
 ; Makes the object move up and down in an accelerated fashion. :]
 
-    UpAndDownFlyerMain:
+    @@UpAndDownFlyerMain:
     ; y movement
     lda     OBJ_AccelY,x
     bpl     ++
@@ -160,29 +143,31 @@ ItemPickupScriptPtrs:
     lda     #$00
     sta     OBJ_AccelYFrac,x
   + rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; Standard enemy discard handler.
 ; Spawns a health item if this is an odd frame
 
-    DiscardEnemy:
+.proc DiscardEnemy
     lda     FrameCount
     lsr
-    bcc     NoHealthItemSpawn
+    bcc     @@NoHealthItemSpawn
     lda     Health
     cmp     MaxHealth       ; only spawn if health isn't already full
-    beq     NoHealthItemSpawn
+    beq     @@NoHealthItemSpawn
     jsr     TestSetObjFlag
     jmp     ObjectToHealthItem
-    NoHealthItemSpawn:
+    @@NoHealthItemSpawn:
     jmp     DiscardObject
+.endp
 
 ;-----------------------------------------------------------------------------
 
 ; Transitions to the next state once the animation is done playing.
 
-    WaitAnimEnd:
+.proc WaitAnimEnd
     lda     ANIM_Method,x
     cmp     #amNoCycling
     bne     +
@@ -196,20 +181,23 @@ ItemPickupScriptPtrs:
 ; Standard enemy handler.
 
   - rts
-    EnemyMain:
+.endp
+.proc EnemyMain
     lda     OBJ_State,x
     bmi     -           ; don't update if offscreen
     jsr     CheckPlayerHit
     jmp     CheckEnemyHit
+.endp
     
 ;-----------------------------------------------------------------------------
 
-    HealthItemMain:
+.proc HealthItemMain
     jsr     CheckHealthItemBounce
     jsr     CheckHealthItemAlive
     jmp     CheckHealthItemPickup
+.endp
     
-    CheckHealthItemBounce:
+.proc CheckHealthItemBounce
     lda     CollStat
     and     #COLL_DOWN
     beq     -
@@ -237,8 +225,9 @@ ItemPickupScriptPtrs:
     sta     OBJ_SpeedY,x
     sta     OBJ_SpeedYFrac,x
   - rts
+.endp
     
-    CheckHealthItemAlive:
+.proc CheckHealthItemAlive
     lda     OBJ_Health,x
     beq     +
     dec     OBJ_Health,x
@@ -270,6 +259,7 @@ ItemPickupScriptPtrs:
     lda     #5
     sta     SFX_Number+1
     jmp     RemoveObject
+.endp
 
 ;-----------------------------------------------------------------------------
 
@@ -277,31 +267,34 @@ ItemPickupScriptPtrs:
 ; =============
 ; Gives player control again.
 
-    PlayerControl:
+.proc PlayerControl
     lda     $7FFE       ; !!!
     sta     OBJ_Action  ; restore player's action
     rts
+.endp
 
 ; ProgramControl
 ; ==============
 ; Prohibits player from interacting/interfering.
 
-    ProgramControl:
+.proc ProgramControl
     lda     OBJ_Action
     sta     $7FFE       ; !!! store player's current action
     ldy     #0
     lda     #OE_IDLE
     sta     OBJ_Action,y
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    NeoDoorMain:
+.proc NeoDoorMain
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    BlockingDoorMain:
+.proc BlockingDoorMain
     lda     OBJ_State,x
     bpl     +
     ; do nothing if door is not onscreen
@@ -323,13 +316,14 @@ ItemPickupScriptPtrs:
     jsr     ANIM_SetCel
     lda     #OE_DISCARDOBJECT
     jmp     SetAnimWaitAction
+.endp
 
 ; BlockPlayer
 ; ===========
 ; Stops player from walking through current object.
 ; In: X = object slot
 
-    BlockPlayer:
+.proc BlockPlayer
     jsr     TestPlayerCollide
     beq     +
 ; object isn't touching player, so exit
@@ -356,5 +350,6 @@ ItemPickupScriptPtrs:
     sbc     #$01
     sta     OBJ_WorldXLo
     rts
+.endp
 
 .end

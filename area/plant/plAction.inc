@@ -30,7 +30,7 @@ OE_MOVINGFIELDMAIN  EQU 21
 ;-----------------------------------------------------------------------------
 
   - rts
-    ForceFieldMain:
+.proc ForceFieldMain
     lda     OBJ_State,x
     bmi     -
     lda     FrameCount
@@ -52,23 +52,26 @@ OE_MOVINGFIELDMAIN  EQU 21
 .db >(ForceFieldSlowBlink-1),   <(ForceFieldSlowBlink-1)
 .db >(ForceFieldMediumBlink-1), <(ForceFieldMediumBlink-1)
 .db >(ForceFieldFastBlink-1),   <(ForceFieldFastBlink-1)
+.endp
 
 ForceFieldTimerTable:
 .db 120,30,30,30,60,30,30,30
 
-    ForceFieldShow:
+.proc ForceFieldShow
     lda     OBJ_State,x
     and     #$BF
     sta     OBJ_State,x
     jmp     DecForceFieldCounter
+.endp
 
-    ForceFieldFastBlink:
+.proc ForceFieldFastBlink
     lda     OBJ_State,x
     eor     #$40
     sta     OBJ_State,x
     jmp     DecForceFieldCounter
+.endp
 
-    ForceFieldMediumBlink:
+.proc ForceFieldMediumBlink
     lda     FrameCount
     lsr
     bcc     +
@@ -76,8 +79,9 @@ ForceFieldTimerTable:
     eor     #$40
     sta     OBJ_State,x
   + jmp     DecForceFieldCounter
+.endp
 
-    ForceFieldSlowBlink:
+.proc ForceFieldSlowBlink
     lda     FrameCount
     and     #3
     bne     +
@@ -85,8 +89,9 @@ ForceFieldTimerTable:
     eor     #$40
     sta     OBJ_State,x
   + jmp     DecForceFieldCounter
+.endp
 
-    ForceFieldHide:
+.proc ForceFieldHide
     lda     OBJ_State,x
     ora     #$40
     sta     OBJ_State,x
@@ -103,10 +108,11 @@ ForceFieldTimerTable:
     lda     ForceFieldTimerTable,y
     sta     OBJ_Var1,x
   + rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    MovingFieldMain:
+.proc MovingFieldMain
     lda     FrameCount
     and     #3
     bne     +
@@ -118,3 +124,4 @@ ForceFieldTimerTable:
     jsr     XSIGN
     sta     OBJ_SpeedY,x
   + jmp     EnemyMain
+.endp

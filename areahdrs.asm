@@ -1,65 +1,16 @@
 .include "chr.h"
+.include "area/base/base.h"
+.include "area/boss0/boss0.h"
+.include "area/boss1/boss1.h"
+.include "area/boss2/boss2.h"
+.include "area/building/building.h"
+.include "area/plant/plant.h"
+.include "area/ruins/ruins.h"
+.include "areahdrs.h"
 
 .codeseg
 
 .public AreaHdrTable
-
-.extrn ruins_maps:label
-.extrn ruins_macroptrtable:label
-.extrn ruins_macroattribs:label
-.extrn ruins_macrowalkabilities:label
-.extrn ruins_palette:label
-.extrn ruins_objconstructors:label
-.extrn ruins_actionptrtable:label
-.extrn ruins_loopptrtable:label
-.extrn plant_maps:label
-.extrn plant_macroptrtable:label
-.extrn plant_macroattribs:label
-.extrn plant_macrowalkabilities:label
-.extrn plant_palette:label
-.extrn plant_objconstructors:label
-.extrn plant_actionptrtable:label
-.extrn plant_loopptrtable:label
-.extrn base_maps:label
-.extrn base_macroptrtable:label
-.extrn base_macroattribs:label
-.extrn base_macrowalkabilities:label
-.extrn base_palette:label
-.extrn base_objconstructors:label
-.extrn base_actionptrtable:label
-.extrn base_loopptrtable:label
-.extrn building_maps:label
-.extrn building_macroptrtable:label
-.extrn building_macroattribs:label
-.extrn building_macrowalkabilities:label
-.extrn building_palette:label
-.extrn building_objconstructors:label
-.extrn building_actionptrtable:label
-.extrn building_loopptrtable:label
-.extrn boss0_maps:label
-.extrn boss0_macroptrtable:label
-.extrn boss0_macroattribs:label
-.extrn boss0_macrowalkabilities:label
-.extrn boss0_palette:label
-.extrn boss0_objconstructors:label
-.extrn boss0_actionptrtable:label
-.extrn boss0_loopptrtable:label
-.extrn boss1_maps:label
-.extrn boss1_macroptrtable:label
-.extrn boss1_macroattribs:label
-.extrn boss1_macrowalkabilities:label
-.extrn boss1_palette:label
-.extrn boss1_objconstructors:label
-.extrn boss1_actionptrtable:label
-.extrn boss1_loopptrtable:label
-.extrn boss2_maps:label
-.extrn boss2_macroptrtable:label
-.extrn boss2_macroattribs:label
-.extrn boss2_macrowalkabilities:label
-.extrn boss2_palette:label
-.extrn boss2_objconstructors:label
-.extrn boss2_actionptrtable:label
-.extrn boss2_loopptrtable:label
 
 ;-------------------------------[ Area headers ]------------------------------
 
@@ -84,7 +35,6 @@ ruins_header:
 .dw ruins_objconstructors
 .dw ruins_actionptrtable
 .dw ruins_loopptrtable
-
 
 plant_header:
 .db 2
@@ -157,6 +107,5 @@ boss2_header:
 .dw boss2_objconstructors
 .dw boss2_actionptrtable
 .dw boss2_loopptrtable
-
 
 .end

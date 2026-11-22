@@ -1,3 +1,4 @@
+.include "sfxdata.h"
 .codeseg
 
 .public RNME_SFXPtrTable

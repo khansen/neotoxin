@@ -1,6 +1,16 @@
 .include "game.h"
 .include "nes.h"
 .include "rnme.h"
+.include "area2d.h"
+.include "entername.h"
+.include "fade.h"
+.include "gamedata.h"
+.include "ngsl.h"
+.include "palette.h"
+.include "ppu.h"
+.include "savegame.h"
+.include "screendata.h"
+.include "warp.h"
 
 .codeseg
 
@@ -11,30 +21,10 @@
 .public InitGameState
 .public PerformNameChange
 
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn EnterNameData:label
-.extrn WriteROMPPUString:proc
-.extrn StatusScreenPal:label
-.extrn PAL_LoadPalette:proc
-.extrn StatusScreenCHR:label
-.extrn LoadCHR:proc
-.extrn SetSavePtr:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn PAL_FadeToBlack:proc
-.extrn LetterTransTable:label
-.extrn EndPPUString:proc
-.extrn CalcSaveGameCheckSum:proc
-.extrn InitialSaveGame:label
-.extrn WriteSaveGame:proc
-.extrn IntroScript:label
-.extrn LoadScript:proc
-
 ; EnterNameInit
 ; =============
 
-    EnterNameInit:
+.proc EnterNameInit
     jsr     ScreenOff
     jsr     ClearDisplay
     lda     #0
@@ -84,11 +74,12 @@
     inc     MainRoutine
     jsr     ScreenOn
     jmp     PAL_FadeFromBlack
+.endp
 
 ; EnterNameMain
 ; =============
 
-    EnterNameMain:
+.proc EnterNameMain
     jsr     FlashCursorPal
     lda     JoyFirst
     and     #btnSTART
@@ -104,7 +95,7 @@
  ++ lda     #11
     cmp     LetterCol
     bne     -
-    jmp     NameFinished
+    jmp     @@NameFinished
 
   + lda     JoyFirst
     and     #(btnA | btnB)
@@ -112,7 +103,7 @@
     ldy     #4
     sty     SFX_Number+1
     and     #btnA
-    bne     EnterLetter
+    bne     @@EnterLetter
 ; erase last letter
     ldy     NamePos
     bne     +
@@ -124,7 +115,7 @@
     jsr     ShowName
     jmp     SetNameCursor
 
-    NameFinished:
+    @@NameFinished:
 ; check that the name is valid (contains 1+ non-zero characters)
     ldy     #9
     lda     #0
@@ -141,7 +132,7 @@
     sty     SFX_Number+1
     jmp     PAL_FadeToBlack
 
-    EnterLetter:
+    @@EnterLetter:
     lda     LetterRow
     asl
     asl
@@ -151,7 +142,7 @@
     tay
     lda     LetterTransTable,y
     cmp     #$FF
-    beq     NameFinished
+    beq     @@NameFinished
 
     ldy     NamePos
     sta     NameStr,y
@@ -162,8 +153,9 @@
     ldy     #255
   + iny
     sty     NamePos
+.endp
 
-    SetNameCursor:
+.proc SetNameCursor
     lda     NamePos
     asl
     asl
@@ -175,11 +167,11 @@
     NoNameChange:
     lda     JoyFirst
     and     #(btnLEFT | btnRIGHT)
-    beq     NoLetterLeftRight
+    beq     @@NoLetterLeftRight
     ldy     #3
     sty     SFX_Number+1
     lsr
-    bcs     LetterRight
+    bcs     @@LetterRight
 ; LEFT pressed
     ldy     LetterCol
     bne     +
@@ -193,7 +185,7 @@
     sty     LetterCol
     jmp     SetLetterCursor
 
-    LetterRight:
+    @@LetterRight:
     ldy     LetterCol
     cpy     #11
     bne     +
@@ -208,14 +200,14 @@
     sty     LetterCol
     jmp     SetLetterCursor
 
-    NoLetterLeftRight:
+    @@NoLetterLeftRight:
     lda     JoyFirst
     and     #(btnUP | btnDOWN)
     beq     SetLetterCursor
     ldy     #3
     sty     SFX_Number+1
     and     #btnDOWN
-    bne     LetterDown
+    bne     @@LetterDown
 ; UP pressed
     ldy     LetterRow
     bne     +
@@ -224,15 +216,16 @@
     sty     LetterRow
     jmp     SetLetterCursor
 
-    LetterDown:
+    @@LetterDown:
     ldy     LetterRow
     cpy     #5
     bne     +
     ldy     #255
   + iny
     sty     LetterRow
+.endp
 
-    SetLetterCursor:
+.proc SetLetterCursor
     lda     LetterRow
     asl
     asl
@@ -248,8 +241,9 @@
     adc     #32
     sta     SPR_PosX
     rts
+.endp
 
-    FlashCursorPal:
+.proc FlashCursorPal
     lda     FrameCount
     and     #$03
     bne     +
@@ -273,11 +267,12 @@
     inx
     jmp     EndPPUString
   + rts
+.endp
 
 FlashTable:
 .db $0F,$04,$14,$24,$34,$24,$14,$04
 
-    ShowName:
+.proc ShowName
     ldx     PPUStrIndex
     lda     #$22
     sta     PPUString,x
@@ -296,11 +291,12 @@ FlashTable:
     cpy     #10
     bne     -
     jmp     EndPPUString
+.endp
 
 ; PerformNameChange
 ; =================
 
-    PerformNameChange:
+.proc PerformNameChange
     jsr     SetSavePtr
     ldx     #9
     ldy     #58
@@ -317,24 +313,26 @@ FlashTable:
     lda     #mrSelectGameInit
     sta     MainRoutine
     rts
+.endp
 
 ; StartNewGame
 ; ============
 ; Start new game in slot (SaveSlot).
 
-    StartNewGame:
+.proc StartNewGame
     jsr     InitGameState
     jsr     WriteSaveGame
     lda     #<IntroScript
     ldy     #>IntroScript
     jmp     LoadScript
+.endp
 
 ; InitGameState
 ; =============
 ; Initializes player stats from InitialSaveGame and clears StatusFlags.
 ; Out: A = 0
 
-    InitGameState:
+.proc InitGameState
     ldx     #16
   - lda     InitialSaveGame,x
     sta     Health,x
@@ -346,6 +344,6 @@ FlashTable:
     dex
     bpl     -
     rts
-
+.endp
 
 .end

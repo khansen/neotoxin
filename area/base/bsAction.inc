@@ -46,7 +46,7 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
 ;-----------------------------------------------------------------------------
 
   - rts
-    CeilingBombMain:
+.proc CeilingBombMain
     lda     OBJ_AccelYFrac,x
     beq     +
     ; it's bouncing towards player
@@ -84,10 +84,11 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     lda     #$2C
     sta     OBJ_AccelYFrac,x
   - rts
+.endp
     
 ;-----------------------------------------------------------------------------
 
-    LandMineMain:
+.proc LandMineMain
     jsr     CheckEnemyHit
     jsr     IsPlayerHitAndWoundable
     bcc     -
@@ -154,10 +155,11 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     lda     #$E0
     sta     OBJ_AccelXFrac,x
   + jmp     EnemyMain
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    FlyingBrainMain:
+.proc FlyingBrainMain
     ; y movement
     lda     OBJ_AccelY,x
     bpl     ++
@@ -187,7 +189,8 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
 ;-----------------------------------------------------------------------------
 
   - rts    
-    JumpingApeMain:
+.endp
+.proc JumpingApeMain
     lda     OBJ_State,x
     bmi     -
     lda     OBJ_AccelYFrac,x
@@ -254,10 +257,11 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     lda     #2
     jsr     ANIM_SetCel
   + jmp     EnemyMain
+.endp
   
 ;-----------------------------------------------------------------------------
 
-    MovingMineMain:
+.proc MovingMineMain
     lda     CollStat
     and     #(COLL_LEFT + COLL_RIGHT + COLL_PIXEL)
     beq     +
@@ -266,10 +270,11 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     jsr     XSIGN
     sta     OBJ_SpeedX,x
   + jmp     LandMineMain
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    BombWagonMain:
+.proc BombWagonMain
     lda     OBJ_State,x
     bpl     +
     rts
@@ -299,10 +304,11 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     ldy     #OT_FLYINGBOMB
     jsr     SpawnObject
   + jmp     EnemyMain
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    FlyingBombMain:
+.proc FlyingBombMain
     lda     OBJ_State,x
     bpl     +
     jmp     DiscardObject
@@ -310,10 +316,11 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     beq     +
     jmp     ExplodeThing
   + jmp     LandMineMain
+.endp
   
 ;-----------------------------------------------------------------------------
 
-    CeilingLaserMain:
+.proc CeilingLaserMain
     lda     OBJ_State,x
     bpl     +
     rts
@@ -340,10 +347,11 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     ldy     #OT_LASERRAY
     jsr     SpawnObject
   + rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    LaserRayMain:
+.proc LaserRayMain
     lda     OBJ_State,x
     bpl     +
     jmp     DiscardObject
@@ -351,3 +359,4 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     beq     +
     jmp     ExplodeThing
   + jmp     LandMineMain+3
+.endp

@@ -1,7 +1,21 @@
 .include "anim.h"
-.include "area.h"
 .include "game.h"
 .include "obj.h"
+.include "area/boss2/boss2.h"
+.include "area2d.h"
+.include "bgcollision.h"
+.include "enemy.h"
+.include "flags.h"
+.include "gbAction.h"
+.include "gbLoop.h"
+.include "gbObj.h"
+.include "maincycle.h"
+.include "math.h"
+.include "movement.h"
+.include "ngsl.h"
+.include "objcollision.h"
+.include "player.h"
+.include "ppu.h"
 
 .codeseg
 

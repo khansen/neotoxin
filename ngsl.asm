@@ -2,6 +2,16 @@
 .include "nes.h"
 .include "ngsl.h"
 .include "rnme.h"
+.include "entername.h"
+.include "fade.h"
+.include "flags.h"
+.include "huff.h"
+.include "maincycle.h"
+.include "math.h"
+.include "palette.h"
+.include "ppu.h"
+.include "savegame.h"
+.include "statusmain.h"
 
 .codeseg
 
@@ -21,38 +31,19 @@
 .public Item7PickupScript
 .public NGSL_ExecScript
 
-.extrn GoRoutine:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn PAL_FadeToBlack:proc
-.extrn ScreenOn:proc
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn PAL_SetPalette:proc
-.extrn WriteSaveGame:proc
-.extrn SetStatusFlag:proc
-.extrn ResetStatusFlag:proc
-.extrn GetStatusFlag:proc
-.extrn XSIGN:proc
-.extrn HuffInit:proc
-.extrn HuffDecodeByte:proc
-.extrn EndPPUString:proc
-.extrn WaitNMIPass:proc
-.extrn FlashCursorPal:proc
-.extrn ExitStatusScreen:proc
-.extrn WriteRAMPPUString:proc
-
 ; NGSL_ExecScript
 ; ===============
 
-    NGSL_ExecScript:
+.proc NGSL_ExecScript
     jsr     NGSL_GetScriptByte
     jsr     NGSL_GoScriptOpcode
     jmp     NGSL_ExecScript
+.endp
 
 ; NGSL_GoScriptOpcode
 ; ===================
 
-    NGSL_GoScriptOpcode:
+.proc NGSL_GoScriptOpcode
     jsr     GoRoutine
 
 .db >(NGSL_ScriptEnd-1),       <(NGSL_ScriptEnd-1)
@@ -79,61 +70,67 @@
 .db >(NGSL_ScriptSetTitle-1),   <(NGSL_ScriptSetTitle-1)
 .db >(WriteSaveGame-1),    <(WriteSaveGame-1)
 .db >(NGSL_PlaySfx-1),      <(NGSL_PlaySfx-1)
+.endp
 
 ; NGSL_ScriptEnd
 ; ==============
 
-    NGSL_ScriptEnd:
+.proc NGSL_ScriptEnd
     pla
     pla
     rts
+.endp
 
 ; NGSL_ScriptSetFlag
 ; ==================
 
-    NGSL_ScriptSetFlag:
+.proc NGSL_ScriptSetFlag
     jsr     NGSL_GetScriptByte  ; flag # to set
     jmp     SetStatusFlag
+.endp
 
 ; NGSL_ScriptResetFlag
 ; ====================
 
-    NGSL_ScriptResetFlag:
+.proc NGSL_ScriptResetFlag
     jsr     NGSL_GetScriptByte  ; flag # to reset
     jmp     ResetStatusFlag
+.endp
 
 ; NGSL_ScriptJmpIfFlag
 ; ====================
 
-    NGSL_ScriptJmpIfFlag:
+.proc NGSL_ScriptJmpIfFlag
     jsr     NGSL_GetScriptByte  ; flag # to test
     jsr     GetStatusFlag
     bne     NGSL_ScriptJmp      ; branch if flag is set (=1=nonzero)
     jmp     NGSL_GetScriptByte  ; else skip branch amount
+.endp
 
 ; NGSL_ScriptJmpIfNFlag
 ; =====================
 
-    NGSL_ScriptJmpIfNFlag:
+.proc NGSL_ScriptJmpIfNFlag
     jsr     NGSL_GetScriptByte  ; flag # to test
     jsr     GetStatusFlag
     beq     NGSL_ScriptJmp      ; branch if flag is not set (=0=zero)
     jmp     NGSL_GetScriptByte  ; else skip branch amount
+.endp
 
 ; NGSL_ScriptJmp
 ; ==============
 
-    NGSL_ScriptJmp:
+.proc NGSL_ScriptJmp
     jsr     NGSL_GetScriptByte  ; relative branch amount
     cmp     #$80                ; branch backwards?
-    bcs     NGSL_ScriptBranchBack
+    bcs     @@NGSL_ScriptBranchBack
     ; branch forwards
     adc     NGSL_pScript
     sta     NGSL_pScript
     bcc     +
     inc     NGSL_pScript
     rts
-    NGSL_ScriptBranchBack:
+    @@NGSL_ScriptBranchBack:
     jsr     XSIGN
     sta     NGSL_Temp
     lda     NGSL_pScript
@@ -143,11 +140,12 @@
     bcs     +
     dec     NGSL_pScript
   + rts
+.endp
 
 ; NGSL_ScriptPrintMsg
 ; ===================
 
-    NGSL_ScriptPrintMsg:
+.proc NGSL_ScriptPrintMsg
     ; get string id
     jsr     NGSL_GetScriptByte
     asl
@@ -159,7 +157,7 @@
     pla
     jsr     HuffInit
 
-    NGSL_BeginSection:
+    @@NGSL_BeginSection:
     ; default text speeds
     lda     #6
     sta     NGSL_TextSpeed
@@ -175,7 +173,7 @@
     lda     NGSL_CharsPerFrame
     sta     Count
 
-    NGSL_BeginTextChunk:
+    @@NGSL_BeginTextChunk:
     lda     #0
     sta     Count2
     ldx     PPUStrIndex
@@ -188,12 +186,12 @@
     stx     Index
     inx
 
-    NGSL_PrintLoop:
+    @@NGSL_PrintLoop:
     stx     Index2
     jsr     HuffDecodeByte
     ldx     Index2
     cmp     #$FD                    ; if it's < FD...
-    bcc     NGSL_PrintChar          ; it's a normal char, print it
+    bcc     @@NGSL_PrintChar          ; it's a normal char, print it
     pha
     lda     Count2
     beq     +
@@ -202,18 +200,18 @@
     jsr     EndPPUString
   + pla
     cmp     #$FD
-    beq     NGSL_NewLine            ; FD = break to next line
+    beq     @@NGSL_NewLine            ; FD = break to next line
     cmp     #$FE
-    beq     NGSL_NewSection         ; FE = section done
+    beq     @@NGSL_NewSection         ; FE = section done
     ; $FF = end of text
     rts
 
-    NGSL_PrintChar:
+    @@NGSL_PrintChar:
     sta     PPUString,x             ; character to write
     inx
     inc     Count2
     dec     Count                   ; allowed to print more chars this frame?
-    bne     NGSL_PrintLoop          ; branch if yes
+    bne     @@NGSL_PrintLoop          ; branch if yes
 ; finish the PPU string
     ldy     Index
     lda     Count2
@@ -238,9 +236,9 @@
 ; print rest of text
     lda     NGSL_CharsPerFrame
     sta     Count
-    jmp     NGSL_BeginTextChunk
+    jmp     @@NGSL_BeginTextChunk
 
-    NGSL_NewLine:
+    @@NGSL_NewLine:
     lda     NGSL_LineAddr+1
     clc
     adc     #32
@@ -248,13 +246,14 @@
     sta     NGSL_Temp
     bcc     +
     inc     NGSL_LineAddr
-  + jmp     NGSL_BeginTextChunk
+  + jmp     @@NGSL_BeginTextChunk
 
-    NGSL_NewSection:
+    @@NGSL_NewSection:
     jsr     NGSL_CursorWaitKey
-    jmp     NGSL_BeginSection
+    jmp     @@NGSL_BeginSection
+.endp
 
-    NGSL_CursorWaitKey:
+.proc NGSL_CursorWaitKey
     lda     #$05      ; arrow down
     sta     SPR_Tile
     lda     #216
@@ -271,11 +270,12 @@
     lda     #$F4
     sta     SPR_PosY
     rts
+.endp
 
 ; NGSL_ClearText
 ; ==============
 
-    NGSL_ClearText:
+.proc NGSL_ClearText
     lda     #$22
     sta     NGSL_LineAddr ; high vram address
     lda     #$64
@@ -305,19 +305,21 @@
     cmp     #$40
     bcc     -
     rts
+.endp
 
 ; NGSL_ScriptPlaySong
 ; ===================
 
-    NGSL_ScriptPlaySong:
+.proc NGSL_ScriptPlaySong
     jsr     NGSL_GetScriptByte  ; song # to play
     sta     RNME_LoadTune
     rts
+.endp
 
 ; NGSL_PlaySfx:
 ; =============
 
-    NGSL_PlaySfx:
+.proc NGSL_PlaySfx
     jsr     NGSL_GetScriptByte  ; channel # in upper 2 bits, effect # in lower 6
     pha
     rol
@@ -329,11 +331,12 @@
     and     #$3F
     sta     SFX_Number,y
     rts
+.endp
 
 ; NGSL_ScriptGoArea
 ; =================
 
-    NGSL_ScriptGoArea:
+.proc NGSL_ScriptGoArea
     jsr     NGSL_GetScriptByte  ; area # to warp to
     cmp     #$FF
     bne     +
@@ -358,11 +361,12 @@
     pla
     pla
     rts
+.endp
 
 ; NGSL_ScriptLoadPic
 ; ==================
 
-    NGSL_ScriptLoadPic:
+.proc NGSL_ScriptLoadPic
     ; get picture id
     jsr     NGSL_GetScriptByte
     asl
@@ -450,41 +454,45 @@
     sbc     #1
     bne     -
     rts
+.endp
 
 ; NGSL_ScriptTextSpeed
 ; ====================
 
-    NGSL_ScriptTextSpeed:
+.proc NGSL_ScriptTextSpeed
     jsr     NGSL_GetScriptByte  ; get # of frames between each char
     sta     NGSL_TextSpeed
     rts
+.endp
 
 ; NGSL_GetScriptByte
 ; ==================
 
-    NGSL_GetScriptByte:
+.proc NGSL_GetScriptByte
     ldy     #0
     lda     [NGSL_pScript],y
     inc     NGSL_pScript
     bne     +
     inc     NGSL_pScript+1
   + rts
+.endp
 
 ; NGSL_GetDataItemByte
 ; ====================
 
-    NGSL_GetDataItemByte:
+.proc NGSL_GetDataItemByte
     ldy     #0
     lda     [NGSL_pDataItem],y
     inc     NGSL_pDataItem
     bne     +
     inc     NGSL_pDataItem+1
   + rts
+.endp
 
 ; NGSL_ScriptDelay
 ; ================
 
-    NGSL_ScriptDelay:
+.proc NGSL_ScriptDelay
     jsr     NGSL_GetScriptByte  ; get delay amount
   - pha
     lda     #12
@@ -499,11 +507,12 @@
     sbc     #1
     bne     -
     rts
+.endp
 
 ; NGSL_ScriptGoScript
 ; ===================
 
-    NGSL_ScriptGoScript:
+.proc NGSL_ScriptGoScript
     jsr     NGSL_GetScriptByte
     tax
     jsr     NGSL_GetScriptByte
@@ -514,18 +523,20 @@
     pla
     pla
     rts
+.endp
 
 ; NGSL_ScriptPrintMsgX
 ; ====================
 
-    NGSL_ScriptPrintMsgX:
+.proc NGSL_ScriptPrintMsgX
     jsr     NGSL_ScriptPrintMsg
     jmp     NGSL_CursorWaitKey
+.endp
 
 ; NGSL_ScriptMultChoice
 ; =====================
 
-    NGSL_ScriptMultChoice:
+.proc NGSL_ScriptMultChoice
     jsr     NGSL_ScriptPrintMsg ; print the choice text
     jsr     NGSL_GetScriptByte
     sta     MenuItemCount
@@ -538,52 +549,53 @@
     lda     #40
     sta     SPR_PosX
 
-    NGSL_MultChoiceMain:
+    @@NGSL_MultChoiceMain:
     jsr     NGSL_SetChoiceCursor
     jsr     FlashCursorPal
     jsr     WaitNMIPass
     lda     JoyFirst
     and     #(btnA | btnSTART)
-    bne     NGSL_SelectChoice
+    bne     @@NGSL_SelectChoice
     lda     JoyFirst
     and     #btnUP
-    bne     NGSL_PrevChoice
+    bne     @@NGSL_PrevChoice
     lda     JoyFirst
     and     #(btnDOWN | btnSELECT)
-    bne     NGSL_NextChoice
-    jmp     NGSL_MultChoiceMain
+    bne     @@NGSL_NextChoice
+    jmp     @@NGSL_MultChoiceMain
 
-    NGSL_SelectChoice:
+    @@NGSL_SelectChoice:
     lda     #$F4
     sta     SPR_PosY    ; hide choice cursor
     ldy     MenuSelect
     lda     [NGSL_pScript],y    ; relative offset of choice handler
     jmp     NGSL_ScriptJmp+3    ; go there
 
-    NGSL_PrevChoice:
+    @@NGSL_PrevChoice:
     lda     MenuSelect
     beq     +
     dec     MenuSelect
-    jmp     NGSL_MultChoiceMain
+    jmp     @@NGSL_MultChoiceMain
     ; wrap
   + ldy     MenuItemCount
     dey
     sty     MenuSelect
-    jmp     NGSL_MultChoiceMain
+    jmp     @@NGSL_MultChoiceMain
 
-    NGSL_NextChoice:
+    @@NGSL_NextChoice:
     ldy     MenuSelect
     iny
     cpy     MenuItemCount
     beq     +
     sty     MenuSelect
-    jmp     NGSL_MultChoiceMain
+    jmp     @@NGSL_MultChoiceMain
     ; wrap
   + lda     #0
     sta     MenuSelect
-    jmp     NGSL_MultChoiceMain
+    jmp     @@NGSL_MultChoiceMain
+.endp
 
-    NGSL_SetChoiceCursor:
+.proc NGSL_SetChoiceCursor
     lda     MenuSelect
     asl
     asl
@@ -591,12 +603,14 @@
     adc     #167
     sta     SPR_PosY
     rts
+.endp
 
 ;NGSL_ScriptSetTitle
 ;===================
 
-    NGSL_ScriptSetTitle:
+.proc NGSL_ScriptSetTitle
     rts
+.endp
 
 IntroScript:
 .incbin "script/introscript.bin"

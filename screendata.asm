@@ -1,5 +1,6 @@
 .charmap "font.tbl"
 
+.include "screendata.h"
 .codeseg
 
 .public StatusScreenCHR

@@ -1,4 +1,5 @@
 .include "chr.h"
+.include "gbLoop.h"
 
 .codeseg
 

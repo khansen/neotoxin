@@ -12,4 +12,14 @@ OT_BLOCKINGDOOR     EQU 7
 
 ; objinfo: rangex, rangey, loop, cel, method, handler
 
+; Exported symbols.
+.extrn PlayerInit:proc
+.extrn ProjectileInit:proc
+.extrn ManualWarpInit:proc
+.extrn InstantWarpInit:proc
+.extrn ItemInit:proc
+.extrn NPCInit:proc
+.extrn NeoDoorInit:proc
+.extrn BlockingDoorInit:proc
+
 .endif

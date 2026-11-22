@@ -1,3 +1,4 @@
+.include "math.h"
 .codeseg
 
 .public XSIGN
@@ -7,11 +8,12 @@
 ; =====
 ; A = -A
 
-    XSIGN:
+.proc XSIGN
     eor     #$FF
     clc
     adc     #$01
     rts
+.endp
 
 ; CMC
 ; ===
@@ -20,11 +22,12 @@
 ; In: CF
 ; Out: !CF
 
-    CMC:
+.proc CMC
     rol
     eor     #$01            ; toggle carry
     ror
     rts
+.endp
 
 
 .end

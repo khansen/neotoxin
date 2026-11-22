@@ -13,4 +13,9 @@ MMC3_IRQ_LATCH_REG      EQU     $C001
 MMC3_IRQ_DISABLE_REG    EQU     $E000
 MMC3_IRQ_ENABLE_REG     EQU     $E001
 
+; Exported symbols.
+.extrn SetBank:proc
+.extrn SwapBank:proc
+.extrn ResetBank:proc
+
 .endif

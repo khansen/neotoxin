@@ -3,6 +3,13 @@
 .include "nes.h"
 .include "obj.h"
 .include "rnme.h"
+.include "entername.h"
+.include "fade.h"
+.include "gamedata.h"
+.include "palette.h"
+.include "ppu.h"
+.include "screendata.h"
+.include "titlescreen.h"
 
 DEMO_FRAMECOUNT_SEED    EQU     $34
 
@@ -11,24 +18,7 @@ DEMO_FRAMECOUNT_SEED    EQU     $34
 .public TitleInit
 .public TitleMain
 
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn TitleData:label
-.extrn WriteROMPPUString:proc
-.extrn TitleCHR:label
-.extrn LoadCHR:proc
-.extrn TitlePal:label
-.extrn PAL_LoadPalette:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn PAL_FadeToBlack:proc
-.extrn GameDemos:label
-.extrn InitGameState:proc
-.extrn TitleSine:label
-.extrn PAL_FadeToWhite:proc
-.extrn PAL_FadeFromWhite:proc
-
-    TitleInit:
+.proc TitleInit
     jsr     ScreenOff
     lda     ZPCtrl0
     and     #$FC            ; nametable address = $2000
@@ -70,10 +60,11 @@ DEMO_FRAMECOUNT_SEED    EQU     $34
     jsr     ScreenOn
     inc     MainRoutine
     jmp     PAL_FadeFromBlack
+.endp
 
 ;-------------------------[ Title screen main loop ]--------------------------
 
-    TitleMain:
+.proc TitleMain
 ; check for button presses
     lda     JoyFirst
     and     #btnSELECT
@@ -85,7 +76,7 @@ DEMO_FRAMECOUNT_SEED    EQU     $34
 ;
   + lda     JoyFirst
     and     #(btnSTART+btnA)
-    bne     TitleStartPressed
+    bne     @@TitleStartPressed
 ; see if it's time to start game demo
     lda     Timer
     bne     +
@@ -123,7 +114,7 @@ DEMO_FRAMECOUNT_SEED    EQU     $34
     and     #$1F
     tax
     ldy     #40      ; # of scanlines to apply the wave on
-    TitleWaveLoop:
+    @@TitleWaveLoop:
     lda     PPUStat  ; 4
     lda     TitleSine,x  ; 4
     sta     PPUScroll ; 4
@@ -139,14 +130,14 @@ DEMO_FRAMECOUNT_SEED    EQU     $34
     nop             ; 2
     nop             ; 2
     dey             ; 2
-    bne     TitleWaveLoop ; 3             = 31 total
+    bne     @@TitleWaveLoop ; 3             = 31 total
     ; 4 + 79 + 31 = 114
     sty     PPUScroll
     sty     PPUScroll
     inc     SinePos
     rts
 
-    TitleStartPressed:
+    @@TitleStartPressed:
     jsr     PAL_FadeToWhite
     jsr     PAL_FadeFromWhite
     jsr     PAL_FadeToBlack
@@ -156,5 +147,6 @@ DEMO_FRAMECOUNT_SEED    EQU     $34
     lda     #mrSelectGameInit
     sta     MainRoutine
     rts
+.endp
 
 .end

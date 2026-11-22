@@ -6,6 +6,9 @@
 .include "obj.h"
 .include "player.h"
 .include "rnme.h"
+.include "flags.h"
+.include "gbObj.h"
+.include "maincycle.h"
 
 .codeseg
 
@@ -18,21 +21,10 @@
 .public NeoDoorInit
 .public BlockingDoorInit
 
-.extrn PlayerStartFall:proc
-.extrn GoRoutine:proc
-.extrn OBJ_IncY:proc
-.extrn OBJ_DecY:proc
-.extrn OBJ_DecX:proc
-.extrn OBJ_IncX:proc
-.extrn ANIM_SetLoop:proc
-.extrn GetStatusFlag:proc
-.extrn RemoveObject:proc
-
-
 ; PlayerInit
 ; ==========
 
-    PlayerInit:
+.proc PlayerInit
     lda     #6
     sta     OBJ_RangeX
     lda     #23
@@ -40,11 +32,12 @@
     lda     #$38
     sta     OBJ_AccelYFrac
     jmp     PlayerStartFall
+.endp
 
 ; ProjectileInit
 ; ==============
 
-    ProjectileInit:
+.proc ProjectileInit
     lda     #OE_PROJECTILEMAIN
     sta     OBJ_Action,x
     lda     ProjectileType
@@ -53,12 +46,13 @@
 .db >(EnergyBulletInit-1), <(EnergyBulletInit-1)
 .db >(WaveBulletInit-1), <(WaveBulletInit-1)
 .db >(RocketInit-1), <(RocketInit-1)
+.endp
 
 ; RocketInit
 ; ==========
 ; Initializes a rocket projectile.
 
-    RocketInit:
+.proc RocketInit
     lda     #2
     jsr     OBJ_IncY
 ; check if ducking
@@ -114,12 +108,13 @@
     lda     #SFX_ROCKETLAUNCH
     sta     SFX_Number+1
     rts
+.endp
 
 ; EnergyBulletInit
 ; ================
 ; Same deal as the above, mostly. GAH.
 
-    EnergyBulletInit:
+.proc EnergyBulletInit
     lda     #2
     jsr     OBJ_IncY
 ;
@@ -165,12 +160,13 @@
     lda     #SFX_ENERGYBULLET
     sta     SFX_Number+1
     rts
+.endp
 
 ; WaveBulletInit
 ; ==============
 ; Same same...
 
-    WaveBulletInit:
+.proc WaveBulletInit
     lda     #2
     jsr     OBJ_IncY
 ;
@@ -218,22 +214,24 @@
     lda     #SFX_ENERGYBULLET
     sta     SFX_Number+1
     rts
+.endp
 
 ; InstantWarpInit
 ; ===============
 
-    InstantWarpInit:
+.proc InstantWarpInit
     jsr     ManualWarpInit
     lda     #48
     sta     OBJ_RangeY,x
     lda     #OE_INSTANTWARPMAIN
     sta     OBJ_Action,x
     rts
+.endp
     
 ; ManualWarpInit
 ; ==============
 
-    ManualWarpInit:
+.proc ManualWarpInit
     ldy     Index
     lda     [HSGE_pObject],y
     sta     OBJ_Var0,x
@@ -253,12 +251,13 @@
     lda     #OE_IDLE
     sta     OBJ_Action,x
     rts
+.endp
     
 ; NPCInit
 ; =======
 ; Same as manualwarp, except one extra byte for NPC frame #.
 
-    NPCInit:
+.proc NPCInit
     ldy     Index
     lda     [HSGE_pObject],y
     sta     OBJ_Var0,x          ; lo script ptr
@@ -281,11 +280,12 @@
     sta     OBJ_Action,x
     lda     #8
     jmp     OBJ_IncY
+.endp
 
 ; ItemInit
 ; ========
 
-    ItemInit:
+.proc ItemInit
     ldy     Index
     lda     [HSGE_pObject],y
     sta     OBJ_Var0,x  ; item type
@@ -312,12 +312,13 @@
     sta     OBJ_Action,x
     lda     #8
     jmp     OBJ_IncY
+.endp
 
 ; NeoDoorInit
 ; ===========
 ; Initializes a door that can be only be blasted away with a certain weapon.
 
-    NeoDoorInit:
+.proc NeoDoorInit
     lda     #amNoCycling
     sta     ANIM_Method,x
     ldy     #LOOP_NEODOOR
@@ -331,11 +332,12 @@
     sta     OBJ_Action,x
     lda     #8
     jmp     OBJ_IncX
+.endp
 
 ; BlockingDoorInit
 ; ================
 
-    BlockingDoorInit:
+.proc BlockingDoorInit
     lda     #amNoCycling
     sta     ANIM_Method,x
     ldy     #LOOP_BLOCKINGDOOR
@@ -349,5 +351,6 @@
     sta     OBJ_Action,x
     lda     #8
     jmp     OBJ_IncX
+.endp
 
 .end

@@ -23,7 +23,7 @@ OT_ENEMY7   EQU 15
 
 ;-----------------------------------------------------------------------------
 
-    AcidZombieInit:
+.proc AcidZombieInit
     lda     OBJ_WorldYLo,x
     ora     #7
     sta     OBJ_WorldYLo,x
@@ -45,10 +45,11 @@ OT_ENEMY7   EQU 15
     lda     #$40
     sta     OBJ_AccelYFrac,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    BigBirdInit:
+.proc BigBirdInit
     ldy     #LOOP_BIGBIRD
     lda     #0
     jsr     ANIM_SetLoop
@@ -69,3 +70,4 @@ OT_ENEMY7   EQU 15
     lda     #1
     sta     OBJ_Var1,x  ; standing still
     rts
+.endp

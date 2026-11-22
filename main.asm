@@ -1,21 +1,18 @@
 .include "game.h"
 .include "mmc3.h"
 .include "nes.h"
+.include "clearram.h"
+.include "main.h"
+.include "maincycle.h"
+.include "ppu.h"
 
 .codeseg
 
 .public RESET
 
-.extrn ClearRAM:proc
-.extrn ClearWRAM:proc
-.extrn SetBank:proc
-.extrn UpdateTimers:proc
-.extrn GoMainHandler:proc
-.extrn WaitNMIPass:proc
-
 ;--------------------------[ Program entrypoint ]-----------------------------
 
-    RESET:
+.proc RESET
     cld                     ; clear decimal mode
     ldx     #$00
     stx     PPUCtrl0        ; disable NMI and stuff
@@ -37,7 +34,6 @@
 
     jsr     ClearRAM
     jsr     ClearWRAM
-
 
     lda     #%00000000      ; Screen off
                             ; BG+SPR clipping
@@ -62,12 +58,12 @@
 
 ;-----------------------------[ The main loop ]-------------------------------
 
-    MainLoop:
+    @@MainLoop:
     jsr     UpdateTimers
     jsr     GoMainHandler
   + ; lda     ZPCtrl1
     jsr     WaitNMIPass
-    jmp     MainLoop
-
+    jmp     @@MainLoop
+.endp
 
 .end

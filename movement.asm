@@ -2,6 +2,9 @@
 .include "game.h"
 .include "hsge.h"
 .include "obj.h"
+.include "math.h"
+.include "movement.h"
+.include "scroller.h"
 
 .codeseg
 
@@ -10,13 +13,10 @@
 .public InvertYSpeed
 .public OBJ_GetCenterAttrib
 
-.extrn HSGE_SetRoomPtr:proc
-.extrn XSIGN:proc
-
 ; OBJ_GetCenterAttrib
 ; ===================
 
-    OBJ_GetCenterAttrib:
+.proc OBJ_GetCenterAttrib
     lda     OBJ_MapOfs,x
     jsr     HSGE_SetRoomPtr
     lda     OBJ_WorldXLo,x
@@ -58,11 +58,12 @@
     ldy     Index2
     lda     [pData],y
     rts
+.endp
 
 ; OBJ_GetBottomAttrib
 ; ===================
 
-    OBJ_GetBottomAttrib:
+.proc OBJ_GetBottomAttrib
     php
     lda     OBJ_WorldXLo,x
     lsr
@@ -116,16 +117,17 @@
     ldy     Index2
     lda     [pData],y
     rts
+.endp
 
 ; SetCollMode
 ; ===========
 
-    SetCollMode:
+.proc SetCollMode
     clc
     jsr     OBJ_GetBottomAttrib
     cmp     #TA_AIR
     bcs     +
-    SetPixelCollMode:
+    @@SetPixelCollMode:
     asl
     asl
     asl
@@ -139,16 +141,17 @@
   + sec
     jsr     OBJ_GetBottomAttrib
     cmp     #TA_AIR
-    bcs     SetTileCollMode
+    bcs     @@SetTileCollMode
     inc     OBJ_WorldYLo,x
-    bne     SetPixelCollMode
-    SetTileCollMode:
+    bne     @@SetPixelCollMode
+    @@SetTileCollMode:
     lda     OBJ_State,x
     and     #$FD        ; collision mode = per-tile
     sta     OBJ_State,x
     rts
+.endp
 
-    InvertXSpeed:
+.proc InvertXSpeed
     lda     OBJ_SpeedXFrac,x
     jsr     XSIGN
     tay
@@ -156,8 +159,9 @@
     eor     #$FF
     adc     #0
     rts
+.endp
 
-    InvertYSpeed:
+.proc InvertYSpeed
     lda     OBJ_SpeedYFrac,x
     jsr     XSIGN
     tay
@@ -165,5 +169,6 @@
     eor     #$FF
     adc     #0
     rts
+.endp
 
 .end

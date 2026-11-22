@@ -2,6 +2,9 @@
 .include "game.h"
 .include "nes.h"
 .include "rnme.h"
+.include "gamedata.h"
+.include "levelup.h"
+.include "obj.h"
 
 .codeseg
 
@@ -11,13 +14,10 @@
 .public AddExpPoints
 .public CheckLevelAdvance
 
-.extrn DestroyAllSprites:proc
-.extrn ExpPtsLevelTable:label
-
 ; LevelUpInit
 ; ===========
 
-    LevelUpInit:
+.proc LevelUpInit
     jsr     DestroyAllSprites
     lda     #CHR_LEVELUP
     sta     SelectedCHR+3
@@ -53,6 +53,7 @@
     sta     Timer+1
     inc     MainRoutine
     rts
+.endp
 
 LevelUpSprites:
 .db $41,$43,$45,$43,$41,$FF,$47,$49
@@ -60,7 +61,7 @@ LevelUpSprites:
 ; LevelUpMain
 ; ===========
 
-    LevelUpMain:
+.proc LevelUpMain
     lda     Timer
     bne     +
 ; hand over control to the game engine again
@@ -89,18 +90,20 @@ LevelUpSprites:
     dey
     bpl     -
   + rts
+.endp
 
 ; AddExpPoints
 ; ============
 ; In: A = # of pts to add
 
-    AddExpPoints:
+.proc AddExpPoints
     clc
     adc     Experience
     sta     Experience
     bcc     +
     inc     Experience+1
   + rts
+.endp
 
 ; AdjustExpGain
 ; =============
@@ -108,7 +111,7 @@ LevelUpSprites:
 ; Out: A = # of exp adjusted to account for current level
 ; Destroys: Temp
 
-    AdjustExpGain:
+.proc AdjustExpGain
     tay
     txa
     pha
@@ -134,11 +137,12 @@ LevelUpSprites:
     tax
     lda     Temp
     rts
+.endp
 
 ; CheckLevelAdvance
 ; =================
 
-    CheckLevelAdvance:
+.proc CheckLevelAdvance
     lda     Level
     asl
     tay
@@ -147,10 +151,10 @@ LevelUpSprites:
     sbc     Experience
     lda     ExpPtsLevelTable+1,y
     sbc     Experience+1
-    bmi     AdvanceLevel
+    bmi     @@AdvanceLevel
     rts
 ; advance to next level
-    AdvanceLevel:
+    @@AdvanceLevel:
     inc     Level
 ; decrease ease of gaining exp.
     lda     ExpFrac
@@ -166,6 +170,6 @@ LevelUpSprites:
     lda     #mrLevelUpInit
     sta     MainRoutine
     rts
+.endp
     
-
 .end

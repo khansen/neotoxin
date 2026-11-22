@@ -1,4 +1,7 @@
 .include "game.h"
+.include "main.h"
+.include "savegame.h"
+.include "warp.h"
 
 .codeseg
 
@@ -6,13 +9,10 @@
 .public LoadSaveGame
 .public CalcSaveGameCheckSum
 
-.extrn SetSavePtr:proc
-.extrn RESET:proc
-
 ; WriteSaveGame
 ; =============
 
-    WriteSaveGame:
+.proc WriteSaveGame
     jsr     SetSavePtr
     ldx     #0
     stx     Index
@@ -44,6 +44,7 @@
     lda     Temp+1
     sta     [pData],y
     rts
+.endp
 
 SaveGameInfo:
 .db 17 : .dw Health
@@ -55,7 +56,7 @@ SaveGameInfo:
 ; ============
 ; A,Y = address of savegame to load
 
-    LoadSaveGame:
+.proc LoadSaveGame
     jsr     SetSavePtr
     ldx     #0
     stx     Index
@@ -83,23 +84,24 @@ SaveGameInfo:
 ; verify checksum
   + jsr     CalcSaveGameCheckSum
     cmp     [pData],y
-    bne     InvalidCheckSum
+    bne     @@InvalidCheckSum
     iny
     lda     Temp+1
     cmp     [pData],y
-    bne     InvalidCheckSum
+    bne     @@InvalidCheckSum
 ; save game loaded successfully!
     rts
 ; save game data corrupted
-    InvalidCheckSum:
+    @@InvalidCheckSum:
     jmp     RESET
     rts
+.endp
 
 ; CalcSaveGameCheckSum
 ; ====================
 ; pData = address of save game
 
-    CalcSaveGameCheckSum:
+.proc CalcSaveGameCheckSum
     lda     #0
     sta     Temp
     sta     Temp+1
@@ -115,6 +117,6 @@ SaveGameInfo:
     bne     -
     iny
     rts
-
+.endp
 
 .end

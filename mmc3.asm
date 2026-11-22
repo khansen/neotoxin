@@ -11,11 +11,13 @@
 ; =======
 ; Loads 16K ROM bank in A at $8000.
 
-        ResetBank:
+.proc ResetBank
         lda     CurrentBank
-        SetBank:
+.endp
+.proc SetBank
         sta     CurrentBank
-        SwapBank:
+.endp
+.proc SwapBank
         asl
         tay                     ; Y = 8K bank #
         ldx     #$06            ; command = swap 1st 8K bank
@@ -28,5 +30,6 @@
         stx     MMC3_CTRL_REG
         sty     MMC3_PAGE_REG
         rts
+.endp
 
 .end

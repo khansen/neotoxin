@@ -6,6 +6,21 @@
 .include "nes.h"
 .include "ngsl.h"
 .include "obj.h"
+.include "anim.h"
+.include "area2d.h"
+.include "bgcollision.h"
+.include "demomode.h"
+.include "enemy.h"
+.include "fade.h"
+.include "flags.h"
+.include "math.h"
+.include "objcollision.h"
+.include "palette.h"
+.include "ppu.h"
+.include "renderer.h"
+.include "scroller.h"
+.include "statusscreen.h"
+.include "warp.h"
 
 .codeseg
 
@@ -16,43 +31,11 @@
 .public Area2DMain
 .public WaitTimer
 
-.extrn ScreenOff:proc
-.extrn ClearDisplay:proc
-.extrn DestroyAllObjects:proc
-.extrn PAL_LoadPalette:proc
-.extrn SetStatusFlag:proc
-.extrn Load2DArea:proc
-.extrn OBJ_CalcMapOfs:proc
-.extrn LoadObject:proc
-.extrn HSGE_RenderScreen:proc
-.extrn HSGE_LoadObjects:proc
-.extrn OBJ_CoordsToScreen:proc
-.extrn HSGE_CheckScreenWrite:proc
-.extrn CheckPPUWrite:proc
-.extrn ScreenOn:proc
-.extrn PAL_FadeFromBlack:proc
-.extrn RecordDemo:proc
-.extrn LoadObjectsFromQueue:proc
-.extrn UpdateClock:proc
-.extrn CheckPause:proc
-.extrn DestroyAllSprites:proc
-.extrn MoveObject:proc
-.extrn CheckObjColl:proc
-.extrn OBJ_PerformAction:proc
-.extrn ANIM_GoMethod:proc
-.extrn ANIM_DrawCel:proc
-.extrn EndPPUString:proc
-.extrn XSIGN:proc
-.extrn HSGE_ScrollLeft:proc
-.extrn HSGE_ScrollRight:proc
-.extrn HSGE_ScrollDown:proc
-.extrn HSGE_ScrollUp:proc
-
 ; SharedAreaInit
 ; ==============
 ; Init stuff that needs to be done equally for both 2D and 3D areas.
 
-    SharedAreaInit:
+.proc SharedAreaInit
     jsr     ScreenOff
     jsr     ClearDisplay
     jsr     DestroyAllObjects
@@ -65,12 +48,13 @@
     lda     ah_pAreaPalette
     ldy     ah_pAreaPalette+1
     jmp     PAL_LoadPalette
+.endp
 
 ; Area2DInit
 ; ==========
 ; Initialize the 2D Area.
 
-    Area2DInit:
+.proc Area2DInit
 ;;;;
     lda     #2
     jsr     SetStatusFlag
@@ -273,6 +257,7 @@
     sta     IRQCount
     jsr     ScreenOn
     jmp     PAL_FadeFromBlack
+.endp
 
 ; Area2DMain
 ; ==========
@@ -301,7 +286,7 @@
 ; CheckWeaponSwitch
 ; =================
 
-    CheckWeaponSwitch:
+.proc CheckWeaponSwitch
     lda     JoyFirst
     and     #btnSELECT
     beq     +
@@ -313,19 +298,20 @@
     lda     #0
     sta     ProjectileType
   + rts
+.endp
 
 ; UpdateObjects
 ; =============
 ; Moves & draws all objects, checks for collisions, calls object handlers.
 
-    UpdateObjects:
+.proc UpdateObjects
     jsr     DestroyAllSprites
     lda     SpriteBase
     sta     SpriteIndex
     ldx     #23
-    UpdateOneObject:
+    @@UpdateOneObject:
     lda     OBJ_Type,x
-    bmi     NextObject  ; skip the whole thing if object is inactive
+    bmi     @@NextObject  ; skip the whole thing if object is inactive
     lda     #0
     sta     CollObjCount
     jsr     MoveObject
@@ -344,21 +330,22 @@
   + jsr     ANIM_GoMethod
     lda     OBJ_State,x
     cmp     #$40
-    bcs     NextObject  ; don't draw if offscreen or invisible
+    bcs     @@NextObject  ; don't draw if offscreen or invisible
     jsr     ANIM_DrawCel
-    NextObject:
+    @@NextObject:
     dex
-    bpl     UpdateOneObject
+    bpl     @@UpdateOneObject
     lda     SpriteBase
     clc
     adc     #17*4
     sta     SpriteBase
     rts
+.endp
 
 ; ShowHealth
 ; ==========
 
-    ShowHealth:
+.proc ShowHealth
     ldx     SpriteIndex
     lda     #15
     sta     SPR_PosY,x
@@ -376,11 +363,12 @@
     adc     #15*4
     sta     SpriteIndex
     rts
+.endp
 
 ; SetHealthPal
 ; ============
 
-    SetHealthPal:
+.proc SetHealthPal
     ldx     PPUStrIndex
     lda     #$3F
     sta     PPUString,x
@@ -405,6 +393,7 @@
     sta     RAMPalette+22
     inx
     jmp     EndPPUString
+.endp
     
 HealthPals:
 .db $10,$16 ; 0-7
@@ -416,7 +405,7 @@ HealthPals:
 ; ===========
 ; Checks if it's necessary to scroll the display, based on player's position.
 
-    CheckScroll:
+.proc CheckScroll
 ; check X direction
     lda     OBJ_State
     lsr                 ; CF = player's direction
@@ -424,17 +413,17 @@ HealthPals:
     bcc     +           ; branch if facing the RIGHT
     jsr     XSIGN
   + cmp     #SCROLL_TRESHOLD
-    beq     CheckScrollY
-    bcs     DoScrollX
+    beq     @@CheckScrollY
+    bcs     @@DoScrollX
     ;
     lda     OBJ_State
     lsr
     bcs     +
     jsr     HSGE_ScrollLeft
-    jmp     CheckScrollY
+    jmp     @@CheckScrollY
   + jsr     HSGE_ScrollRight
-    jmp     CheckScrollY
-    DoScrollX:
+    jmp     @@CheckScrollY
+    @@DoScrollX:
     sbc     #SCROLL_TRESHOLD
     lsr
     lsr
@@ -448,18 +437,18 @@ HealthPals:
   + sta     Count           ; # of pixels to scroll
     lda     OBJ_State
     lsr
-    bcs     DoScrollLeft
+    bcs     @@DoScrollLeft
   - jsr     HSGE_ScrollRight
-    bcs     CheckScrollY    ; stop if can't scroll any further
+    bcs     @@CheckScrollY    ; stop if can't scroll any further
     dec     Count           ; scrolled desired amount?
     bne     -               ; if not, attempt to scroll another pixel
-    beq     CheckScrollY
-    DoScrollLeft:
+    beq     @@CheckScrollY
+    @@DoScrollLeft:
     jsr     HSGE_ScrollLeft
-    bcs     CheckScrollY    ; stop if can't scroll any further
+    bcs     @@CheckScrollY    ; stop if can't scroll any further
     dec     Count           ; scrolled desired amount?
-    bne     DoScrollLeft    ; if not, attempt to scroll another pixel
-    CheckScrollY:
+    bne     @@DoScrollLeft    ; if not, attempt to scroll another pixel
+    @@CheckScrollY:
 ; check Y direction
     lda     #4              ; max. 4 pixels per frame
     sta     Count
@@ -469,7 +458,7 @@ HealthPals:
     cmp     #110
     bcc     +
     cmp     #130
-    bcc     NoScrollY
+    bcc     @@NoScrollY
     jsr     HSGE_ScrollDown
     dec     Temp
     jmp     ++
@@ -477,42 +466,45 @@ HealthPals:
     inc     Temp
  ++ dec     Count
     bne     -
-    NoScrollY:
+    @@NoScrollY:
     rts
+.endp
 
 ; WaitTimer
 ; =========
 ; Waits for Timer to hit zero, then updates MainRoutine.
 ; Basically just delays the program for a certain amount of time.
 
-    WaitTimer:
+.proc WaitTimer
     lda     Timer
     bne     +
     lda     NextRoutine
     sta     MainRoutine
   + rts
+.endp
 
 ; SetTimer
 ; ========
 ; In: A = # of time units to delay
 ;     X = next routine to execute after delay
 
-    SetTimer:
+.proc SetTimer
     sta     Timer
     stx     NextRoutine
     lda     #mrWaitTimer
     sta     MainRoutine
     rts
+.endp
 
 ; LoadScript
 ; ==========
 
-    LoadScript:
+.proc LoadScript
     sta     NGSL_pScript
     sty     NGSL_pScript+1
     lda     #mrScriptInit
     sta     MainRoutine
     rts
-
+.endp
 
 .end

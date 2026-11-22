@@ -23,4 +23,10 @@ amReverse               EQU     $10
 amReverseLoop           EQU     $08
 
 
+; Exported symbols.
+.extrn ANIM_SetLoop:proc
+.extrn ANIM_SetCel:proc
+.extrn ANIM_GoMethod:proc
+.extrn ANIM_DrawCel:proc
+
 .endif

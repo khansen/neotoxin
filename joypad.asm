@@ -1,5 +1,6 @@
 .include "game.h"
 .include "nes.h"
+.include "joypad.h"
 
 .codeseg
 
@@ -12,7 +13,7 @@
 ;          JoyFirst = only reports a button press the first time the
 ;                     button is pressed; not while it's being held down.
 
-    ReadJoypad0:
+.proc ReadJoypad0
     lda     JoyStat
     pha                     ; save last frame's status
     ldy     #$01
@@ -30,6 +31,7 @@
     and     JoyStat
     sta     JoyFirst
     rts
+.endp
 
 
 .end

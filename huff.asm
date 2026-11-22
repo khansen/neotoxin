@@ -8,7 +8,7 @@
 ; HuffDecodeByte
 ; ==============
 
-    HuffDecodeByte:
+.proc HuffDecodeByte
     lda     #<HuffTable
     sta     pHuffNode
     lda     #>HuffTable
@@ -39,16 +39,18 @@
     lda     [pHuffNode],y   ; decoded value
     stx     HuffCount
     rts
+.endp
 
 ; HuffInit
 ; ========
 
-    HuffInit:
+.proc HuffInit
     sta     pHuffData
     sty     pHuffData+1
     lda     #0
     sta     HuffCount
     rts
+.endp
 
 HuffTable:
 .include "huff/huffpuff.tab"

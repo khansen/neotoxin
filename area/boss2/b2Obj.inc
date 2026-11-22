@@ -14,7 +14,7 @@ boss2_objconstructors:
 ; Boss2Init
 ; =========
 
-    Boss2Init:
+.proc Boss2Init
     ldy     #LOOP_BOSS2
     lda     #0
     jsr     ANIM_SetLoop
@@ -33,3 +33,4 @@ boss2_objconstructors:
     lda     #1
     sta     RoomFlags   ; boss alive
     rts
+.endp

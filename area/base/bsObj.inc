@@ -31,7 +31,7 @@ OT_LASERRAY     EQU $10
 
 ;-----------------------------------------------------------------------------
 
-    CeilingBombInit:
+.proc CeilingBombInit
     lda     OBJ_WorldYLo,x
     ora     #8
     sta     OBJ_WorldYLo,x
@@ -51,10 +51,11 @@ OT_LASERRAY     EQU $10
     lda     #OE_CEILINGBOMBMAIN
     sta     OBJ_Action,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    LandMineInit:
+.proc LandMineInit
     lda     OBJ_WorldYLo,x
     clc
     adc     #12
@@ -73,10 +74,11 @@ OT_LASERRAY     EQU $10
     lda     #OE_LANDMINEMAIN
     sta     OBJ_Action,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    FlyingBrainInit:
+.proc FlyingBrainInit
     ldy     #LOOP_FLYINGBRAIN
     lda     #0
     jsr     ANIM_SetLoop
@@ -106,10 +108,11 @@ OT_LASERRAY     EQU $10
     ora     #4      ; ignore BG collision
     sta     OBJ_State,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    JumpingApeInit:
+.proc JumpingApeInit
     lda     OBJ_WorldYLo,x
     ora     #7
     sta     OBJ_WorldYLo,x
@@ -130,10 +133,11 @@ OT_LASERRAY     EQU $10
     and     #$1F
     sta     OBJ_Var0,x      ; wait a random amount of 0..32 frames till first jump allowed
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    MovingMineInit:
+.proc MovingMineInit
     ldy     #LOOP_MOVINGMINE
     lda     #0
     jsr     ANIM_SetLoop
@@ -149,10 +153,11 @@ OT_LASERRAY     EQU $10
     lda     #$FF
     sta     OBJ_SpeedX,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    BombWagonInit:
+.proc BombWagonInit
     lda     OBJ_WorldYLo,x
     ora     #8
     sta     OBJ_WorldYLo,x
@@ -180,10 +185,11 @@ OT_LASERRAY     EQU $10
     sta     OBJ_SpeedX,x
     jsr     FaceLeft
   + rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    FlyingBombInit:
+.proc FlyingBombInit
     ldy     #LOOP_FLYINGBOMB
     lda     #0
     jsr     ANIM_SetLoop
@@ -213,13 +219,14 @@ OT_LASERRAY     EQU $10
     lda     #OE_FLYINGBOMBMAIN
     sta     OBJ_Action,x
     rts
+.endp
 
 FlyingBombStartSpeedXTable:
 .db 2,-2,2,-2,-2,2,-2,2
 
 ;-----------------------------------------------------------------------------
 
-    CeilingLaserInit:
+.proc CeilingLaserInit
     lda     OBJ_WorldYLo,x
     ora     #8
     sta     OBJ_WorldYLo,x
@@ -239,10 +246,11 @@ FlyingBombStartSpeedXTable:
     lda     #OE_CEILINGLASERMAIN
     sta     OBJ_Action,x
     rts
+.endp
 
 ;-----------------------------------------------------------------------------
 
-    LaserRayInit:
+.proc LaserRayInit
     ldy     #LOOP_LASERRAY
     lda     #0
     jsr     ANIM_SetLoop
@@ -257,3 +265,4 @@ FlyingBombStartSpeedXTable:
     lda     #OE_LASERRAYMAIN
     sta     OBJ_Action,x
     rts
+.endp

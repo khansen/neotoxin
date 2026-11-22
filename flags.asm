@@ -1,4 +1,6 @@
 .include "game.h"
+.include "flags.h"
+.include "gamedata.h"
 
 .codeseg
 
@@ -6,14 +8,12 @@
 .public ResetStatusFlag
 .public GetStatusFlag
 
-.extrn BitMaskTable:label
-
 ; GetStatusFlag
 ; =============
 ; in: A = flag #
 ; out: ZF=0 if flag set, else ZF=1
 
-    GetStatusFlag:
+.proc GetStatusFlag
     pha
     lsr
     lsr
@@ -27,12 +27,13 @@
     lda     Temp
     and     BitMaskTable,y
     rts
+.endp
 
 ; SetStatusFlag
 ; =============
 ; in: A = flag #
 
-    SetStatusFlag:
+.proc SetStatusFlag
     pha
     and     #$07
     tay
@@ -47,12 +48,13 @@
     ora     Temp
     sta     StatusFlags,y
     rts
+.endp
 
 ; ResetStatusFlag
 ; ===============
 ; in: A = flag #
 
-    ResetStatusFlag:
+.proc ResetStatusFlag
     pha
     and     #$07
     tay
@@ -68,6 +70,6 @@
     and     Temp
     sta     StatusFlags,y
     rts
-
+.endp
 
 .end

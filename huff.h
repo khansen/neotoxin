@@ -6,4 +6,8 @@ pHuffData       EQU     $52
 HuffCount       EQU     $54
 HuffInput       EQU     $55
 
+; Exported symbols.
+.extrn HuffInit:proc
+.extrn HuffDecodeByte:proc
+
 .endif
