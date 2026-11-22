@@ -13,7 +13,8 @@
 #   NEOTOXIN_SHOT_DIR      If set, save every checkpoint's screen there as
 #                          <checkpoint>.ppm (to see what a failing hash shows).
 #
-# FCEUX gets a throwaway home/config directory per run. The harness never quits
+# FCEUX gets a throwaway home/config directory per run, which is kept (and its
+# path printed) when the run fails. The harness never quits
 # FCEUX itself; it writes a final PASS:/FAIL: line and idles, and this script
 # then kills FCEUX with SIGKILL. FCEUX traps SIGTERM and segfaults on its
 # emulator thread while shutting down, which leaves a macOS crash report each
@@ -42,8 +43,10 @@ cd "$(dirname "$0")/.." || exit 1
 FCEUX="${FCEUX_BIN:-fceux}"
 TIMEOUT="${NEOTOXIN_TEST_TIMEOUT:-60}"
 
+# Removed after a passing run; kept after a failure (with FCEUX's own output
+# in fceux.out) so the failure can be investigated.
 CFG_DIR=$(mktemp -d "${TMPDIR:-/tmp}/neotoxin_test.XXXXXX") || exit 1
-trap 'rm -rf "$CFG_DIR"' EXIT
+trap 'rm -rf "$CFG_DIR"; exit 1' INT TERM HUP
 LOG_FILE="$CFG_DIR/test.log"
 
 # Software rendering; the OpenGL view cannot start under the offscreen platform.
@@ -55,6 +58,7 @@ python3 - "$FCEUX" "$CFG_DIR" "$LOG_FILE" "$ROM" "$TIMEOUT" <<'PY'
 import os, signal, subprocess, sys, time
 
 fceux, cfg_dir, log_file, rom, timeout = sys.argv[1:6]
+fceux_out = open(os.path.join(cfg_dir, "fceux.out"), "wb")
 env = dict(
     os.environ,
     HOME=cfg_dir,
@@ -77,8 +81,8 @@ try:
     proc = subprocess.Popen(
         cmd,
         stdin=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        stdout=fceux_out,
+        stderr=subprocess.STDOUT,
         env=env,
         start_new_session=True,
     )
@@ -117,4 +121,9 @@ if [ -f "$LOG_FILE" ]; then
 else
     echo "FAIL: test harness produced no log output"
 fi
-grep -q "^PASS:" "$LOG_FILE" 2>/dev/null
+if grep -q "^PASS:" "$LOG_FILE" 2>/dev/null; then
+    rm -rf "$CFG_DIR"
+    exit 0
+fi
+echo "Harness log and FCEUX output kept in $CFG_DIR"
+exit 1
