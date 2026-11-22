@@ -20,8 +20,8 @@ boss0.o boss1.o boss2.o sequencer.o envelope.o effect.o rnmedata.o songs.o \
 sfxdata.o bgcollision.o objcollision.o movement.o scroller.o nametable.o \
 attribtable.o renderer.o obj.o anim.o mmc3.o palette.o fade.o gbObj.o \
 gbAction.o player.o gbLoop.o main.o warp.o savegame.o statusscreen.o \
-flags.o ppu.o joypad.o clearram.o math.o maincycle.o area2d.o demomode.o \
-statusmain.o gameover.o levelup.o enemy.o nmi.o irq.o gamedata.o areahdrs.o \
+flags.o ppu.o timer.o joypad.o clearram.o math.o maincycle.o area2d.o demomode.o \
+gameover.o levelup.o enemy.o nmi.o irq.o gamedata.o areahdrs.o \
 dmcdata.o vectors.o
 
 HEADERFILE = ines.hdr

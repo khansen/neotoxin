@@ -11,7 +11,7 @@
 .include "palette.h"
 .include "ppu.h"
 .include "savegame.h"
-.include "statusmain.h"
+.include "statusscreen.h"
 
 .codeseg
 
@@ -343,7 +343,7 @@
     ; return to current area location
     pla
     pla
-    jmp     ExitStatusScreen+3
+    jmp     ResumeArea
   + pha
     and     #$1F
     sta     CurrentSection

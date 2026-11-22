@@ -11,6 +11,7 @@
 .include "savegame.h"
 .include "screendata.h"
 .include "warp.h"
+.include "mmc3.h"
 
 .codeseg
 

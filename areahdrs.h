@@ -3,5 +3,6 @@
 
 ; Exported symbols.
 .extrn AreaHdrTable:label
+.extrn Load2DAreaHdr:proc
 
 .endif  ; !AREAHDRS_H

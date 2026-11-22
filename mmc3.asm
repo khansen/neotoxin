@@ -6,6 +6,7 @@
 .public SetBank
 .public SwapBank
 .public ResetBank
+.public LoadCHR
 
 ; SetBank
 ; =======
@@ -30,6 +31,23 @@
         stx     MMC3_CTRL_REG
         sty     MMC3_PAGE_REG
         rts
+.endp
+
+; LoadCHR
+; =======
+; Sets the eight 1K CHR pages to use when drawing the screen.
+; In: A = low data address.
+;     Y = high data address.
+
+.proc LoadCHR
+    sta     pData
+    sty     pData+1
+    ldy     #$05
+  - lda     [pData],y
+    sta     SelectedCHR,y
+    dey
+    bpl     -
+    rts
 .endp
 
 .end

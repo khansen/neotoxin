@@ -15,10 +15,10 @@
 .include "ppu.h"
 .include "screendata.h"
 .include "selectgame.h"
-.include "statusmain.h"
 .include "titlescreen.h"
 .include "vste.h"
 .include "warp.h"
+.include "statusscreen.h"
 
 .codeseg
 

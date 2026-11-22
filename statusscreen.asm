@@ -8,12 +8,21 @@
 .include "ppu.h"
 .include "screendata.h"
 .include "statusscreen.h"
+.include "anim.h"
+.include "chr.h"
+.include "obj.h"
+.include "area2d.h"
+.include "renderer.h"
+.include "warp.h"
 
 .codeseg
 
 .public PrintValue
 .public UpdateClock
 .public CheckPause
+.public StatusMain
+.public ExitStatusScreen
+.public ResumeArea
 
 ; UpdateClock
 ; ===========
@@ -331,6 +340,75 @@ DecPos2:
     lda     #mrStatusMain
     sta     MainRoutine
     rts
+.endp
+
+; StatusMain
+; ==========
+
+.proc StatusMain
+    lda     JoyFirst
+    and     #btnSTART
+    bne     ExitStatusScreen
+    rts
+.endp
+
+; ExitStatusScreen
+; ================
+; Fades out the status screen and returns to the area.
+
+.proc ExitStatusScreen
+    jsr     PAL_FadeToBlack
+    ; falls through to ResumeArea
+.endp
+
+; ResumeArea
+; ==========
+; Redraws the current area and fades it in, then continues Area2DMain.
+
+.proc ResumeArea
+    jsr     ScreenOff
+    jsr     Load2DArea
+    jsr     RestoreAreaScreen
+    jsr     Area2DMain   ; just so objects are drawn during fade-in
+    lda     #231
+    sta     IRQCount
+    jsr     ScreenOn
+    jsr     PAL_FadeFromBlack
+    lda     #mrArea2DMain
+    sta     MainRoutine
+    rts
+.endp
+
+; RestoreAreaScreen
+; =================
+
+.proc RestoreAreaScreen
+; restore Area CHR
+    lda     ah_AreaCHR
+    sta     SelectedCHR
+    lda     ah_AreaCHR+1
+    sta     SelectedCHR+1
+    lda     #CHR_STATUS
+    sta     SelectedCHR+3
+; restore sprite CHR
+    ldx     #23
+  - lda     OBJ_Type,x
+    bmi     +
+    lda     ANIM_Cel,x
+    jsr     ANIM_SetCel
+  + dex
+    bpl     -
+; restore Area palette
+    lda     ah_pAreaPalette
+    ldy     ah_pAreaPalette+1
+    jsr     PAL_LoadPalette
+    jsr     SetHealthPal
+; restore screen settings
+    lda     HSGE_Temp2000
+    sta     ZPCtrl0
+; restore Area screen
+    dec     HSGE_MapOfs
+    jmp     HSGE_RenderScreen
 .endp
 
 .end

@@ -7,6 +7,7 @@
 .include "ppu.h"
 .include "screendata.h"
 .include "statusscreen.h"
+.include "mmc3.h"
 
 .codeseg
 

@@ -6,6 +6,7 @@
 .include "mmc3.h"
 .include "ppu.h"
 .include "warp.h"
+.include "areahdrs.h"
 
 .codeseg
 

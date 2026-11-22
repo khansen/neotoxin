@@ -5,6 +5,7 @@
 .include "main.h"
 .include "maincycle.h"
 .include "ppu.h"
+.include "timer.h"
 
 .codeseg
 

@@ -17,5 +17,6 @@ MMC3_IRQ_ENABLE_REG     EQU     $E001
 .extrn SetBank:proc
 .extrn SwapBank:proc
 .extrn ResetBank:proc
+.extrn LoadCHR:proc
 
 .endif

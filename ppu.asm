@@ -1,6 +1,5 @@
 .include "game.h"
 .include "nes.h"
-.include "areahdrs.h"
 .include "obj.h"
 .include "ppu.h"
 
@@ -8,7 +7,6 @@
 
 .public ScreenOff
 .public ClearDisplay
-.public LoadCHR
 .public ScreenOn
 .public EndPPUString
 .public WaitNMIPass
@@ -17,53 +15,9 @@
 .public Return
 .public CheckPPUWrite
 .public FrameDelay
-.public UpdateTimers
-.public Load2DAreaHdr
 .public WritePPUString
 
-; PPU / VRAM helper routines, plus Load2DAreaHdr and UpdateTimers
-; (kept in this unit to preserve the original Bank 7 routine order).
-
-; Load2DAreaHdr
-; =============
-; In: A = Area to load
-
-.proc Load2DAreaHdr
-    asl
-    tax
-    lda     AreaHdrTable,x
-    sta     pData
-    lda     AreaHdrTable+1,x
-    sta     pData+1
-    ldy     #18     ; header length - 1
-  - lda     [pData],y
-    sta     ah_AreaBank,y
-    dey
-    bpl     -
-    rts
-.endp
-
-; LoadCHR
-; =======
-; Sets the eight 1K CHR pages to use when drawing the screen.
-; In: A = low data address.
-;     Y = high data address.
-
-.proc LoadCHR
-    sta     pData
-    sty     pData+1
-    ldy     #$05
-  - lda     [pData],y
-    sta     SelectedCHR,y
-    dey
-    bpl     -
-    rts
-.endp
-
-; AnimateCHR
-; ==========
-
-;    AnimateCHR:
+; PPU / VRAM helper routines.
 
 ; ScreenOff
 ; =========
@@ -110,25 +64,6 @@
     ora     #%00011000      ; bg & sprite visibility = true
     sta     ZPCtrl1
     bne     WaitNMIPass
-.endp
-
-; UpdateTimers
-; ============
-; Decrements Timer every (1/60)*TIMER_SPEED seconds (AKA every TIMER_SPEEDth
-; frame), if it isn't already zero.
-
-.proc UpdateTimers
-    dec     TimerDelay
-    bpl     ++
-    lda     #TIMER_SPEED-1
-    sta     TimerDelay
-    ldx     #$07            ; 8 timers to update
-  - lda     Timer,x
-    beq     +               ; don't modify if already zero
-    dec     Timer,x
-  + dex                     ; next timer
-    bpl     -
- ++ rts
 .endp
 
 ; ClearDisplay

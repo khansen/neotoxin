@@ -5,6 +5,7 @@
 .include "palette.h"
 .include "ppu.h"
 .include "screendata.h"
+.include "mmc3.h"
 
 .codeseg
 

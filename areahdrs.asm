@@ -7,10 +7,12 @@
 .include "area/plant/plant.h"
 .include "area/ruins/ruins.h"
 .include "areahdrs.h"
+.include "game.h"
 
 .codeseg
 
 .public AreaHdrTable
+.public Load2DAreaHdr
 
 ;-------------------------------[ Area headers ]------------------------------
 
@@ -107,5 +109,24 @@ boss2_header:
 .dw boss2_objconstructors
 .dw boss2_actionptrtable
 .dw boss2_loopptrtable
+
+; Load2DAreaHdr
+; =============
+; In: A = Area to load
+
+.proc Load2DAreaHdr
+    asl
+    tax
+    lda     AreaHdrTable,x
+    sta     pData
+    lda     AreaHdrTable+1,x
+    sta     pData+1
+    ldy     #18     ; header length - 1
+  - lda     [pData],y
+    sta     ah_AreaBank,y
+    dey
+    bpl     -
+    rts
+.endp
 
 .end
