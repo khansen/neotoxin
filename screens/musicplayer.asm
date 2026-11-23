@@ -9,6 +9,12 @@
 .include "screens/statusscreen.h"
 .include "common/mmc3.h"
 
+SONG_COUNT      EQU     16      ; songs are numbered 1..SONG_COUNT
+
+.dataseg
+
+SongNumber      .byte           ; the song being played
+
 .codeseg
 
 .public MusicPlayerInit
@@ -35,7 +41,7 @@
     jsr     LoadCHR
     lda     #1
     sta     RNME_LoadTune
-    sta     $9D
+    sta     SongNumber
     jsr     PrintSong
     inc     MainRoutine
     jsr     ScreenOn
@@ -58,20 +64,20 @@
     sta     MainRoutine
     jmp     PAL_FadeToBlack
     @@PlayPrevSong:
-    dec     $9D
+    dec     SongNumber
     bne     +
-    lda     #16
-    sta     $9D
-  + lda     $9D
+    lda     #SONG_COUNT
+    sta     SongNumber
+  + lda     SongNumber
     sta     RNME_LoadTune
     jmp     PrintSong
     @@PlayNextSong:
-    inc     $9D
-    lda     $9D
-    cmp     #17
+    inc     SongNumber
+    lda     SongNumber
+    cmp     #SONG_COUNT+1
     bne     +
     lda     #1
-    sta     $9D
+    sta     SongNumber
   + sta     RNME_LoadTune
     jmp     PrintSong
 .endp
@@ -79,7 +85,7 @@
 .proc PrintSong
     lda     #$22
     ldy     #$0F
-    ldx     $9D
+    ldx     SongNumber
     stx     AC0
     ldx     #0
     stx     AC1
