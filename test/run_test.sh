@@ -77,43 +77,66 @@ cmd = [
     rom,
 ]
 
-try:
-    proc = subprocess.Popen(
-        cmd,
-        stdin=subprocess.DEVNULL,
-        stdout=fceux_out,
-        stderr=subprocess.STDOUT,
-        env=env,
-        start_new_session=True,
-    )
-except OSError as e:
-    print("FAIL: cannot run %s: %s" % (fceux, e))
-    sys.exit(1)
+# FCEUX occasionally loads the script and then never emulates a frame
+# (seen on the first run after FCEUX has been idle for a few minutes). The
+# first checkpoint normally comes within a second, so a run that has logged
+# none after STARTUP_TIMEOUT seconds is restarted, once.
+STARTUP_TIMEOUT = 15
+ATTEMPTS = 2
+
+def read_lines(path):
+    try:
+        with open(path, "rb") as f:
+            return f.read().splitlines()
+    except FileNotFoundError:
+        return []
 
 def finished():
-    try:
-        with open(log_file, "rb") as f:
-            lines = f.read().splitlines()
-    except FileNotFoundError:
-        return False
-    return any(l.startswith((b"PASS:", b"FAIL:")) for l in lines)
+    return any(l.startswith((b"PASS:", b"FAIL:")) for l in read_lines(log_file))
 
-deadline = time.monotonic() + float(timeout)
-try:
-    while not finished():
-        if proc.poll() is not None:
-            print("FAIL: FCEUX exited before the harness finished (status %d)" % proc.returncode)
-            break
-        if time.monotonic() >= deadline:
-            print("FAIL: test harness timed out after %ss" % timeout)
-            break
-        time.sleep(0.05)
-finally:
+def emulating():
+    return any(not l.startswith(b"start ") for l in read_lines(log_file + ".progress"))
+
+def run_once(attempt):
+    """Returns True to retry (FCEUX never started emulating)."""
     try:
-        os.killpg(proc.pid, signal.SIGKILL)
-    except ProcessLookupError:
-        pass
-    proc.wait()
+        proc = subprocess.Popen(
+            cmd,
+            stdin=subprocess.DEVNULL,
+            stdout=fceux_out,
+            stderr=subprocess.STDOUT,
+            env=env,
+            start_new_session=True,
+        )
+    except OSError as e:
+        print("FAIL: cannot run %s: %s" % (fceux, e))
+        sys.exit(1)
+    started = time.monotonic()
+    deadline = started + float(timeout)
+    try:
+        while not finished():
+            if proc.poll() is not None:
+                print("FAIL: FCEUX exited before the harness finished (status %d)" % proc.returncode)
+                return False
+            now = time.monotonic()
+            if attempt + 1 < ATTEMPTS and now - started >= STARTUP_TIMEOUT and not emulating():
+                print("NOTE: FCEUX emulated no frames in %ds; restarting it" % STARTUP_TIMEOUT)
+                return True
+            if now >= deadline:
+                print("FAIL: test harness timed out after %ss" % timeout)
+                return False
+            time.sleep(0.05)
+        return False
+    finally:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        proc.wait()
+
+for attempt in range(ATTEMPTS):
+    if not run_once(attempt):
+        break
 PY
 
 if [ -f "$LOG_FILE" ]; then
