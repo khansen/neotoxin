@@ -26,8 +26,6 @@ SCROLL_TRESHOLD         EQU     80
 ; 2D area header (ah_AreaBank, ah_pMaps, ...)
 .include "area/areahdrs.h"
 
-pCode                   EQU     $FC
-pData                   EQU     $FE
 
 PPUString               EQU     $0100
 RAMPalette              EQU     $0160

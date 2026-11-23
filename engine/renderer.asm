@@ -12,10 +12,12 @@
 .dataseg zeropage
 
 ObjMapOfs       .byte
+HSGE            .hsge_state
 
 .codeseg
 
 .public ObjMapOfs
+.public HSGE
 .public HSGE_DeleteFarObjects
 .public ExecObjConstr
 .public LoadObject

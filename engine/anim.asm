@@ -6,6 +6,8 @@
 
 .dataseg zeropage
 
+ANIM_pLoop          .word
+ANIM_pCel           .word
 ScreenX             .byte
 ScreenY             .byte
 SpriteBase          .byte

@@ -6,10 +6,12 @@
 
 .include "common/temps.h"
 
-.public Temp, Count, Count2, Count3, Index, Index2, Index3, Index4
+.public pCode, pData, Temp, Count, Count2, Count3, Index, Index2, Index3, Index4
 
 .dataseg zeropage
 
+pCode           .word
+pData           .word
 Temp            .byte[4]
 Count           .byte
 Count2          .byte

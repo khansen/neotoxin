@@ -6,11 +6,7 @@
 #   7-15: $00
 # RAM the linker may assign to .dataseg variables. Only ranges that no
 # hard-coded RAM (game.h, engine headers) uses are listed; end is exclusive.
-# xlnk places the smallest variables first, each in the first block that
-# fits. The small zero page block is listed first so that they fill it and
-# leave the large one in one piece for the structs.
-ram{start=$C0,end=$FC}      # zero page
-ram{start=$00,end=$A0}      # zero page
+ram{start=$00,end=$100}     # zero page
 ram{start=$0180,end=$01A0}
 ram{start=$0700,end=$0800}
 copy{file=ines.hdr}

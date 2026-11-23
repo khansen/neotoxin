@@ -13,8 +13,6 @@ ANIM_Tick               EQU     $03C0
 ANIM_Method             EQU     $03D8
 ANIM_CHRPage            EQU     $03F0
 
-ANIM_pLoop              EQU     $BC
-ANIM_pCel               EQU     $BE
 
 amNoCycling             EQU     $80
 amForward               EQU     $40

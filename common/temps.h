@@ -7,6 +7,8 @@
 ; Zero page temporaries shared by all code; a routine may use them only
 ; until it calls another routine that might.
 
+.extrn pCode:word               ; GoRoutine's jump table pointer
+.extrn pData:word               ; general purpose data pointer
 .extrn Temp:byte                ; 4 bytes; Temp/Temp+1 is also used as a word
 .extrn Count:byte
 .extrn Count2:byte
