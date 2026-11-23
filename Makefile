@@ -155,7 +155,7 @@ $(BUILD_DIR)/songs.o: $(wildcard music/*.inc) $(GEN_MUSIC)
 $(BUILD_DIR)/vste.o: font.tbl
 $(BUILD_DIR)/screendata.o: font.tbl $(wildcard data/*.dat) $(GEN_DATS) data/title.pal
 $(BUILD_DIR)/gamedata.o: data/demo.dat
-$(BUILD_DIR)/dmcdata.o: $(wildcard sound/samples/*)
+$(BUILD_DIR)/dmcdata.o: $(wildcard sound/samples/*) sound/samples/hurt.dmc
 
 $(BUILD_DIR)/ruins.o: area/ruins/rnMain.asm $(wildcard area/ruins/*.inc) $(filter area/ruins/%,$(GEN_MAPS)) | $(BUILD_DIR)
 	$(XASM) $< -o $@
@@ -229,6 +229,11 @@ area/building/bdSave%.inc: area/building/building_save%.nga tools/nga2asm
 	$(MAP_RECIPE)
 
 $(PATCHED_MAPS): %.inc: %.patch
+
+# The player-hurt sound is synthesized (deterministic, so the committed copy
+# is reproduced exactly).
+sound/samples/hurt.dmc: tools/hurtsfx.py
+	python3 $< $@
 
 $(GEN_MUSIC): music/%.inc: music/%.xm tools/xm2muz
 	tools/xm2muz $< > $@

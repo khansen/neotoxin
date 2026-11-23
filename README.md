@@ -13,7 +13,7 @@ Requirements:
 
 - [XORcyst](https://github.com/khansen/xorcyst) 2.1
 - GNU make (3.81 works)
-- A C++ compiler and `patch`
+- A C++ compiler, `patch` and `python3`
 - [huffpuff](https://github.com/khansen/huffpuff) 1.0.6, only to change the
   game's text
 
@@ -76,6 +76,7 @@ changes; edit the source, not the generated file:
 | `music/neox009.xm` | `music/neox009.inc` | `tools/xm2muz` |
 | `data/*.nam` | the dialog, name entry and game select screens, `data/*.dat` | `tools/comp` |
 | `huff/strings.txt` | the game's text, `huff/strings.inc` and `huff/huffpuff.tab` | huffpuff |
+| `tools/hurtsfx.py` | the player-hurt sound, `sound/samples/hurt.dmc` | `python3` |
 
 Some map sections have hand edits on top of the converter's output, kept in a
 `.patch` next to the `.inc`; the Makefile explains how to change one. The
