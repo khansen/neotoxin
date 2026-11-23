@@ -4,8 +4,8 @@
 #   5:   $10 (16 x 8K CHR-ROM banks = 128K)
 #   6:   $43 (Mapper = 4 / MMC3, Mirroring = 1 / vertical, WRAM = yes)
 #   7-15: $00
-# RAM the linker may assign to .dataseg variables. Only ranges that no
-# hard-coded RAM (game.h, engine headers) uses are listed; end is exclusive.
+# RAM the linker may assign to .dataseg variables (end is exclusive). All
+# RAM is linker-placed except the stack and the sprite page.
 ram{start=$00,end=$100}     # zero page
 # xlnk places smaller variables first, each in the first block where it
 # fits. The blocks are listed so that the large tables still find room:

@@ -58,7 +58,7 @@ IRQCount            .byte   ; scanline of the MMC3 IRQ, 0 = none
 ; perform sprite DMA
     lda     #$00
     sta     SPRAddr         ; reset SPR-RAM address
-    lda     #$02
+    lda     #>SPRITE_PAGE
     sta     SPRDMAReg
 ; set CHR banks
     ldx     #$05

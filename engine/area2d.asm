@@ -241,10 +241,10 @@ RoomFlags           .byte
     bne     -
 .ifdef DEMOREC
 ; prepare to record game demo
-    lda     #$71
+    lda     #>DEMO_BUFFER
     sta     pDemo+1
     ldy     #0
-    sty     pDemo   ; store demo in WRAM, starting at $7100.
+    sty     pDemo   ; store demo in WRAM at DEMO_BUFFER
     sty     OldStat
     iny     ; =1
     sty     JoyCount

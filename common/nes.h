@@ -17,10 +17,14 @@ JoyReg                  EQU     $4016
 
 ; Sprite RAM defs
 
-SPR_PosX                EQU     $0203
-SPR_PosY                EQU     $0200
-SPR_Tile                EQU     $0201
-SPR_Attrib              EQU     $0202
+; The sprite page: 64 sprites of 4 bytes, copied to the PPU by the NMI with
+; sprite DMA. It is the only fixed RAM besides the stack ($0100-$01FF is
+; shared with linker-placed variables below $01A0).
+SPRITE_PAGE             EQU     $0200
+SPR_PosY                EQU     SPRITE_PAGE
+SPR_Tile                EQU     SPRITE_PAGE+1
+SPR_Attrib              EQU     SPRITE_PAGE+2
+SPR_PosX                EQU     SPRITE_PAGE+3
 
 ; Joy pad defs
 
