@@ -10,7 +10,7 @@ BLANK_TILE              EQU     $00
 MAX_SCROLLSPEED         EQU     2
 SCROLL_TRESHOLD         EQU     80
 
-; Zero page defs
+; Global state. Each header says which unit defines its variables.
 
 
 ; shared temporaries (Temp, Count, Index, ...)
