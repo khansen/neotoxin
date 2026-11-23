@@ -1,0 +1,35 @@
+--- bdSect3.inc (nga2asm -r -w)
++++ bdSect3.inc
+@@ -1,3 +1,7 @@
++building_sect3_warps:
++.db $00,$A5
++.db $11,$CB
++
+ building_sect3_room0:
+ .db $4C,$77,$77,$77,$77,$77,$10,$77
+ .db $4C,$76,$76,$76,$76,$76,$10,$77
+@@ -6,9 +10,10 @@
+ .db $4C,$7F,$0B,$7F,$07,$7F,$4A,$00
+ .db $4C,$0D,$0C,$0D,$0D,$0D,$4A,$6D
+ .db $4C,$42,$42,$42,$42,$42,$0F,$00
+-.db $71,$00,$6F,$6F,$6E,$6C,$42,$0F
++.db $71,$00,$6F,$6F,$6E,$6C,$00,$0F
+ ; building_sect3_room0_objects:
+-.db $02,$A5,$00,$00,$FF
++.db $02,$A5,$00,$02
++.db $FF
+ building_sect3_room1:
+ .db $77,$10,$77,$77,$77,$77,$77,$4C
+ .db $77,$10,$76,$76,$76,$76,$76,$4C
+@@ -41,9 +46,7 @@
+ .db $79,$67,$79,$67,$79,$0C,$67,$4C
+ .db $41,$41,$41,$41,$41,$41,$41,$4C
+ ; building_sect3_room3_objects:
+-.db $02,$CB,$00,$00,$FF
++.db $02,$CB,$40,$01
++.db $FF
+ building_sect3_map:
+ .dw building_sect3_room0,building_sect3_room1,building_sect3_room2,building_sect3_room3
+-building_sect3_warps:
+-.db $00, $A5 ; 00
+-.db $11, $CB ; 01

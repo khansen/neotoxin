@@ -1,0 +1,37 @@
+--- bdSect20.inc (nga2asm -r -w)
++++ bdSect20.inc
+@@ -1,3 +1,7 @@
++building_sect20_warps:
++.db $20,$AF
++.db $01,$C1
++
+ building_sect20_room0:
+ .db $4C,$67,$79,$67,$79,$67,$79,$67
+ .db $4C,$3D,$3D,$3D,$3D,$3D,$3D,$3D
+@@ -19,7 +23,8 @@
+ .db $0C,$6E,$69,$0E,$00,$00,$00,$4C
+ .db $41,$41,$41,$41,$41,$41,$41,$71
+ ; building_sect20_room1_objects:
+-.db $02,$C1,$00,$00,$FF
++.db $02,$C1,$00,$03
++.db $FF
+ building_sect20_room2:
+ .db $4C,$69,$00,$00,$00,$7F,$7F,$00
+ .db $4C,$00,$29,$2B,$2B,$2E,$2E,$00
+@@ -52,7 +57,8 @@
+ .db $4C,$42,$42,$42,$42,$42,$42,$42
+ .db $4C,$00,$50,$00,$50,$00,$50,$00
+ ; building_sect20_room4_objects:
+-.db $02,$AF,$00,$00,$FF
++.db $02,$AF,$00,$03
++.db $FF
+ building_sect20_room5:
+ .db $41,$41,$41,$41,$53,$53,$07,$4C
+ .db $53,$53,$53,$53,$07,$7F,$7F,$4C
+@@ -67,6 +73,3 @@
+ building_sect20_map:
+ .dw building_sect20_room0,building_sect20_room1,building_sect20_room2,building_sect20_room3
+ .dw building_sect20_room4,building_sect20_room5
+-building_sect20_warps:
+-.db $01, $C1 ; 00
+-.db $20, $AF ; 01

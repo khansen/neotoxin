@@ -1,0 +1,50 @@
+--- plSect0.inc (nga2asm -r -w)
++++ plSect0.inc
+@@ -1349,25 +1349,26 @@
+ .dw plant_sect0_room108,plant_sect0_room109,plant_sect0_room110,plant_sect0_room111
+ .dw plant_sect0_room112,plant_sect0_room113,plant_sect0_room114,plant_sect0_room115
+ .dw plant_sect0_room116,plant_sect0_room117,plant_sect0_room118,plant_sect0_room119
++
+ plant_sect0_warps:
+-.db $00, $A1 ; 00
+-.db $03, $CF ; 01
+-.db $08, $CB ; 02
+-.db $0B, $83 ; 03
+-.db $1B, $6E ; 04
+-.db $27, $69 ; 05
+-.db $28, $6F ; 06
+-.db $2A, $65 ; 07
+-.db $35, $AB ; 08
+-.db $3B, $0E ; 09
+-.db $42, $A1 ; 0A
+-.db $5A, $EB ; 0B
+-.db $60, $01 ; 0C
+-.db $64, $AF ; 0D
+-.db $70, $8F ; 0E
+-.db $74, $41 ; 0F
+-.db $7B, $CE ; 10
+-.db $80, $E1 ; 11
+-.db $88, $8B ; 12
+-.db $91, $A7 ; 13
+-.db $9B, $2E ; 14
++.db $00, $A1 ; 00 - plant_sect14 ; 0E
++.db $03, $CF ; 01 - plant_sect1  ; 01
++.db $08, $CB ; 02 - building_save3
++.db $0B, $83 ; 03 - plant_sect16 ; 10
++.db $1B, $6E ; 04 - plant_sect2  ; 02
++.db $27, $69 ; 05 - plant_sect12 ; 0C CHANGE ROOM! IDENTICAL TO 16
++.db $28, $6F ; 06 - plant_sect3  ; 03
++.db $2A, $65 ; 07 - plant_sect4  ; 04
++.db $35, $AB ; 08 - boss1_sect1
++.db $3B, $0E ; 09 - plant_sect5  ; 05
++.db $42, $A1 ; 0A - plant_sect6  ; 06
++.db $5A, $EB ; 0B - building_save4
++.db $60, $01 ; 0C - plant_sect13 ; 0D
++.db $64, $AF ; 0D - building_save5
++.db $70, $8F ; 0E - plant_sect7  ; 07
++.db $74, $41 ; 0F - plant_sect8  ; 08
++.db $7B, $CE ; 10 - plant_sect9  ; 09
++.db $80, $E1 ; 11 - plant_sect15 ; 0F
++.db $88, $8B ; 12 - plant_sect10 ; 0A
++.db $91, $A7 ; 13 - ruins_sect0
++.db $9B, $2E ; 14 - plant_sect11 ; 0B

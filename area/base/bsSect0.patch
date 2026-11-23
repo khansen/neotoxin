@@ -1,0 +1,48 @@
+--- bsSect0.inc (nga2asm -r -w)
++++ bsSect0.inc
+@@ -1439,24 +1439,25 @@
+ .dw base_sect0_room116,base_sect0_room117,base_sect0_room118,base_sect0_room119
+ .dw base_sect0_room120,base_sect0_room121,base_sect0_room122,base_sect0_room123
+ .dw base_sect0_room124,base_sect0_room125,base_sect0_room126,base_sect0_room127
++
+ base_sect0_warps:
+-.db $00, $81 ; 00
+-.db $05, $E1 ; 01
+-.db $10, $C5 ; 02
+-.db $12, $2B ; 03
+-.db $1C, $41 ; 04
+-.db $30, $A1 ; 05
+-.db $31, $29 ; 06
+-.db $36, $07 ; 07
+-.db $38, $07 ; 08
+-.db $3F, $0E ; 09
+-.db $43, $EF ; 0A
+-.db $47, $4D ; 0B
+-.db $50, $61 ; 0C
+-.db $53, $85 ; 0D
+-.db $55, $6F ; 0E
+-.db $5E, $65 ; 0F
+-.db $5F, $01 ; 10
+-.db $61, $E7 ; 11
+-.db $64, $E5 ; 12
+-.db $7E, $A9 ; 13
++.db $00, $81    ; 00 - base_sect1   ; 01
++.db $05, $E1    ; 01 - building_sect2 (exit from base)
++.db $10, $C5    ; 02 - building_save6
++.db $12, $2B    ; 03 - base_sect2   ; 02
++.db $1C, $41    ; 04 - base_sect3   ; 03
++.db $30, $A1    ; 05 - base_sect4   ; 04
++.db $31, $29    ; 06 - base_sect5   ; 05
++.db $36, $07    ; 07 - base_sect6   ; 06
++.db $38, $07    ; 08 - building_save7
++.db $3F, $0E    ; 09 - base_sect7   ; 07
++.db $43, $EF    ; 0A - base_sect8   ; 08
++.db $47, $4D    ; 0B - base_sect9   ; 09
++.db $50, $61    ; 0C - base_sect10  ; 0A
++.db $53, $85    ; 0D - base_sect11  ; 0B
++.db $55, $6F    ; 0E - base_sect12  ; 0C
++.db $5E, $65    ; 0F - base_sect13  ; 0D
++.db $5F, $01    ; 10 - base_sect14  ; 0E
++.db $61, $E7    ; 11 - base_sect15  ; 0F
++.db $64, $E5    ; 12 - boss2_sect1
++.db $7E, $A9    ; 13 - building_save8

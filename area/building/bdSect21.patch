@@ -1,0 +1,25 @@
+--- bdSect21.inc (nga2asm -r -w)
++++ bdSect21.inc
+@@ -1,3 +1,6 @@
++building_sect21_warps:
++.db $10,$AF
++
+ building_sect21_room0:
+ .db $10,$10,$10,$10,$10,$10,$10,$10
+ .db $10,$10,$18,$18,$18,$18,$10,$10
+@@ -30,7 +33,8 @@
+ .db $10,$03,$03,$03,$03,$03,$03,$03
+ .db $7C,$00,$12,$00,$12,$00,$12,$00
+ ; building_sect21_room2_objects:
+-.db $02,$AF,$00,$00,$FF
++.db $02,$AF,$00,$0E
++.db $FF
+ building_sect21_room3:
+ .db $2E,$00,$2E,$00,$4A,$73,$59,$15
+ .db $2E,$00,$2E,$7E,$7D,$73,$59,$7C
+@@ -44,5 +48,3 @@
+ .db $FF
+ building_sect21_map:
+ .dw building_sect21_room0,building_sect21_room1,building_sect21_room2,building_sect21_room3
+-building_sect21_warps:
+-.db $10, $AF ; 00

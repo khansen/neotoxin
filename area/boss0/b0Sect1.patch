@@ -1,0 +1,10 @@
+--- b0Sect1.inc (nga2asm -r -w)
++++ b0Sect1.inc
+@@ -45,5 +45,5 @@
+ boss0_sect1_map:
+ .dw boss0_sect1_room0,boss0_sect1_room1,boss0_sect1_room2,boss0_sect1_room3
+ boss0_sect1_warps:
+-.db $00, $81 ; 00
+-.db $03, $87 ; 01
++.db $00, $81
++.db $03, $87

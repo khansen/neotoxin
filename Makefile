@@ -98,15 +98,28 @@ CHRFILES = $(wildcard chr/*.chr)
 # converters having run, but each is rebuilt whenever its source or tool
 # changes, and must come out identical to the committed copy.
 #
-# Sources that are kept as reference only, because the committed output was
-# edited by hand after conversion and is now the file to edit:
+# Sources kept as reference only, because the committed output was edited
+# by hand after conversion and is now the file to edit:
 #   music/*.xm except neox009.xm   patterns shortened to fit bank 6
-#   area/*/*.nga for every section not listed below (item IDs, script
-#   pointers and warps were added to the .inc by hand, and bsSect12.inc
-#   has one changed warp target)
-PLANT_GEN_SECTS = $(patsubst %,area/plant/plSect%.inc,1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)
+#
+# Every map section with a .nga source is generated from it. Where the .inc
+# needs more than the converter produces (item IDs, script pointers, hand
+# written warp tables), those edits are kept as a patch next to it
+# (bdSect1.patch for bdSect1.inc) and applied to the converter output. The
+# patches use no fuzz: if a map edit changes the lines a patch touches, the
+# build stops (patch leaves a .rej file) instead of silently dropping the
+# hand edit. To change a hand edit, edit the .inc, then recreate the patch:
+#   tools/nga2asm SOURCE.nga -r -w | diff -u --label "X.inc (nga2asm -r -w)" \
+#       --label X.inc - X.inc > X.patch
+GEN_MAPS = \
+    $(patsubst area/ruins/ruins_sect%.nga,area/ruins/rnSect%.inc,$(wildcard area/ruins/ruins_sect*.nga)) \
+    $(patsubst area/plant/plant_sect%.nga,area/plant/plSect%.inc,$(wildcard area/plant/plant_sect*.nga)) \
+    $(patsubst area/base/base_sect%.nga,area/base/bsSect%.inc,$(wildcard area/base/base_sect*.nga)) \
+    $(patsubst area/boss0/boss0_sect%.nga,area/boss0/b0Sect%.inc,$(wildcard area/boss0/boss0_sect*.nga)) \
+    $(patsubst area/building/building_sect%.nga,area/building/bdSect%.inc,$(wildcard area/building/building_sect*.nga)) \
+    $(patsubst area/building/building_save%.nga,area/building/bdSave%.inc,$(wildcard area/building/building_save*.nga))
 
-BASE_GEN_SECTS = $(patsubst %,area/base/bsSect%.inc,1 2 3 4 5 6 7 8 9 10 11 13 14 15)
+PATCHED_MAPS = $(patsubst %.patch,%.inc,$(wildcard area/*/*.patch))
 
 GEN_DATS = data/dialog.dat data/name2.dat data/select22.dat
 
@@ -144,19 +157,19 @@ $(BUILD_DIR)/screendata.o: font.tbl $(wildcard data/*.dat) $(GEN_DATS) data/titl
 $(BUILD_DIR)/gamedata.o: data/demo.dat
 $(BUILD_DIR)/dmcdata.o: $(wildcard sound/samples/*)
 
-$(BUILD_DIR)/ruins.o: area/ruins/rnMain.asm $(wildcard area/ruins/*.inc) | $(BUILD_DIR)
+$(BUILD_DIR)/ruins.o: area/ruins/rnMain.asm $(wildcard area/ruins/*.inc) $(filter area/ruins/%,$(GEN_MAPS)) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-$(BUILD_DIR)/plant.o: area/plant/plMain.asm $(wildcard area/plant/*.inc) $(PLANT_GEN_SECTS) | $(BUILD_DIR)
+$(BUILD_DIR)/plant.o: area/plant/plMain.asm $(wildcard area/plant/*.inc) $(filter area/plant/%,$(GEN_MAPS)) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-$(BUILD_DIR)/base.o: area/base/bsMain.asm $(wildcard area/base/*.inc) $(BASE_GEN_SECTS) | $(BUILD_DIR)
+$(BUILD_DIR)/base.o: area/base/bsMain.asm $(wildcard area/base/*.inc) $(filter area/base/%,$(GEN_MAPS)) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-$(BUILD_DIR)/building.o: area/building/bdMain.asm $(wildcard area/building/*.inc) | $(BUILD_DIR)
+$(BUILD_DIR)/building.o: area/building/bdMain.asm $(wildcard area/building/*.inc) $(filter area/building/%,$(GEN_MAPS)) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
-$(BUILD_DIR)/boss0.o: area/boss0/b0Main.asm $(wildcard area/boss0/*.inc) | $(BUILD_DIR)
+$(BUILD_DIR)/boss0.o: area/boss0/b0Main.asm $(wildcard area/boss0/*.inc) $(filter area/boss0/%,$(GEN_MAPS)) | $(BUILD_DIR)
 	$(XASM) $< -o $@
 
 $(BUILD_DIR)/boss1.o: area/boss1/b1Main.asm $(wildcard area/boss1/*.inc) | $(BUILD_DIR)
@@ -187,11 +200,35 @@ data/name2.dat: data/name.nam tools/comp
 data/select22.dat: data/select2.nam tools/comp
 	tools/comp $< 32 24 0x2065 $@
 
-$(PLANT_GEN_SECTS): area/plant/plSect%.inc: area/plant/plant_sect%.nga tools/nga2asm
-	tools/nga2asm $< -r -w > $@
+# Map sections: converter output, plus the section's patch if it has one.
+define MAP_RECIPE
+tools/nga2asm $< -r -w > $@.gen
+rm -f $@ $@.rej
+if [ -f $(@:.inc=.patch) ]; then \
+    patch -s -F 0 -o $@ $@.gen < $(@:.inc=.patch) || { rm -f $@ $@.gen; exit 1; }; \
+else cp $@.gen $@; fi
+rm -f $@.gen
+endef
 
-$(BASE_GEN_SECTS): area/base/bsSect%.inc: area/base/base_sect%.nga tools/nga2asm
-	tools/nga2asm $< -r -w > $@
+area/ruins/rnSect%.inc: area/ruins/ruins_sect%.nga tools/nga2asm
+	$(MAP_RECIPE)
+
+area/plant/plSect%.inc: area/plant/plant_sect%.nga tools/nga2asm
+	$(MAP_RECIPE)
+
+area/base/bsSect%.inc: area/base/base_sect%.nga tools/nga2asm
+	$(MAP_RECIPE)
+
+area/boss0/b0Sect%.inc: area/boss0/boss0_sect%.nga tools/nga2asm
+	$(MAP_RECIPE)
+
+area/building/bdSect%.inc: area/building/building_sect%.nga tools/nga2asm
+	$(MAP_RECIPE)
+
+area/building/bdSave%.inc: area/building/building_save%.nga tools/nga2asm
+	$(MAP_RECIPE)
+
+$(PATCHED_MAPS): %.inc: %.patch
 
 $(GEN_MUSIC): music/%.inc: music/%.xm tools/xm2muz
 	tools/xm2muz $< > $@

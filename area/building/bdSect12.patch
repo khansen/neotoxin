@@ -1,0 +1,25 @@
+--- bdSect12.inc (nga2asm -r -w)
++++ bdSect12.inc
+@@ -1,3 +1,6 @@
++building_sect12_warps:
++.db $12,$A7
++
+ building_sect12_room0:
+ .db $15,$15,$15,$15,$15,$15,$15,$15
+ .db $10,$3F,$3F,$3F,$3F,$3F,$3F,$3F
+@@ -74,7 +77,8 @@
+ .db $41,$41,$41,$41,$41,$41,$41,$41
+ .db $50,$00,$50,$00,$50,$00,$50,$00
+ ; building_sect12_room6_objects:
+-.db $02,$A7,$00,$00,$FF
++.db $02,$A7,$00,$10
++.db $FF
+ building_sect12_room7:
+ .db $15,$19,$19,$6E,$69,$2C,$4F,$15
+ .db $10,$69,$00,$6A,$6C,$07,$2C,$10
+@@ -89,5 +93,3 @@
+ building_sect12_map:
+ .dw building_sect12_room0,building_sect12_room1,building_sect12_room2,building_sect12_room3
+ .dw building_sect12_room4,building_sect12_room5,building_sect12_room6,building_sect12_room7
+-building_sect12_warps:
+-.db $12, $A7 ; 00

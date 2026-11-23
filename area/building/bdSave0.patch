@@ -1,0 +1,22 @@
+--- bdSave0.inc (nga2asm -r -w)
++++ bdSave0.inc
+@@ -1,3 +1,4 @@
++; Ruins saveroom #1
+ building_save0_room0:
+ .db $00,$00,$00,$00,$00,$00,$00,$00
+ .db $00,$1D,$56,$56,$56,$56,$1D,$00
+@@ -8,10 +9,11 @@
+ .db $00,$58,$3E,$3E,$3E,$3E,$57,$00
+ .db $00,$00,$00,$00,$00,$00,$00,$00
+ ; building_save0_room0_objects:
+-.db $03,$AA,$00,$00,$02,$A5,$00,$00
++.db $03,$AA
++.db <SaveScript,>SaveScript
++.db $02,$A5,$00,$01
+ .db $FF
+ building_save0_map:
+ .dw building_save0_room0
+ building_save0_warps:
+-.db $00, $AA ; 00
+-.db $00, $A5 ; 01
++.db $00, $A5

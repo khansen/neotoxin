@@ -1,0 +1,25 @@
+--- bdSect17.inc (nga2asm -r -w)
++++ bdSect17.inc
+@@ -1,3 +1,6 @@
++building_sect17_warps:
++.db $10,$AB,$00
++
+ building_sect17_room0:
+ .db $4C,$73,$72,$73,$72,$73,$72,$73
+ .db $4C,$76,$76,$76,$76,$76,$76,$76
+@@ -30,7 +33,8 @@
+ .db $4C,$3E,$3E,$3E,$3E,$3E,$3E,$3E
+ .db $4C,$6F,$6F,$6F,$6F,$6F,$6F,$6F
+ ; building_sect17_room2_objects:
+-.db $02,$AB,$00,$00,$FF
++.db $02,$AB,$00,$0B
++.db $FF
+ building_sect17_room3:
+ .db $00,$7F,$7F,$37,$00,$53,$53,$4C
+ .db $00,$7F,$3C,$3C,$00,$7F,$7F,$4C
+@@ -44,5 +48,3 @@
+ .db $FF
+ building_sect17_map:
+ .dw building_sect17_room0,building_sect17_room1,building_sect17_room2,building_sect17_room3
+-building_sect17_warps:
+-.db $10, $AB ; 00

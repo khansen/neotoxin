@@ -1,0 +1,19 @@
+--- b0Sect0.inc (nga2asm -r -w)
++++ b0Sect0.inc
+@@ -30,7 +30,7 @@
+ .db $0B,$10,$0C,$0C,$0C,$0B,$10,$0C
+ .db $0B,$10,$0C,$0C,$0C,$0B,$10,$0C
+ ; boss0_sect0_room2_objects:
+-.db $03,$60,$76,$01,$08,$28,$FF
++.db $03,$60,$76,$01,$88,$08,$28,$FF
+ boss0_sect0_room3:
+ .db $01,$01,$08,$15,$01,$01,$01,$17
+ .db $01,$01,$07,$15,$01,$01,$01,$17
+@@ -45,5 +45,5 @@
+ boss0_sect0_map:
+ .dw boss0_sect0_room0,boss0_sect0_room1,boss0_sect0_room2,boss0_sect0_room3
+ boss0_sect0_warps:
+-.db $10, $61 ; 00
+-.db $11, $6E ; 01
++.db $10, $61
++.db $11, $6E

@@ -1,0 +1,20 @@
+--- bdSect14.inc (nga2asm -r -w)
++++ bdSect14.inc
+@@ -1,3 +1,6 @@
++building_sect14_warps:
++.db $10,$A9
++
+ building_sect14_room0:
+ .db $3A,$77,$77,$77,$77,$77,$77,$3A
+ .db $3A,$3D,$3D,$3D,$3D,$3D,$3D,$3A
+@@ -19,8 +22,7 @@
+ .db $3A,$14,$14,$14,$14,$14,$14,$3A
+ .db $3A,$78,$79,$78,$79,$78,$79,$3A
+ ; building_sect14_room1_objects:
+-.db $02,$A9,$00,$00,$FF
++.db $02,$A9,$00,$05
++.db $FF
+ building_sect14_map:
+ .dw building_sect14_room0,building_sect14_room1
+-building_sect14_warps:
+-.db $10, $A9 ; 00

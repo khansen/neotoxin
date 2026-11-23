@@ -1,0 +1,15 @@
+--- bdSave7.inc (nga2asm -r -w)
++++ bdSave7.inc
+@@ -8,10 +8,9 @@
+ .db $00,$58,$3E,$3E,$3E,$3E,$57,$00
+ .db $00,$00,$00,$00,$00,$00,$00,$00
+ ; building_save7_room0_objects:
+-.db $03,$AA,$00,$00,$02,$A5,$40,$08
++.db $03,$AA,<SaveScript,>SaveScript,$02,$A5,$40,$08
+ .db $FF
+ building_save7_map:
+ .dw building_save7_room0
+ building_save7_warps:
+-.db $00, $AA ; 00
+-.db $00, $A5 ; 01
++.db $00, $A5

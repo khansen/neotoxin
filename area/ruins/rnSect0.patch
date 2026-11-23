@@ -1,0 +1,60 @@
+--- rnSect0.inc (nga2asm -r -w)
++++ rnSect0.inc
+@@ -1,3 +1,28 @@
++ruins_sect0_warps:
++.db $71,$AD     ; Ruins starting pos (from building_sect22)
++.db $78,$A1     ; from building_save0
++.db $7A,$A9     ; from building_sect3
++.db $70,$09     ; from building_sect20
++.db $72,$01     ; from building_sect10
++.db $73,$03     ; from building_sect14
++.db $76,$07     ; from building_sect7
++.db $7B,$01     ; from building_sect18
++.db $7D,$05     ; from building_sect9
++.db $7E,$0D     ; from building_sect11
++.db $40,$C9     ; from building_sect16
++.db $42,$CD     ; from building_sect17
++.db $30,$CD     ; from building_sect13
++.db $32,$2B     ; from building_sect6 (bottom door)
++.db $37,$C1     ; from building_sect21
++.db $39,$E5     ; from building_sect4
++.db $3E,$CB     ; from building_sect12
++.db $2C,$8F     ; from plant_sect0
++.db $2F,$8B     ; from building_sect15
++.db $11,$2D     ; from building_sect2
++.db $16,$A9     ; from building_sect5
++.db $00,$E7     ; from building_sect1
++.db $12,$AB     ; from building_sect6 (top door)
++
+ ruins_sect0_room0:
+ .db $00,$13,$51,$11,$11,$11,$12,$00
+ .db $00,$18,$14,$14,$50,$14,$7D,$00
+@@ -1439,28 +1464,3 @@
+ .dw ruins_sect0_room116,ruins_sect0_room117,ruins_sect0_room118,ruins_sect0_room119
+ .dw ruins_sect0_room120,ruins_sect0_room121,ruins_sect0_room122,ruins_sect0_room123
+ .dw ruins_sect0_room124,ruins_sect0_room125,ruins_sect0_room126,ruins_sect0_room127
+-ruins_sect0_warps:
+-.db $00, $E7 ; 00
+-.db $11, $2D ; 01
+-.db $12, $AB ; 02
+-.db $16, $A9 ; 03
+-.db $1B, $4F ; 04
+-.db $1E, $41 ; 05
+-.db $2C, $8F ; 06
+-.db $2F, $8B ; 07
+-.db $30, $CD ; 08
+-.db $32, $2B ; 09
+-.db $37, $C1 ; 0A
+-.db $39, $E5 ; 0B
+-.db $3E, $CB ; 0C
+-.db $40, $C9 ; 0D
+-.db $60, $29 ; 0E
+-.db $70, $09 ; 0F
+-.db $71, $AD ; 10
+-.db $72, $01 ; 11
+-.db $73, $03 ; 12
+-.db $78, $A1 ; 13
+-.db $7A, $A9 ; 14
+-.db $7B, $01 ; 15
+-.db $7D, $05 ; 16
+-.db $7E, $0D ; 17

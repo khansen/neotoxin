@@ -1,0 +1,11 @@
+--- bsSect12.inc (nga2asm -r -w)
++++ bsSect12.inc
+@@ -8,7 +8,7 @@
+ .db $2A,$02,$05,$05,$0E,$0E,$0E,$2A
+ .db $2A,$2B,$2B,$2B,$2B,$2B,$2B,$2A
+ ; base_sect12_room0_objects:
+-.db $02,$C3,$40,$0E,$FF
++.db $02,$C3,$40,$0C,$FF
+ base_sect12_map:
+ .dw base_sect12_room0
+ base_sect12_warps:
