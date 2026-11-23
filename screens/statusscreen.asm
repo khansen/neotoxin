@@ -14,6 +14,9 @@
 .include "engine/area2d.h"
 .include "engine/renderer.h"
 .include "engine/warp.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
 
 .dataseg zeropage
 

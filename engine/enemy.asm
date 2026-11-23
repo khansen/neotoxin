@@ -14,9 +14,16 @@
 .include "engine/renderer.h"
 .include "sound/sfx.h"
 .include "engine/scroller.h"
+.include "common/nmi.h"
+.include "common/timer.h"
+
+.dataseg zeropage
+
+Random              .byte   ; RND state
 
 .codeseg
 
+.public Random
 .public RND
 .public TestProjectileCollide
 .public CheckPlayerHit

@@ -2,6 +2,7 @@
 .define AREA2D_H
 
 ; Exported symbols.
+.extrn RoomFlags:byte
 .extrn SetTimer:proc
 .extrn LoadScript:proc
 .extrn SetHealthPal:proc

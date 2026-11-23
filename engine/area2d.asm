@@ -21,9 +21,19 @@
 .include "engine/scroller.h"
 .include "screens/statusscreen.h"
 .include "engine/warp.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
+.include "common/timer.h"
+.include "engine/player.h"
+
+.dataseg zeropage
+
+RoomFlags           .byte
 
 .codeseg
 
+.public RoomFlags
 .public SetTimer
 .public LoadScript
 .public SetHealthPal

@@ -19,6 +19,7 @@
 .include "engine/player.h"
 .include "common/ppu.h"
 .include "sound/sfx.h"
+.include "common/nmi.h"
 
 .codeseg
 

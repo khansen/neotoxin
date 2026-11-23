@@ -10,8 +10,18 @@
 .include "common/ppu.h"
 .include "screens/screendata.h"
 .include "screens/titlescreen.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
+.include "game/demomode.h"
+.include "common/timer.h"
+.include "engine/enemy.h"
 
 DEMO_FRAMECOUNT_SEED    EQU     $34
+
+.dataseg zeropage
+
+SinePos             .byte
 
 .codeseg
 
@@ -32,8 +42,6 @@ DEMO_FRAMECOUNT_SEED    EQU     $34
     sta     IRQCount
     lda     #H_MIRROR
     sta     MMC3_MIRROR_REG
-    lda     #$08
-    sta     MaxSpeed
     lda     #$40
     sta     Timer
     jsr     ClearDisplay

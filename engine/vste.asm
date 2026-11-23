@@ -7,6 +7,8 @@
 .include "common/palette.h"
 .include "common/ppu.h"
 .include "screens/screendata.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
 
 .charmap "font.tbl"
 

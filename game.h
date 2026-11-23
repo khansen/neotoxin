@@ -12,69 +12,9 @@ SCROLL_TRESHOLD         EQU     80
 
 ; Zero page defs
 
-ScrollX                 EQU     $00
-ScrollY                 EQU     $01
-ZPCtrl0                 EQU     $02
-ZPCtrl1                 EQU     $03
-MainRoutine             EQU     $04
-IRQRoutine              EQU     $05
-FrameStat               EQU     $06
-FrameCount              EQU     $07
-pDemo                   EQU     $08
-OldStat                 EQU     $0A
-JoyStat                 EQU     $0B
-JoyFirst                EQU     $0C
-FlashPos                EQU     $0D
-ScreenX                 EQU     $0E
-ScreenY                 EQU     $0F
-SpriteBase              EQU     $10
-SpriteIndex             EQU     $11
-CelLength               EQU     $12
-Timer                   EQU     $13     ; 8 bytes
-TimerDelay              EQU     $1B
-PPUDataPending          EQU     $1C
-Temp                    EQU     $1D
-Temp2                   EQU     $1E
-Temp3                   EQU     $1F
-Temp4                   EQU     $20
-Random                  EQU     $21
-Count                   EQU     $22
-Count2                  EQU     $23
-Count3                  EQU     $24
-Count4                  EQU     $25
-JoyCount                EQU     $26
-AllowDblJmp             EQU     $27
-RoomFlags               EQU     $28
-MMC3Ctrl                EQU     $29
-CurrentBank             EQU     $2A
-NextRoutine             EQU     $2B
-SelectedCHR             EQU     $2C     ; 6 bytes
-PPUStrIndex             EQU     $32
-SinePos                 EQU     $33
-IRQCount                EQU     $34
-CollStat                EQU     $35
-DemoNumber              EQU     $36
-ObjLoadEnable           EQU     $37
-DemoMode                EQU     $38
-Index                   EQU     $39
-Index2                  EQU     $3A
-Index3                  EQU     $3B
-Index4                  EQU     $3C
-ProjectileCount         EQU     $3D
-XIndexStart             EQU     $3E
-YIndexStart             EQU     $3F
-CurrentSpeed            EQU     $40
-MaxSpeed                EQU     $41
-ObjCount                EQU     $42
-ObjPageX                EQU     $43
-ObjPageY                EQU     $44
-CurrentGame             EQU     $45
-AreaStartX              EQU     $46
-AreaStartY              EQU     $47
-PlayerStart             EQU     $48
-SaveSlot                EQU     $49
-MenuSelect              EQU     $4A
-MenuItemCount           EQU     $4B
+
+; shared temporaries (Temp, Count, Index, ...)
+.include "common/temps.h"
 
 ; collision scratch (OBJ2_*, CollObjCount/Nums/Types)
 .include "engine/scratch.h"

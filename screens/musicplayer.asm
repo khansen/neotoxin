@@ -8,6 +8,9 @@
 .include "screens/screendata.h"
 .include "screens/statusscreen.h"
 .include "common/mmc3.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
 
 SONG_COUNT      EQU     16      ; songs are numbered 1..SONG_COUNT
 

@@ -10,7 +10,7 @@
 # fits. The small zero page block is listed first so that they fill it and
 # leave the large one in one piece for the structs.
 ram{start=$C0,end=$FC}      # zero page
-ram{start=$4C,end=$A0}      # zero page
+ram{start=$00,end=$A0}      # zero page
 ram{start=$0180,end=$01A0}
 ram{start=$0700,end=$0800}
 copy{file=ines.hdr}
@@ -79,6 +79,7 @@ link{file=build/timer.o}
 link{file=build/sfx.o}
 link{file=build/joypad.o}
 link{file=build/clearram.o}
+link{file=build/temps.o}
 link{file=build/math.o}
 link{file=build/maincycle.o}
 link{file=build/area2d.o}

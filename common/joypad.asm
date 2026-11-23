@@ -2,8 +2,15 @@
 .include "common/nes.h"
 .include "common/joypad.h"
 
+.dataseg zeropage
+
+JoyStat             .byte   ; buttons held
+JoyFirst            .byte   ; buttons pressed this frame
+
 .codeseg
 
+.public JoyStat
+.public JoyFirst
 .public ReadJoypad0
 
 ; ReadJoypad0

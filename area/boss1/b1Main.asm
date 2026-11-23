@@ -17,6 +17,7 @@
 .include "engine/objcollision.h"
 .include "engine/player.h"
 .include "common/ppu.h"
+.include "common/nmi.h"
 
 .codeseg
 

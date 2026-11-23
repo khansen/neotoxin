@@ -11,6 +11,7 @@ OE_PLAYERDEAD       EQU 6
 OE_PLAYERHURT       EQU 7
 
 ; Exported symbols.
+.extrn ProjectileCount:byte
 .extrn PlayerStand:proc
 .extrn PlayerRun:proc
 .extrn PlayerJump:proc

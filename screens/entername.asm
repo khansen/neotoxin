@@ -12,12 +12,19 @@
 .include "engine/warp.h"
 .include "common/mmc3.h"
 .include "sound/sfx.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
 
 .dataseg
 
 LetterCol       .byte       ; cursor position in the letter grid
 LetterRow       .byte
 NamePos         .byte       ; cursor position in the name
+
+.dataseg zeropage
+
+FlashPos            .byte
 
 .codeseg
 

@@ -11,6 +11,10 @@
 .include "engine/warp.h"
 .include "common/mmc3.h"
 .include "sound/sfx.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
+.include "engine/ngsl.h"
 
 .codeseg
 

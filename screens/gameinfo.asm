@@ -6,6 +6,9 @@
 .include "common/ppu.h"
 .include "screens/screendata.h"
 .include "common/mmc3.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
+.include "common/timer.h"
 
 .codeseg
 

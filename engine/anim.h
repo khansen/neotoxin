@@ -24,6 +24,8 @@ amReverseLoop           EQU     $08
 
 
 ; Exported symbols.
+.extrn SpriteBase:byte
+.extrn SpriteIndex:byte
 .extrn ANIM_SetLoop:proc
 .extrn ANIM_SetCel:proc
 .extrn ANIM_GoMethod:proc

@@ -2,6 +2,7 @@
 .define ENEMY_H
 
 ; Exported symbols.
+.extrn Random:byte
 .extrn RND:proc
 .extrn TestProjectileCollide:proc
 .extrn CheckPlayerHit:proc

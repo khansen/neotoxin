@@ -10,6 +10,9 @@
 .include "engine/ngsl.h"
 .include "engine/warp.h"
 .include "sound/sfx.h"
+.include "common/nmi.h"
+.include "engine/player.h"
+.include "engine/bgcollision.h"
 
 .codeseg
 

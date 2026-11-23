@@ -3,6 +3,7 @@
 .include "engine/renderer.h"
 .include "engine/scroller.h"
 .include "engine/warp.h"
+.include "common/nmi.h"
 
 .dataseg zeropage
 

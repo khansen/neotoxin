@@ -33,6 +33,7 @@ SO_PLAYSFX          EQU     23
 
 
 ; Exported symbols.
+.extrn MenuSelect:byte
 .extrn NGSL_pScript:word
 .extrn IntroScript:label
 .extrn ZombieScript:label

@@ -19,9 +19,19 @@
 .include "engine/vste.h"
 .include "engine/warp.h"
 .include "screens/statusscreen.h"
+.include "common/nmi.h"
+
+.dataseg zeropage
+
+MainRoutine         .byte   ; mr* routine run every frame
+NextRoutine         .byte
+IRQRoutine          .byte   ; GoIRQRoutine entry
 
 .codeseg
 
+.public MainRoutine
+.public NextRoutine
+.public IRQRoutine
 .public GoRoutine
 .public GoMainHandler
 .public GoIRQRoutine

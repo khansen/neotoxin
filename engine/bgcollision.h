@@ -2,6 +2,7 @@
 .define BGCOLLISION_H
 
 ; Exported symbols.
+.extrn CollStat:byte
 .extrn OBJ_CheckMoveDown:proc
 .extrn MoveXDir:proc
 .extrn OBJ_CheckMoveLeft:proc

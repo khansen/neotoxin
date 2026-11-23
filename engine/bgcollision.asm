@@ -8,8 +8,13 @@
 .include "engine/scroller.h"
 .include "engine/warp.h"
 
+.dataseg zeropage
+
+CollStat            .byte
+
 .codeseg
 
+.public CollStat
 .public OBJ_CheckMoveDown
 .public MoveXDir
 .public OBJ_CheckMoveLeft

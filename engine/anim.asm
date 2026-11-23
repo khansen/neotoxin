@@ -2,9 +2,20 @@
 .include "game.h"
 .include "common/nes.h"
 .include "engine/obj.h"
+.include "common/mmc3.h"
+
+.dataseg zeropage
+
+ScreenX             .byte
+ScreenY             .byte
+SpriteBase          .byte
+SpriteIndex         .byte   ; next free sprite
+CelLength           .byte
 
 .codeseg
 
+.public SpriteBase
+.public SpriteIndex
 .public ANIM_SetLoop
 .public ANIM_SetCel
 .public ANIM_GoMethod

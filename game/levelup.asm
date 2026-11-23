@@ -5,6 +5,10 @@
 .include "game/levelup.h"
 .include "engine/obj.h"
 .include "sound/sfx.h"
+.include "game/maincycle.h"
+.include "common/timer.h"
+.include "common/mmc3.h"
+.include "engine/anim.h"
 
 .codeseg
 

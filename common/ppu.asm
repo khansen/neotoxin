@@ -2,9 +2,17 @@
 .include "common/nes.h"
 .include "engine/obj.h"
 .include "common/ppu.h"
+.include "common/nmi.h"
+
+.dataseg zeropage
+
+PPUDataPending      .byte
+PPUStrIndex         .byte   ; end of the queued PPUString data
 
 .codeseg
 
+.public PPUDataPending
+.public PPUStrIndex
 .public ScreenOff
 .public ClearDisplay
 .public ScreenOn

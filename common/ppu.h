@@ -2,6 +2,8 @@
 .define PPU_H
 
 ; Exported symbols.
+.extrn PPUDataPending:byte
+.extrn PPUStrIndex:byte
 .extrn ScreenOff:proc
 .extrn ClearDisplay:proc
 .extrn ScreenOn:proc

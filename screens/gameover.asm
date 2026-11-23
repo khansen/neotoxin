@@ -9,6 +9,10 @@
 .include "game/savegame.h"
 .include "screens/screendata.h"
 .include "engine/warp.h"
+.include "common/nmi.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
+.include "engine/ngsl.h"
 
 .codeseg
 

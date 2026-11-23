@@ -14,6 +14,8 @@ MMC3_IRQ_DISABLE_REG    EQU     $E000
 MMC3_IRQ_ENABLE_REG     EQU     $E001
 
 ; Exported symbols.
+.extrn MMC3Ctrl:byte
+.extrn SelectedCHR:byte
 .extrn SetBank:proc
 .extrn SwapBank:proc
 .extrn ResetBank:proc

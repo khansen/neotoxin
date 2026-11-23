@@ -10,9 +10,19 @@
 .include "common/math.h"
 .include "engine/renderer.h"
 .include "engine/warp.h"
+.include "engine/player.h"
+
+.dataseg zeropage
+
+ObjCount            .byte
+ObjPageX            .byte
+ObjPageY            .byte
 
 .codeseg
 
+.public ObjCount
+.public ObjPageX
+.public ObjPageY
 .public DiscardObject
 .public ToggleDirection
 .public FaceLeft

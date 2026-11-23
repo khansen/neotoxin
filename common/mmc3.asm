@@ -1,8 +1,16 @@
 .include "game.h"
 .include "common/mmc3.h"
 
+.dataseg zeropage
+
+MMC3Ctrl            .byte   ; last value written to MMC3_CTRL_REG
+CurrentBank         .byte
+SelectedCHR         .byte[6]   ; CHR banks, written to the MMC3 by the NMI
+
 .codeseg
 
+.public MMC3Ctrl
+.public SelectedCHR
 .public SetBank
 .public SwapBank
 .public ResetBank

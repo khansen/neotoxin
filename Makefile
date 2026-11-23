@@ -68,6 +68,7 @@ OBJS = $(addprefix $(BUILD_DIR)/, \
     timer.o \
     joypad.o \
     clearram.o \
+    temps.o \
     math.o \
     maincycle.o \
     area2d.o \

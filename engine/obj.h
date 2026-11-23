@@ -39,6 +39,9 @@ OBJ_Var3                EQU     $06D8
 
 
 ; Exported symbols.
+.extrn ObjCount:byte
+.extrn ObjPageX:byte
+.extrn ObjPageY:byte
 .extrn DiscardObject:proc
 .extrn ToggleDirection:proc
 .extrn FaceLeft:proc

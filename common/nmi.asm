@@ -6,8 +6,25 @@
 .include "common/ppu.h"
 .include "sound/sequencer.h"
 
+.dataseg zeropage
+
+ScrollX             .byte
+ScrollY             .byte
+ZPCtrl0             .byte   ; shadow of PPUCtrl0, written by the NMI
+ZPCtrl1             .byte   ; shadow of PPUCtrl1
+FrameStat           .byte   ; 0 while the main loop waits for the NMI
+FrameCount          .byte
+IRQCount            .byte   ; scanline of the MMC3 IRQ, 0 = none
+
 .codeseg
 
+.public ScrollX
+.public ScrollY
+.public ZPCtrl0
+.public ZPCtrl1
+.public FrameStat
+.public FrameCount
+.public IRQCount
 .public NMI
 
 ;------------------------[ Non Maskable Interrupt ]---------------------------

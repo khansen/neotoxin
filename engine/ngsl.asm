@@ -12,6 +12,8 @@
 .include "common/ppu.h"
 .include "game/savegame.h"
 .include "screens/statusscreen.h"
+.include "common/joypad.h"
+.include "common/mmc3.h"
 
 .dataseg zeropage
 
@@ -22,8 +24,14 @@ NGSL_LineAddr       .word   ; PPU address of the text line
 NGSL_TextSpeed      .byte
 NGSL_CharsPerFrame  .byte
 
+.dataseg zeropage
+
+MenuSelect          .byte   ; menu cursor (scripts, select game, game over)
+MenuItemCount       .byte
+
 .codeseg
 
+.public MenuSelect
 .public NGSL_pScript
 .public IntroScript
 .public ZombieScript

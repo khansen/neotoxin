@@ -14,8 +14,13 @@
 SaveStats       .save_stats
 NameStr         .byte[NAME_LENGTH]
 
+.dataseg zeropage
+
+SaveSlot            .byte   ; selected save slot (0-7)
+
 .codeseg
 
+.public SaveSlot
 .public SaveStats
 .public NameStr
 .public WriteSaveGame

@@ -13,9 +13,18 @@
 .include "engine/objcollision.h"
 .include "engine/warp.h"
 .include "sound/sfx.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
+.include "common/timer.h"
+
+.dataseg zeropage
+
+AllowDblJmp         .byte
+ProjectileCount     .byte
 
 .codeseg
 
+.public ProjectileCount
 .public PlayerStand
 .public PlayerRun
 .public PlayerJump

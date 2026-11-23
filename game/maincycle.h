@@ -2,6 +2,9 @@
 .define MAINCYCLE_H
 
 ; Exported symbols.
+.extrn MainRoutine:byte
+.extrn NextRoutine:byte
+.extrn IRQRoutine:byte
 .extrn GoRoutine:proc
 .extrn GoMainHandler:proc
 .extrn GoIRQRoutine:proc

@@ -4,8 +4,14 @@
 .include "game.h"
 .include "common/timer.h"
 
+.dataseg zeropage
+
+Timer               .byte[8]
+TimerDelay          .byte
+
 .codeseg
 
+.public Timer
 .public UpdateTimers
 
 ; UpdateTimers

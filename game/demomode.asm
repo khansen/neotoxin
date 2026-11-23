@@ -3,9 +3,24 @@
 .include "game/demomode.h"
 .include "common/fade.h"
 .include "common/mmc3.h"
+.include "game/maincycle.h"
+.include "common/joypad.h"
+
+.dataseg zeropage
+
+pDemo               .word
+OldStat             .byte
+JoyCount            .byte
+DemoMode            .byte
+DemoNumber          .byte
 
 .codeseg
 
+.public pDemo
+.public OldStat
+.public JoyCount
+.public DemoMode
+.public DemoNumber
 .public PlayDemo
 .public RecordDemo
 

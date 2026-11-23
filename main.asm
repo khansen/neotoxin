@@ -6,6 +6,7 @@
 .include "game/maincycle.h"
 .include "common/ppu.h"
 .include "common/timer.h"
+.include "common/nmi.h"
 
 .codeseg
 

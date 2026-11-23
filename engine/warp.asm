@@ -7,6 +7,8 @@
 .include "common/ppu.h"
 .include "engine/warp.h"
 .include "area/areahdrs.h"
+.include "game/maincycle.h"
+.include "game/savegame.h"
 
 .dataseg zeropage
 
@@ -15,8 +17,17 @@ MapHeight           .byte
 pMap                .word   ; room pointer table of the current section
 p2DWarps            .word   ; warp table of the current section
 
+.dataseg zeropage
+
+AreaStartX          .byte
+AreaStartY          .byte
+PlayerStart         .byte
+
 .codeseg
 
+.public AreaStartX
+.public AreaStartY
+.public PlayerStart
 .public MapWidth
 .public MapHeight
 .public pMap
