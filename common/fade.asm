@@ -1,6 +1,7 @@
 .include "game.h"
 .include "common/fade.h"
 .include "common/ppu.h"
+.include "common/palette.h"
 
 .codeseg
 

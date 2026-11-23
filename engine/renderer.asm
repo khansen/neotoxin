@@ -279,7 +279,7 @@ HSGE            .hsge_state
     bcs     --
     sta     ObjPageX
     sty     ObjPageY
-    ldx     #23
+    ldx     #MAX_OBJECTS-1
   - ldy     OBJ_Type,x
     bmi     +
     lda     ObjPageX
@@ -343,7 +343,7 @@ HSGE            .hsge_state
     sty     Index
     bne     @@HSGE_LoadOneObj
     ; attempt to find an enemy that can be squeezed out
-  + ldx     #23
+  + ldx     #MAX_OBJECTS-1
   - lda     OBJ_Type,x
     bmi     +
     cmp     #4

@@ -18,8 +18,13 @@ ObjCount            .byte
 ObjPageX            .byte
 ObjPageY            .byte
 
+.dataseg
+
+OBJ             .obj_table
+
 .codeseg
 
+.public OBJ
 .public ObjCount
 .public ObjPageX
 .public ObjPageY
@@ -198,7 +203,7 @@ ObjPageY            .byte
 
 .proc FindObjSlot
     pha     ; don't want to destroy Acc
-    ldx     #23
+    ldx     #MAX_OBJECTS-1
   - lda     OBJ_Type,x
     bmi     +   ; bit 7 set means slot is available
     dex     ; try next slot
@@ -211,7 +216,7 @@ ObjPageY            .byte
 ;-----------------------------------------------------------------------------
 
 .proc DestroyAllObjects
-    ldx     #23
+    ldx     #MAX_OBJECTS-1
   - jsr     KillObject
     dex
     bpl     -

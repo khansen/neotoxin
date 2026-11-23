@@ -32,7 +32,7 @@ OBJ1_Bottom     .byte
     lda     OBJ1_Top
     sta     OBJ2_Top
     stx     Index
-    ldx     #23
+    ldx     #MAX_OBJECTS-1
     ldy     #0
     @@CheckOneObj:
     cpx     Index

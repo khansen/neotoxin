@@ -410,7 +410,7 @@ DecPos2:
     lda     #CHR_STATUS
     sta     SelectedCHR+3
 ; restore sprite CHR
-    ldx     #23
+    ldx     #MAX_OBJECTS-1
   - lda     OBJ_Type,x
     bmi     +
     lda     ANIM_Cel,x

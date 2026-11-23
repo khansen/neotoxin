@@ -1,17 +1,36 @@
 .ifndef ANIM_H
 .define ANIM_H
 
-ANIM_Loop               EQU     $0300
-ANIM_pLoopLo            EQU     $0318
-ANIM_pLoopHi            EQU     $0330
-ANIM_Cel                EQU     $0348
-ANIM_pCelLo             EQU     $0360
-ANIM_pCelHi             EQU     $0378
-ANIM_NumCels            EQU     $0390
-ANIM_Speed              EQU     $03A8
-ANIM_Tick               EQU     $03C0
-ANIM_Method             EQU     $03D8
-ANIM_CHRPage            EQU     $03F0
+.include "engine/obj.h"
+
+; Animation state of each object, indexed by object slot.
+.struc anim_table
+ANIM_Loop               .byte[MAX_OBJECTS]
+ANIM_pLoopLo            .byte[MAX_OBJECTS]
+ANIM_pLoopHi            .byte[MAX_OBJECTS]
+ANIM_Cel                .byte[MAX_OBJECTS]
+ANIM_pCelLo             .byte[MAX_OBJECTS]
+ANIM_pCelHi             .byte[MAX_OBJECTS]
+ANIM_NumCels            .byte[MAX_OBJECTS]
+ANIM_Speed              .byte[MAX_OBJECTS]
+ANIM_Tick               .byte[MAX_OBJECTS]
+ANIM_Method             .byte[MAX_OBJECTS]
+ANIM_CHRPage            .byte[MAX_OBJECTS]
+.ends
+
+.extrn ANIM:anim_table       ; engine/anim.asm
+
+ANIM_Loop               EQU     ANIM.ANIM_Loop
+ANIM_pLoopLo            EQU     ANIM.ANIM_pLoopLo
+ANIM_pLoopHi            EQU     ANIM.ANIM_pLoopHi
+ANIM_Cel                EQU     ANIM.ANIM_Cel
+ANIM_pCelLo             EQU     ANIM.ANIM_pCelLo
+ANIM_pCelHi             EQU     ANIM.ANIM_pCelHi
+ANIM_NumCels            EQU     ANIM.ANIM_NumCels
+ANIM_Speed              EQU     ANIM.ANIM_Speed
+ANIM_Tick               EQU     ANIM.ANIM_Tick
+ANIM_Method             EQU     ANIM.ANIM_Method
+ANIM_CHRPage            EQU     ANIM.ANIM_CHRPage
 
 
 amNoCycling             EQU     $80

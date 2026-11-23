@@ -5,37 +5,76 @@
 
 ; variables for 24 objects
 
-OBJ_Type                EQU     $0408
-OBJ_State               EQU     $0420    ; D0: direction, D1: collision mode, D2: bg collision ignore (1=yes), D6: invisible (1=yes), D7: offscreen (1=yes)
-OBJ_Action              EQU     $0438
-OBJ_SpeedX              EQU     $0450
-OBJ_SpeedY              EQU     $0468
-OBJ_SpeedXFrac          EQU     $0480
-OBJ_SpeedYFrac          EQU     $0498
-OBJ_AccelX              EQU     $04B0
-OBJ_AccelY              EQU     $04C8
-OBJ_AccelXFrac          EQU     $04E0
-OBJ_AccelYFrac          EQU     $04F8
-OBJ_RangeX              EQU     $0510
-OBJ_RangeY              EQU     $0528
-OBJ_Health              EQU     $0540
-OBJ_Blink               EQU     $0558
-OBJ_CollIndex           EQU     $0570
-OBJ_Flag                EQU     $0588
-OBJ_ScreenX             EQU     $05A0
-OBJ_ScreenY             EQU     $05B8
-OBJ_WorldXLo            EQU     $05D0
-OBJ_WorldXHi            EQU     $05E8
-OBJ_WorldYLo            EQU     $0600
-OBJ_WorldYHi            EQU     $0618
-OBJ_WorldXFrac          EQU     $0630
-OBJ_WorldYFrac          EQU     $0648
-OBJ_MapOfs              EQU     $0660
-OBJ_NextAction          EQU     $0678
-OBJ_Var0                EQU     $0690
-OBJ_Var1                EQU     $06A8
-OBJ_Var2                EQU     $06C0
-OBJ_Var3                EQU     $06D8
+MAX_OBJECTS             EQU     24      ; object slots; slot 0 is the player
+
+; The object table: one array per attribute, indexed by object slot.
+.struc obj_table
+OBJ_Type                .byte[MAX_OBJECTS]
+OBJ_State               .byte[MAX_OBJECTS]   ; D0: direction, D1: collision mode, D2: bg collision ignore (1=yes), D6: invisible (1=yes), D7: offscreen (1=yes)
+OBJ_Action              .byte[MAX_OBJECTS]
+OBJ_SpeedX              .byte[MAX_OBJECTS]
+OBJ_SpeedY              .byte[MAX_OBJECTS]
+OBJ_SpeedXFrac          .byte[MAX_OBJECTS]
+OBJ_SpeedYFrac          .byte[MAX_OBJECTS]
+OBJ_AccelX              .byte[MAX_OBJECTS]
+OBJ_AccelY              .byte[MAX_OBJECTS]
+OBJ_AccelXFrac          .byte[MAX_OBJECTS]
+OBJ_AccelYFrac          .byte[MAX_OBJECTS]
+OBJ_RangeX              .byte[MAX_OBJECTS]
+OBJ_RangeY              .byte[MAX_OBJECTS]
+OBJ_Health              .byte[MAX_OBJECTS]
+OBJ_Blink               .byte[MAX_OBJECTS]
+OBJ_CollIndex           .byte[MAX_OBJECTS]
+OBJ_Flag                .byte[MAX_OBJECTS]
+OBJ_ScreenX             .byte[MAX_OBJECTS]
+OBJ_ScreenY             .byte[MAX_OBJECTS]
+OBJ_WorldXLo            .byte[MAX_OBJECTS]
+OBJ_WorldXHi            .byte[MAX_OBJECTS]
+OBJ_WorldYLo            .byte[MAX_OBJECTS]
+OBJ_WorldYHi            .byte[MAX_OBJECTS]
+OBJ_WorldXFrac          .byte[MAX_OBJECTS]
+OBJ_WorldYFrac          .byte[MAX_OBJECTS]
+OBJ_MapOfs              .byte[MAX_OBJECTS]
+OBJ_NextAction          .byte[MAX_OBJECTS]
+OBJ_Var0                .byte[MAX_OBJECTS]
+OBJ_Var1                .byte[MAX_OBJECTS]
+OBJ_Var2                .byte[MAX_OBJECTS]
+OBJ_Var3                .byte[MAX_OBJECTS]
+.ends
+
+.extrn OBJ:obj_table       ; engine/obj.asm
+
+OBJ_Type                EQU     OBJ.OBJ_Type
+OBJ_State               EQU     OBJ.OBJ_State
+OBJ_Action              EQU     OBJ.OBJ_Action
+OBJ_SpeedX              EQU     OBJ.OBJ_SpeedX
+OBJ_SpeedY              EQU     OBJ.OBJ_SpeedY
+OBJ_SpeedXFrac          EQU     OBJ.OBJ_SpeedXFrac
+OBJ_SpeedYFrac          EQU     OBJ.OBJ_SpeedYFrac
+OBJ_AccelX              EQU     OBJ.OBJ_AccelX
+OBJ_AccelY              EQU     OBJ.OBJ_AccelY
+OBJ_AccelXFrac          EQU     OBJ.OBJ_AccelXFrac
+OBJ_AccelYFrac          EQU     OBJ.OBJ_AccelYFrac
+OBJ_RangeX              EQU     OBJ.OBJ_RangeX
+OBJ_RangeY              EQU     OBJ.OBJ_RangeY
+OBJ_Health              EQU     OBJ.OBJ_Health
+OBJ_Blink               EQU     OBJ.OBJ_Blink
+OBJ_CollIndex           EQU     OBJ.OBJ_CollIndex
+OBJ_Flag                EQU     OBJ.OBJ_Flag
+OBJ_ScreenX             EQU     OBJ.OBJ_ScreenX
+OBJ_ScreenY             EQU     OBJ.OBJ_ScreenY
+OBJ_WorldXLo            EQU     OBJ.OBJ_WorldXLo
+OBJ_WorldXHi            EQU     OBJ.OBJ_WorldXHi
+OBJ_WorldYLo            EQU     OBJ.OBJ_WorldYLo
+OBJ_WorldYHi            EQU     OBJ.OBJ_WorldYHi
+OBJ_WorldXFrac          EQU     OBJ.OBJ_WorldXFrac
+OBJ_WorldYFrac          EQU     OBJ.OBJ_WorldYFrac
+OBJ_MapOfs              EQU     OBJ.OBJ_MapOfs
+OBJ_NextAction          EQU     OBJ.OBJ_NextAction
+OBJ_Var0                EQU     OBJ.OBJ_Var0
+OBJ_Var1                EQU     OBJ.OBJ_Var1
+OBJ_Var2                EQU     OBJ.OBJ_Var2
+OBJ_Var3                EQU     OBJ.OBJ_Var3
 
 
 ; Exported symbols.

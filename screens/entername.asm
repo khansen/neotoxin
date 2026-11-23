@@ -16,7 +16,7 @@
 .include "game/maincycle.h"
 .include "common/joypad.h"
 
-.dataseg
+.dataseg zeropage
 
 LetterCol       .byte       ; cursor position in the letter grid
 LetterRow       .byte

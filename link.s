@@ -7,8 +7,14 @@
 # RAM the linker may assign to .dataseg variables. Only ranges that no
 # hard-coded RAM (game.h, engine headers) uses are listed; end is exclusive.
 ram{start=$00,end=$100}     # zero page
-ram{start=$0180,end=$01A0}
+# xlnk places smaller variables first, each in the first block where it
+# fits. The blocks are listed so that the large tables still find room:
+# StatusFlags, RAMPalette and PPUString fill $0100-$019F, the music
+# engine's RAM goes to $0700, and the animation and object tables to
+# $0300. $01A0-$01FF is the stack and $0200-$02FF the sprite page.
+ram{start=$0100,end=$01A0}
 ram{start=$0700,end=$0800}
+ram{start=$0300,end=$0700}
 copy{file=ines.hdr}
 # Bank 0
 bank{size=$4000,origin=$8000}

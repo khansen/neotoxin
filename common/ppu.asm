@@ -9,8 +9,13 @@
 PPUDataPending      .byte
 PPUStrIndex         .byte   ; end of the queued PPUString data
 
+.dataseg
+
+PPUString           .byte[96]   ; queued PPU writes, sent by the NMI
+
 .codeseg
 
+.public PPUString
 .public PPUDataPending
 .public PPUStrIndex
 .public ScreenOff

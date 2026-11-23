@@ -62,7 +62,7 @@ ProjectileCount     .byte
     cmp     #3
     bcs     +
     lda     ObjCount
-    cmp     #23
+    cmp     #MAX_OBJECTS-1
     bcs     +
     ; missile fire OK
     lda     OBJ_Action

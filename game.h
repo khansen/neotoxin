@@ -27,8 +27,6 @@ SCROLL_TRESHOLD         EQU     80
 .include "area/areahdrs.h"
 
 
-PPUString               EQU     $0100
-RAMPalette              EQU     $0160
 
 
 mrTitleInit             EQU     0

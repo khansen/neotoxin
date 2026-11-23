@@ -318,7 +318,7 @@ RoomFlags           .byte
     jsr     DestroyAllSprites
     lda     SpriteBase
     sta     SpriteIndex
-    ldx     #23
+    ldx     #MAX_OBJECTS-1
     @@UpdateOneObject:
     lda     OBJ_Type,x
     bmi     @@NextObject  ; skip the whole thing if object is inactive

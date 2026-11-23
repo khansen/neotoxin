@@ -14,8 +14,13 @@ SpriteBase          .byte
 SpriteIndex         .byte   ; next free sprite
 CelLength           .byte
 
+.dataseg
+
+ANIM            .anim_table
+
 .codeseg
 
+.public ANIM
 .public SpriteBase
 .public SpriteIndex
 .public ANIM_SetLoop

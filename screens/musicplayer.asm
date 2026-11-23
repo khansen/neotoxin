@@ -14,7 +14,7 @@
 
 SONG_COUNT      EQU     16      ; songs are numbered 1..SONG_COUNT
 
-.dataseg
+.dataseg zeropage
 
 SongNumber      .byte           ; the song being played
 

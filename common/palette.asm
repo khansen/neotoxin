@@ -3,8 +3,13 @@
 .include "common/palette.h"
 .include "common/ppu.h"
 
+.dataseg
+
+RAMPalette          .byte[32]   ; the current palette
+
 .codeseg
 
+.public RAMPalette
 .public PAL_LoadPalette
 .public PAL_SetPalette
 .public PAL_SetBlackPalette
