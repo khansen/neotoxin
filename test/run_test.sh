@@ -65,6 +65,9 @@ env = dict(
     # FCEUX 2.8 asks for a storage location on first run unless one is given.
     FCEUX_HOME=cfg_dir,
     FCEUX_CONFIG_DIR=cfg_dir,
+    # FCEUX makes a temporary directory that only a clean exit removes, and
+    # it is killed (see above).
+    TMPDIR=cfg_dir,
     QT_QPA_PLATFORM="offscreen",
     NEOTOXIN_TEST_LOG=log_file,
 )
@@ -97,23 +100,34 @@ def finished():
 def emulating():
     return any(not l.startswith(b"start ") for l in read_lines(log_file + ".progress"))
 
+# FCEUX runs in its own session, so a signal to this process group does not
+# reach it; run_once's finally clause kills it. SIGTERM and SIGHUP would end
+# Python without running finally clauses, so they (and SIGINT, to exit
+# without a traceback) raise SystemExit.
+def on_signal(signum, frame):
+    raise SystemExit(128 + signum)
+
+for s in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+    signal.signal(s, on_signal)
+
 def run_once(attempt):
     """Returns True to retry (FCEUX never started emulating)."""
+    proc = None
     try:
-        proc = subprocess.Popen(
-            cmd,
-            stdin=subprocess.DEVNULL,
-            stdout=fceux_out,
-            stderr=subprocess.STDOUT,
-            env=env,
-            start_new_session=True,
-        )
-    except OSError as e:
-        print("FAIL: cannot run %s: %s" % (fceux, e))
-        sys.exit(1)
-    started = time.monotonic()
-    deadline = started + float(timeout)
-    try:
+        try:
+            proc = subprocess.Popen(
+                cmd,
+                stdin=subprocess.DEVNULL,
+                stdout=fceux_out,
+                stderr=subprocess.STDOUT,
+                env=env,
+                start_new_session=True,
+            )
+        except OSError as e:
+            print("FAIL: cannot run %s: %s" % (fceux, e))
+            sys.exit(1)
+        started = time.monotonic()
+        deadline = started + float(timeout)
         while not finished():
             if proc.poll() is not None:
                 print("FAIL: FCEUX exited before the harness finished (status %d)" % proc.returncode)
@@ -128,11 +142,12 @@ def run_once(attempt):
             time.sleep(0.05)
         return False
     finally:
-        try:
-            os.killpg(proc.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
-        proc.wait()
+        if proc is not None:
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            proc.wait()
 
 for attempt in range(ATTEMPTS):
     if not run_once(attempt):
