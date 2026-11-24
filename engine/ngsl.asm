@@ -147,7 +147,7 @@ MenuItemCount       .byte
     adc     NGSL_pScript
     sta     NGSL_pScript
     bcc     +
-    inc     NGSL_pScript
+    inc     NGSL_pScript+1
     rts
     @@NGSL_ScriptBranchBack:
     jsr     XSIGN
@@ -157,7 +157,7 @@ MenuItemCount       .byte
     sbc     NGSL_Temp
     sta     NGSL_pScript
     bcs     +
-    dec     NGSL_pScript
+    dec     NGSL_pScript+1
   + rts
 .endp
 
