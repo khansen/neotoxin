@@ -1,6 +1,9 @@
 .ifndef WARP_H
 .define WARP_H
 
+; In WRAM: the player's direction (OBJ_State bit 0) across a warp.
+WarpDirection           EQU     $7FFF
+
 ; Exported symbols.
 .extrn AreaStartX:byte
 .extrn AreaStartY:byte

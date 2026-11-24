@@ -271,7 +271,7 @@ ItemPickupScriptPtrs:
 ; Gives player control again.
 
 .proc PlayerControl
-    lda     $7FFE       ; !!!
+    lda     SavedPlayerAction
     sta     OBJ_Action  ; restore player's action
     rts
 .endp
@@ -282,7 +282,7 @@ ItemPickupScriptPtrs:
 
 .proc ProgramControl
     lda     OBJ_Action
-    sta     $7FFE       ; !!! store player's current action
+    sta     SavedPlayerAction   ; store player's current action
     ldy     #0
     lda     #OE_IDLE
     sta     OBJ_Action,y

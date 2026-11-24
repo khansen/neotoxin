@@ -1,6 +1,9 @@
 .ifndef GBACTION_H
 .define GBACTION_H
 
+; In WRAM: the player's action while ProgramControl has taken control.
+SavedPlayerAction       EQU     $7FFE
+
 OE_PROJECTILEMAIN   EQU 8
 OE_MANUALWARPMAIN   EQU 9
 OE_INSTANTWARPMAIN  EQU 10

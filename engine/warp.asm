@@ -107,7 +107,7 @@ PlayerStart         .byte
     ;;
     lda     OBJ_State
     and     #1
-    sta     $7FFF
+    sta     WarpDirection
     ;;
     jsr     Load2DArea
 ; get offset of warp data

@@ -90,7 +90,7 @@ RoomFlags           .byte
     lda     PlayerStart  ; position
     jsr     LoadObject
 ;; direction
-    lda     $7FFF
+    lda     WarpDirection
     sta     OBJ_State
 ;;
     lda     OBJ_WorldYLo

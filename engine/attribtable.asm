@@ -83,9 +83,9 @@
     sta     Temp
     lda     AttribLookupMaskInv,y
     ldy     Index2
-    and     $7000,y
+    and     ATTRIB_BUFFER,y
     ora     Temp
-    sta     $7000,y
+    sta     ATTRIB_BUFFER,y
     lda     Index4
     lsr
     bcc     +
@@ -99,7 +99,7 @@
     lda     #1
     sta     PPUString,x
     inx
-    lda     $7000,y
+    lda     ATTRIB_BUFFER,y
     sta     PPUString,x
     inx
     lda     HSGE_VRAMAddr+1
@@ -144,7 +144,7 @@
     sta     PPUString,x
     inx
     ldy     Index2
-    lda     $7000,y
+    lda     ATTRIB_BUFFER,y
     sta     PPUString,x
     inx
     lda     #0
@@ -252,9 +252,9 @@ AttribLookupMaskInv:
     sta     Temp
     lda     AttribLookupMaskInv,y
     ldy     Index2
-    and     $7000,y
+    and     ATTRIB_BUFFER,y
     ora     Temp
-    sta     $7000,y
+    sta     ATTRIB_BUFFER,y
     lda     Index3
     lsr
     bcc     +
@@ -268,7 +268,7 @@ AttribLookupMaskInv:
     lda     #1
     sta     PPUString,x
     inx
-    lda     $7000,y
+    lda     ATTRIB_BUFFER,y
     sta     PPUString,x
     inx
     inc     HSGE_VRAMAddr+1 ; next screen attribute table byte address
