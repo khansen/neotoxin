@@ -2,9 +2,10 @@
 -- Replays deterministic input sessions across Title, Music Player, Select Game,
 -- Enter Name, Intro Cutscene, Building, Status Screen, NPC Dialog, Save/Reload,
 -- Base, City Ruins (including the 827-frame recorded demo input stream from
--- data/demo.dat), Boss 0, Title Attract-Mode Demo (two loops), Power Plant,
--- the Boss 1 area, Level-Up, Game Over & Continue, Save Point Terminal, and the
--- End Credits Scroller, verifying 256x240 screen hashes at each checkpoint.
+-- data/demo.dat), the Boss 0 fight, Title Attract-Mode Demo (two loops),
+-- Power Plant, the Boss 1 area, Level-Up, Game Over & Continue, Save Point
+-- Terminal, and the End Credits Scroller, verifying 256x240 screen hashes and
+-- the APU sound register writes at each checkpoint.
 --
 -- Every scenario after the first starts with emu.poweron() rather than
 -- emu.softreset(): a soft reset keeps the CPU/PPU phase left behind by the
@@ -121,17 +122,46 @@ local function save_ppm(s, path)
 end
 
 -- Hash of the writes to the APU's sound registers ($4000-$4013, $4015, $4017;
--- not $4014 sprite DMA or $4016 joypad strobe) since the previous checkpoint.
--- FCEUX runs with sound off, so this is what covers the music and sound
--- effect engine.
-local apu_h1, apu_h2 = 5381, 0
+-- not $4014 sprite DMA or $4016 joypad strobe) since the previous checkpoint,
+-- each with the number of frames since that checkpoint, so that a change in
+-- timing shows too. FCEUX runs with sound off, so this is what covers the
+-- music and sound effect engine. The DMC fetches its sample bytes itself, so
+-- a write to $4015 that starts the DMC also adds the bytes it will play.
+local apu_h1, apu_h2, apu_frame0 = 5381, 0, 0
+local dmc_addr, dmc_len = 0, 0
+local dmc_sample_hashes = {}
+local function apu_add(v)
+    apu_h1 = (apu_h1 * 33 + v) % 4294967291
+    apu_h2 = (apu_h2 * 131 + v) % 4294967279
+end
+-- The samples are at $C000-$FFFF, in the fixed bank, so each one only needs
+-- to be hashed once.
+local function dmc_sample_hash()
+    local key = dmc_addr * 256 + dmc_len
+    local h = dmc_sample_hashes[key]
+    if not h then
+        h = 0
+        local start = 0xC000 + dmc_addr * 64
+        for i = 0, dmc_len * 16 do
+            h = (h * 257 + memory.readbyte(start + i) + 1) % 4294967291
+        end
+        dmc_sample_hashes[key] = h
+    end
+    return h
+end
 memory.registerwrite(0x4000, 0x18, function(addr, size, value)
     if addr == 0x4014 or addr == 0x4016 then
         return
     end
-    local v = (addr - 0x4000) * 256 + value + 1
-    apu_h1 = (apu_h1 * 33 + v) % 4294967291
-    apu_h2 = (apu_h2 * 131 + v) % 4294967279
+    if addr == 0x4012 then
+        dmc_addr = value
+    elseif addr == 0x4013 then
+        dmc_len = value
+    end
+    apu_add((emu.framecount() - apu_frame0) * 65536 + (addr - 0x4000) * 256 + value + 1)
+    if addr == 0x4015 and value % 32 >= 16 then
+        apu_add(dmc_sample_hash())
+    end
 end)
 
 local checkpoints = {}
@@ -146,7 +176,7 @@ local function checkpoint(id)
     local hash = hash_gd(gd, mode)
     table.insert(checkpoints, {id = id, hash = hash})
     table.insert(checkpoints, {id = id .. ".apu", hash = string.format("%08x%08x", apu_h1, apu_h2)})
-    apu_h1, apu_h2 = 5381, 0
+    apu_h1, apu_h2, apu_frame0 = 5381, 0, emu.framecount()
     note_progress(id)
     if SHOT_DIR then
         save_ppm(gd, SHOT_DIR .. "/" .. id .. ".ppm")
@@ -480,13 +510,68 @@ tap("start", 2, 30)
 tap("start", 2, 120)
 checkpoint("boss0_spawn")
 
--- Fight Boss 0
+-- Boss0Init sets up the boss with "lda #12 / sta OBJ_RangeX,x / lda #14 /
+-- sta OBJ_RangeY,x / lda #10 / sta OBJ_Health,x / lda #120 / sta
+-- OBJ_Var0,x"; find that code in the area's bank for the addresses of the
+-- object tables (OBJ_Action is 9 tables, 9 * MAX_OBJECTS bytes, before
+-- OBJ_RangeX), and the boss's slot by those values.
+local OE_BOSS0MAIN = 22
+local OE_WAITANIMEND = 18
+local function find_boss0()
+    local function rd(a) return memory.readbyte(a) end
+    for a = 0x8000, 0xBFE0 do
+        if rd(a) == 0xA9 and rd(a + 1) == 12 and rd(a + 2) == 0x9D
+           and rd(a + 5) == 0xA9 and rd(a + 6) == 14 and rd(a + 7) == 0x9D
+           and rd(a + 10) == 0xA9 and rd(a + 11) == 10 and rd(a + 12) == 0x9D
+           and rd(a + 15) == 0xA9 and rd(a + 16) == 120 and rd(a + 17) == 0x9D then
+            local range_x = rd(a + 3) + rd(a + 4) * 256
+            local health = rd(a + 13) + rd(a + 14) * 256
+            local action = range_x - 9 * 24
+            for slot = 1, 23 do
+                if rd(range_x + slot) == 12 and rd(range_x + 24 + slot) == 14
+                   and rd(health + slot) == 10 then
+                    return {
+                        action = function() return rd(action + slot) end,
+                        health = function() return rd(health + slot) end,
+                    }
+                end
+            end
+        end
+    end
+    check_state(false, "Boss 0 not found")
+end
+local boss0 = find_boss0()
+
+-- Walk up to Boss 0, which starts its intro
 step(30, {right = true})
 tap("B", 2, 20)
 step(35, {right = true, A = true})
 tap("B", 2, 20)
 step(40)
-checkpoint("boss0_action")
+checkpoint("boss0_intro")
+for i = 1, 18 do
+    tap("A", 2, 8)
+end
+step(60)
+checkpoint("boss0_fight")
+check_state(boss0.action() == OE_BOSS0MAIN and boss0.health() == 10,
+            "Boss 0 is not fighting after its intro")
+
+-- The boss flies above the player's head, so turn around and fire in mid
+-- jump; it takes 40 jumps (and some damage to the player) to defeat it
+for c = 1, 40 do
+    step(2, {[(c % 2 == 0) and "left" or "right"] = true})
+    step(12, {A = true})
+    step(2, {A = true, B = true})
+    step(8, {A = true})
+    step(24)
+end
+checkpoint("boss0_defeated")
+check_state(boss0.health() == 0 and boss0.action() == OE_WAITANIMEND,
+            "Boss 0 was not defeated")
+-- it leaves a health item behind
+step(240)
+checkpoint("boss0_cleared")
 
 -- ============================================================================
 -- Scenario 6: Title Screen Attract-Mode Demo (PlayDemo & Second Loop)
