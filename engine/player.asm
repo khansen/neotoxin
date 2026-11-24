@@ -189,7 +189,6 @@ ProjectileCount     .byte
     sta     OBJ_Action
     jsr     FaceRight
     jmp     SetRunAnim
-    rts
 .endp
 
 ; CheckLadder

@@ -103,59 +103,6 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
     lda     #OE_DISCARDOBJECT
     jsr     SetAnimWaitAction
     jmp     SetExplodeAnim
-
-;-----------------------------------------------------------------------------
-
-;    UpAndDownFlyerMain:
-    ; y movement
-    lda     OBJ_AccelY,x
-    bpl     ++
-    ; moving up
-    lda     OBJ_SpeedY,x
-    cmp     #$FE
-    bne     +
-    lda     OBJ_SpeedYFrac,x
-    bne     +
-    ; turn around
-    lda     #$00
-    sta     OBJ_AccelY,x
-    lda     #$10
-    sta     OBJ_AccelYFrac,x
-    bpl     +
- ++ ; moving down
-    lda     OBJ_SpeedY,x
-    cmp     #2
-    bne     +
-    ; turn around
-    lda     #$FF
-    sta     OBJ_AccelY,x
-    lda     #$F0
-    sta     OBJ_AccelYFrac,x
-  + ; x movement
-    lda     OBJ_AccelX,x
-    bpl     ++
-    ; moving up
-    lda     OBJ_SpeedX,x
-    cmp     #$FE
-    bne     +
-    lda     OBJ_SpeedXFrac,x
-    bne     +
-    ; turn around
-    lda     #$00
-    sta     OBJ_AccelX,x
-    lda     #$20
-    sta     OBJ_AccelXFrac,x
-    bpl     +
- ++ ; moving down
-    lda     OBJ_SpeedX,x
-    cmp     #2
-    bne     +
-    ; turn around
-    lda     #$FF
-    sta     OBJ_AccelX,x
-    lda     #$E0
-    sta     OBJ_AccelXFrac,x
-  + jmp     EnemyMain
 .endp
 
 ;-----------------------------------------------------------------------------

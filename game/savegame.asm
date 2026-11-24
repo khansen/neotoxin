@@ -112,7 +112,6 @@ SaveGameInfo:
 ; save game data corrupted
     @@InvalidCheckSum:
     jmp     RESET
-    rts
 .endp
 
 ; CalcSaveGameCheckSum
