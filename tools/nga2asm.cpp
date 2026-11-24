@@ -13,8 +13,10 @@
 #define CHR_SIZE 4096
 #define MAX_MAP_WIDTH 16    // a room's position is stored as a $YX byte
 #define MAX_MAP_HEIGHT 16
-#define MAX_ROOMS (MAX_MAP_WIDTH * MAX_MAP_HEIGHT)
-#define MAX_MACROS 256      // the macro count is one byte
+// The engine doubles a room index (HSGE_SetRoomPtr) or a macro number
+// (HSGE_WriteNameTableCol) in an 8-bit register to index a pointer table.
+#define MAX_ROOMS 128
+#define MAX_MACROS 128
 #define ROOM_OBJECT_SIZE 33 // per room: objects (2 or 4 bytes each), $FF
 
 static const char *ngafile;
@@ -111,10 +113,18 @@ int main(int argc, char *argv[])
         fail(temp);
     }
     mapsize = mapwidth * mapheight;
+    if (mapsize > MAX_ROOMS) {
+        snprintf(temp, sizeof(temp), "map has %d rooms; the limit is %d", mapsize, MAX_ROOMS);
+        fail(temp);
+    }
     readbytes(fp, roomdata, mapsize * 8 * 8, "room data");
 
     // read macro data
     macrocount = readbyte(fp, "macro count");
+    if (macrocount > MAX_MACROS) {
+        snprintf(temp, sizeof(temp), "map has %d macros; the limit is %d", macrocount, MAX_MACROS);
+        fail(temp);
+    }
     readbytes(fp, macrodata, macrocount * 16, "macros");
     readbytes(fp, macroattribs, macrocount, "macro attributes");
     readbytes(fp, macrowalkabilities, macrocount * 4, "macro walkabilities");
