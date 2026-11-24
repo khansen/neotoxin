@@ -202,7 +202,7 @@ data/select22.dat: data/select2.nam tools/comp
 
 # Map sections: converter output, plus the section's patch if it has one.
 define MAP_RECIPE
-tools/nga2asm $< -r -w > $@.gen
+tools/nga2asm $< -r -w > $@.gen || { rm -f $@.gen; exit 1; }
 rm -f $@ $@.rej
 if [ -f $(@:.inc=.patch) ]; then \
     patch -s -F 0 -o $@ $@.gen < $(@:.inc=.patch) || { rm -f $@ $@.gen; exit 1; }; \

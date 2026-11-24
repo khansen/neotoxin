@@ -1,10 +1,22 @@
+// comp: compresses a nametable into the PPU string format the game's
+// screen loader reads.
+//
+// Usage: comp INPUT WIDTH HEIGHT STARTADDR OUTPUT
+//
+// INPUT holds at least WIDTH * HEIGHT tile bytes, row by row; anything after
+// them (such as the attribute table of a full .nam file) is ignored.
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #define RLE_TRIGGER 5
 #define MAX_NAMETABLE_WIDTH 32
 #define MAX_NAMETABLE_HEIGHT 32
+
+// Every run of output (an address, a length and the bytes or the RLE value)
+// consumes at least one input byte and is at most 4 bytes per byte consumed,
+// plus the terminator.
+#define MAX_OUTPUT_SIZE (4 * MAX_NAMETABLE_WIDTH * MAX_NAMETABLE_HEIGHT + 1)
 
 static int EncodeNameTable(const unsigned char *in, unsigned char *out, int addr, int width, int height);
 static int EncodeRow(const unsigned char *in, unsigned char *out, int addr, int length);
@@ -81,54 +93,74 @@ static int EncodeNameTable(const unsigned char *in, unsigned char *out, int addr
     return ppusize;
 }
 
+// Parses a whole argument as an integer (decimal, or hex with 0x).
+static bool ParseInt(const char *s, int *value)
+{
+    char *end;
+    long v = strtol(s, &end, 0);
+    if ((*s == '\0') || (*end != '\0') || (v < -0x10000) || (v > 0x10000)) {
+        return false;
+    }
+    *value = (int)v;
+    return true;
+}
+
 int main(int argc, char *argv[])
 {
     int width, height, namesize, ppusize, addr;
     unsigned char nametable[MAX_NAMETABLE_WIDTH * MAX_NAMETABLE_HEIGHT];
-    unsigned char ppustring[MAX_NAMETABLE_WIDTH * MAX_NAMETABLE_HEIGHT];
+    unsigned char ppustring[MAX_OUTPUT_SIZE];
     FILE *infile, *outfile;
 
-    if (argc <= 5) {
-        printf("Syntax is comp [inputfile] [width] [height] [startaddr] [outputfile]\n");
+    if (argc != 6) {
+        fprintf(stderr, "Usage: comp INPUT WIDTH HEIGHT STARTADDR OUTPUT\n");
         return 1;
     }
 
-    width = strtol(argv[2], 0, 0);
-    if ((width <= 0) || (width > MAX_NAMETABLE_WIDTH)) {
-        printf("Width is outside allowed range (0..%d).\n", MAX_NAMETABLE_WIDTH);
+    if (!ParseInt(argv[2], &width) || (width <= 0) || (width > MAX_NAMETABLE_WIDTH)) {
+        fprintf(stderr, "comp: width must be 1..%d\n", MAX_NAMETABLE_WIDTH);
         return 1;
     }
 
-    height = strtol(argv[3], 0, 0);
-    if ((height <= 0) || (height > MAX_NAMETABLE_HEIGHT)) {
-        printf("Height is outside allowed range (0..%d).\n", MAX_NAMETABLE_HEIGHT);
+    if (!ParseInt(argv[3], &height) || (height <= 0) || (height > MAX_NAMETABLE_HEIGHT)) {
+        fprintf(stderr, "comp: height must be 1..%d\n", MAX_NAMETABLE_HEIGHT);
         return 1;
     }
 
-    addr = strtol(argv[4], 0, 0);
-    if ((addr < 0x2000) || (addr >= 0x3000)) {
-        printf("Startaddr is outside allowed range (0x2000..0x2FFF).\n");
+    if (!ParseInt(argv[4], &addr) || (addr < 0x2000) || (addr >= 0x3000)) {
+        fprintf(stderr, "comp: start address must be 0x2000..0x2FFF\n");
         return 1;
     }
 
     infile = fopen(argv[1], "rb");
     if (infile == 0) {
-        printf("Couldn't open input file '%s', exiting.\n", argv[1]);
+        fprintf(stderr, "comp: cannot open '%s'\n", argv[1]);
         return 1;
     }
 
     namesize = width * height;
-    fread(nametable, 1, namesize, infile);
+    if ((int)fread(nametable, 1, namesize, infile) != namesize) {
+        fprintf(stderr, "comp: '%s' is shorter than %d x %d bytes\n", argv[1], width, height);
+        fclose(infile);
+        return 1;
+    }
     fclose(infile);
 
     ppusize = EncodeNameTable(nametable, ppustring, addr, width, height);
 
     outfile = fopen(argv[5], "wb");
     if (outfile == 0) {
-        printf("Couldn't open output file '%s', exiting.\n", argv[5]);
+        fprintf(stderr, "comp: cannot create '%s'\n", argv[5]);
         return 1;
     }
-    fwrite(ppustring, 1, ppusize, outfile);
-    fclose(outfile);
+    bool ok = ((int)fwrite(ppustring, 1, ppusize, outfile) == ppusize);
+    if (fclose(outfile) != 0) {
+        ok = false;
+    }
+    if (!ok) {
+        fprintf(stderr, "comp: error writing '%s'\n", argv[5]);
+        remove(argv[5]);
+        return 1;
+    }
     return 0;
 }

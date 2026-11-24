@@ -1,98 +1,151 @@
+// nga2asm: converts a map made with the NGA map editor to assembly source.
+//
+// Usage: nga2asm NGAFILE [-a -p -m -r -w -h]
+//
+// The output goes to standard output; -a (the default) prints everything,
+// the other options select the palette, macros, rooms (with their objects
+// and the map), warp locations and the area header.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_ROOMS 128
-#define MAX_MACROS 128
+#define CHR_SIZE 4096
+#define MAX_MAP_WIDTH 16    // a room's position is stored as a $YX byte
+#define MAX_MAP_HEIGHT 16
+#define MAX_ROOMS (MAX_MAP_WIDTH * MAX_MAP_HEIGHT)
+#define MAX_MACROS 256      // the macro count is one byte
+#define ROOM_OBJECT_SIZE 33 // per room: objects (2 or 4 bytes each), $FF
 
+static const char *ngafile;
 static char areaname[256];
 static unsigned char roomdata[MAX_ROOMS * 8 * 8];
 static unsigned char macrodata[MAX_MACROS * 16];
 static unsigned char macroattribs[MAX_MACROS];
 static unsigned char macrowalkabilities[MAX_MACROS * 4];
-static unsigned char objectdata[MAX_ROOMS * 33];
+static unsigned char objectdata[MAX_ROOMS * ROOM_OBJECT_SIZE];
 static int objectdatasize[MAX_ROOMS];
 static int mapwidth;
 static int mapheight;
 static int mapsize;
 static int macrocount;
-static char params[16][256];
 static int paramcount;
+static char **params;
 
 static void printbytes(const unsigned char *buf, int size, int cols);
 static void printchunk(const char *name, const unsigned char *buf, int size, int cols);
 static bool paramexists(const char *param);
 
+static void fail(const char *message)
+{
+    fprintf(stderr, "nga2asm: %s: %s\n", ngafile, message);
+    exit(1);
+}
+
+// Reads exactly size bytes; a short read means the file is not a complete
+// NGA map.
+static void readbytes(FILE *fp, void *buf, size_t size, const char *what)
+{
+    if (fread(buf, 1, size, fp) != size) {
+        char message[128];
+        snprintf(message, sizeof(message), "file ends in the %s", what);
+        fail(message);
+    }
+}
+
+static int readbyte(FILE *fp, const char *what)
+{
+    unsigned char b;
+    readbytes(fp, &b, 1, what);
+    return b;
+}
+
 int main(int argc, char *argv[])
 {
+    static char defaultparam[] = "-a";
+    static char *defaultparams[] = { defaultparam };
     if (argc < 2) {
-        printf("\nSyntax: NGA2ASM [ngafile] [-a -p -m -r -w -h]\n");
+        fprintf(stderr, "Usage: nga2asm NGAFILE [-a -p -m -r -w -h]\n");
         return 1;
     }
-    FILE *fp = fopen(argv[1], "rb");
-    if (!fp) {
-        printf("\nError: Could not open '%s'.\n", argv[1]);
-        return 1;
-    }
+    ngafile = argv[1];
     paramcount = argc - 2;
+    params = argv + 2;
     if (paramcount == 0) {
-        strcpy(params[paramcount++], "-a");
-    } else {
-        for (int i = 0; i < paramcount; i++) {
-            strcpy(params[i], argv[i + 2]);
+        paramcount = 1;
+        params = defaultparams;
+    }
+    for (int i = 0; i < paramcount; i++) {
+        const char *p = params[i];
+        if ((strlen(p) != 2) || (p[0] != '-') || !strchr("apmrwh", p[1])) {
+            fprintf(stderr, "nga2asm: unknown option '%s'\n", p);
+            return 1;
         }
     }
-    const char *base = strrchr(argv[1], '/');
-    base = base ? base + 1 : argv[1];
+    FILE *fp = fopen(ngafile, "rb");
+    if (!fp) {
+        fprintf(stderr, "nga2asm: cannot open '%s'\n", ngafile);
+        return 1;
+    }
+    const char *base = strrchr(ngafile, '/');
+    base = base ? base + 1 : ngafile;
     strncpy(areaname, base, sizeof(areaname) - 1);
     areaname[sizeof(areaname) - 1] = '\0';
     strtok(areaname, ".");
 
-    unsigned char buf[1024];
+    unsigned char buf[CHR_SIZE];
     char temp[256];
-    fseek(fp, 4096, SEEK_SET);  // skip CHR data
-    fread(buf, 1, 16, fp);      // read palette
+    readbytes(fp, buf, CHR_SIZE, "CHR data");   // skipped
+    readbytes(fp, buf, 16, "palette");
     if (paramexists("-a") || paramexists("-p")) {
         printchunk("palette", buf, 16, 4);
     }
 
     // read map data
-    mapwidth = 0;
-    mapheight = 0;
-    fread(&mapwidth, 1, 1, fp);
-    fread(&mapheight, 1, 1, fp);
+    mapwidth = readbyte(fp, "map size");
+    mapheight = readbyte(fp, "map size");
+    if ((mapwidth < 1) || (mapwidth > MAX_MAP_WIDTH) ||
+        (mapheight < 1) || (mapheight > MAX_MAP_HEIGHT)) {
+        snprintf(temp, sizeof(temp), "map is %d x %d rooms; the limit is %d x %d",
+                 mapwidth, mapheight, MAX_MAP_WIDTH, MAX_MAP_HEIGHT);
+        fail(temp);
+    }
     mapsize = mapwidth * mapheight;
-    fread(roomdata, 1, mapsize * 8 * 8, fp);
+    readbytes(fp, roomdata, mapsize * 8 * 8, "room data");
 
     // read macro data
-    macrocount = 0;
-    fread(&macrocount, 1, 1, fp);
-    fread(macrodata, 1, macrocount * 16, fp);
-    fread(macroattribs, 1, macrocount, fp);
-    fread(macrowalkabilities, 1, macrocount * 4, fp);
+    macrocount = readbyte(fp, "macro count");
+    readbytes(fp, macrodata, macrocount * 16, "macros");
+    readbytes(fp, macroattribs, macrocount, "macro attributes");
+    readbytes(fp, macrowalkabilities, macrocount * 4, "macro walkabilities");
 
     // read object data
     for (int i = 0; i < mapsize; i++) {
-        int k = i * 33;  // start of object data for room i
-        unsigned char n = 0;
-        fread(&n, 1, 1, fp);  // # of objects in room i
+        int k = i * ROOM_OBJECT_SIZE;  // start of object data for room i
+        int end = k + ROOM_OBJECT_SIZE - 1;  // room for the end marker
+        int n = readbyte(fp, "objects");  // # of objects in room i
         for (int j = 0; j < n; j++) {
-            unsigned char ot = 0, op = 0;  // type, position
-            fread(&ot, 1, 1, fp);
-            fread(&op, 1, 1, fp);
+            int ot = readbyte(fp, "objects");  // type
+            int op = readbyte(fp, "objects");  // position
+            int size = (ot == 2 || ot == 3) ? 4 : 2;  // warps have a target
+            if (k + size > end) {
+                snprintf(temp, sizeof(temp), "room %d has more objects than fit in %d bytes",
+                         i, ROOM_OBJECT_SIZE);
+                fail(temp);
+            }
             objectdata[k++] = ot;
             objectdata[k++] = op;
-            if (ot == 2 || ot == 3) {
+            if (size == 4) {
                 // read warp data
-                unsigned char b1 = 0, b2 = 0;
-                fread(&b1, 1, 1, fp);
-                fread(&b2, 1, 1, fp);
-                objectdata[k++] = b1;
-                objectdata[k++] = b2;
+                objectdata[k++] = readbyte(fp, "objects");
+                objectdata[k++] = readbyte(fp, "objects");
             }
         }
         objectdata[k++] = 0xFF;  // end marker
-        objectdatasize[i] = k - (i * 33);
+        objectdatasize[i] = k - (i * ROOM_OBJECT_SIZE);
+    }
+    if (fgetc(fp) != EOF) {
+        fail("unexpected data after the objects");
     }
     fclose(fp);
 
@@ -102,7 +155,7 @@ int main(int argc, char *argv[])
             snprintf(temp, sizeof(temp), "room%d", i);
             printchunk(temp, &roomdata[i * 64], 64, 8);
             printf("; %s_room%d_objects:\n", areaname, i);
-            printbytes(&objectdata[i * 33], objectdatasize[i], 8);
+            printbytes(&objectdata[i * ROOM_OBJECT_SIZE], objectdatasize[i], 8);
         }
         // print map
         int k = 0;
@@ -157,7 +210,7 @@ int main(int argc, char *argv[])
         printf("%s_warps:\n", areaname);
         int warpnum = 0;
         for (int i = 0; i < mapsize; i++) {
-            unsigned char *pObjs = &objectdata[i * 33];
+            unsigned char *pObjs = &objectdata[i * ROOM_OBJECT_SIZE];
             int k = 0;
             while (pObjs[k] != 0xFF) {
                 int ot = pObjs[k++];
@@ -189,6 +242,10 @@ int main(int argc, char *argv[])
         printf(".dw %s_macroptrtable\n", areaname);
         printf(".dw %s_macroattribs\n", areaname);
         printf(".dw %s_macrowalkabilities\n", areaname);
+    }
+    if ((fflush(stdout) != 0) || ferror(stdout)) {
+        fprintf(stderr, "nga2asm: error writing the output\n");
+        return 1;
     }
     return 0;
 }
