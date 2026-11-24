@@ -90,6 +90,7 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
 
 .proc LandMineMain
     jsr     CheckEnemyHit
+    LandMineTouch:              ; hurts the player on contact (laser rays)
     jsr     IsPlayerHitAndWoundable
     bcc     -
 ; OUCH!
@@ -358,5 +359,5 @@ OE_UPANDDOWNFLYERMAIN   EQU 99
   + lda     CollStat
     beq     +
     jmp     ExplodeThing
-  + jmp     LandMineMain+3
+  + jmp     LandMineTouch
 .endp

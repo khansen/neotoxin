@@ -140,6 +140,7 @@ MenuItemCount       .byte
 
 .proc NGSL_ScriptJmp
     jsr     NGSL_GetScriptByte  ; relative branch amount
+    NGSL_ScriptJmpA:            ; entry with the branch amount in A
     cmp     #$80                ; branch backwards?
     bcs     @@NGSL_ScriptBranchBack
     ; branch forwards
@@ -587,7 +588,7 @@ MenuItemCount       .byte
     sta     SPR_PosY    ; hide choice cursor
     ldy     MenuSelect
     lda     [NGSL_pScript],y    ; relative offset of choice handler
-    jmp     NGSL_ScriptJmp+3    ; go there
+    jmp     NGSL_ScriptJmpA     ; go there
 
     @@NGSL_PrevChoice:
     lda     MenuSelect

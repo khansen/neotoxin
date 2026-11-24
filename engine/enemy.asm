@@ -305,7 +305,7 @@ Random              .byte   ; RND state
 
 .proc SetBigExplodeAnim
     ldy     #LOOP_OBJECTBIGEXPLODE
-    jmp     SetExplodeAnim+2
+    jmp     SetExplodeAnimY
 .endp
 
 ; SetExplodeAnim
@@ -313,6 +313,7 @@ Random              .byte   ; RND state
 
 .proc SetExplodeAnim
     ldy     #LOOP_OBJECTEXPLODE
+    SetExplodeAnimY:        ; entry with the animation loop in Y
     lda     #0
     jsr     ANIM_SetLoop
     lda     #0
