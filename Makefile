@@ -90,14 +90,19 @@ SCRIPTFILE = link.s
 
 BINFILE = neotoxin.nes
 
-# The assembler flags the objects in $(BUILD_DIR) were built with. When they
-# change (make DEFINES=-DDEMOREC, then plain make), the objects, scripts and
-# ROM are deleted while this file is read, before make compares any
-# timestamps, so everything is reassembled. (A stamp file prerequisite is not
-# enough: make 3.81 compares timestamps in whole seconds.)
+# The assembler flags the objects in $(BUILD_DIR) were built with, written
+# after the ROM links. When the current flags differ (make DEFINES=-DDEMOREC,
+# then plain make), or no build has finished since the last change, every
+# object and script and the ROM depend on the phony aflags-changed, so all of
+# them are rebuilt. (Timestamps cannot decide this: make 3.81 compares them in
+# whole seconds, and a unit reassembled in the second it was last built looks
+# unchanged.) aflags-changed deletes the record first, so a build that stops
+# early reassembles everything next time too. Reading the record here changes
+# nothing, so make -n stays a dry run.
 AFLAGS_STAMP = $(BUILD_DIR)/aflags
-ifneq ($(strip $(shell cat $(AFLAGS_STAMP) 2>/dev/null)),$(strip $(AFLAGS)))
-$(shell rm -f $(OBJS) $(SCRIPTS) $(BINFILE); mkdir -p $(BUILD_DIR); echo '$(strip $(AFLAGS))' > $(AFLAGS_STAMP))
+AFLAGS_RECORD = flags: $(strip $(AFLAGS))
+ifneq ($(strip $(shell cat $(AFLAGS_STAMP) 2>/dev/null)),$(AFLAGS_RECORD))
+AFLAGS_CHANGED = aflags-changed
 endif
 
 HEADERS = $(wildcard *.h $(addsuffix /*.h,$(SRCDIRS)) chr/*.h area/*/*.h)
@@ -143,6 +148,7 @@ all: $(TOOLS) $(BINFILE)
 
 $(BINFILE): $(OBJS) $(HEADERFILE) $(SCRIPTFILE) $(CHRFILES)
 	$(XLNK) $(SCRIPTFILE) -o $@
+	@echo '$(AFLAGS_RECORD)' > $(AFLAGS_STAMP)
 
 vpath %.asm . $(SRCDIRS)
 
@@ -155,6 +161,11 @@ $(BUILD_DIR):
 # xasm cannot emit dependency files, and a full build takes under a second,
 # so every unit depends on every shared header.
 $(OBJS): $(HEADERS)
+
+$(OBJS) $(SCRIPTS) $(BINFILE): $(AFLAGS_CHANGED)
+
+aflags-changed:
+	rm -f $(AFLAGS_STAMP)
 
 # Additional inputs pulled in via .incsrc, .include, .incbin and .charmap.
 # Generated files are listed by name, not only through $(wildcard), so that
@@ -266,7 +277,7 @@ $(GEN_MUSIC): music/%.inc: music/%.xm tools/xm2muz
 test: $(BINFILE)
 	./test/run_test.sh $(BINFILE)
 
-.PHONY: all clean test
+.PHONY: all clean test aflags-changed
 
 clean:
 	rm -f $(BINFILE) $(SCRIPTS) $(TOOLS)
