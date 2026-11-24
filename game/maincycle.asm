@@ -77,11 +77,21 @@ mr_slot = mr_slot + 1
 
 ; GoIRQRoutine
 ; ============
+; Runs the routine IRQRoutine selects. The IRQ interrupts the main code
+; anywhere, so this must not use GoRoutine (which keeps the table address in
+; pCode) or any other shared temporary.
 
 .proc GoIRQRoutine
     lda     IRQRoutine
-    jsr     GoRoutine
+    asl
+    tay
+    lda     @@Table,y
+    pha
+    lda     @@Table+1,y
+    pha
+    rts                     ; jump to routine
 
+    @@Table:
 TC_SLOT IRQScreenOff
 TC_SLOT IRQSwitchBGCHR
 .endp

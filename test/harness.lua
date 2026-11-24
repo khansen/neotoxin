@@ -333,10 +333,10 @@ local function wram_slot_flag(slot, flag)
 end
 
 -- Locate MainRoutine's zero-page address from GoMainHandler in the fixed PRG
--- bank, so the test does not depend on the RAM layout. Both GoMainHandler and
--- GoIRQRoutine are "lda zp / jsr GoRoutine" followed by a jump table of
--- (addr-1) words, high byte first (TC_SLOT); GoMainHandler is the one whose
--- table has an entry for every mr* routine.
+-- bank, so the test does not depend on the RAM layout. GoMainHandler is
+-- "lda zp / jsr GoRoutine" followed by a jump table of (addr-1) words, high
+-- byte first (TC_SLOT); of the code that dispatches that way, it is the one
+-- whose table has an entry for every mr* routine.
 local MR_COUNT = 28 -- mrTitleInit .. mrMusicPlayerMain
 local function find_main_routine_zp()
     local function is_go_routine(a)
