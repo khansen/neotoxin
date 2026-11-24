@@ -90,6 +90,16 @@ SCRIPTFILE = link.s
 
 BINFILE = neotoxin.nes
 
+# The assembler flags the objects in $(BUILD_DIR) were built with. When they
+# change (make DEFINES=-DDEMOREC, then plain make), the objects, scripts and
+# ROM are deleted while this file is read, before make compares any
+# timestamps, so everything is reassembled. (A stamp file prerequisite is not
+# enough: make 3.81 compares timestamps in whole seconds.)
+AFLAGS_STAMP = $(BUILD_DIR)/aflags
+ifneq ($(strip $(shell cat $(AFLAGS_STAMP) 2>/dev/null)),$(strip $(AFLAGS)))
+$(shell rm -f $(OBJS) $(SCRIPTS) $(BINFILE); mkdir -p $(BUILD_DIR); echo '$(strip $(AFLAGS))' > $(AFLAGS_STAMP))
+endif
+
 HEADERS = $(wildcard *.h $(addsuffix /*.h,$(SRCDIRS)) chr/*.h area/*/*.h)
 
 CHRFILES = $(wildcard chr/*.chr)
