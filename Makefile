@@ -194,12 +194,27 @@ script/%.bin: script/%.asm script/script.h
 tools/%: tools/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-# huffpuff (installed separately) writes both files in one run, so it is only
-# needed when strings.txt or font.tbl changes. A pattern rule with two targets is run
-# once for both (an explicit two-target rule would run twice under make -j, and
-# GNU make 3.81 has no &: grouped targets), hence the "huf%" stem.
+# huffpuff (installed separately) writes both files in one run. A pattern rule
+# with two targets is run once for both (an explicit two-target rule would run
+# twice under make -j, and GNU make 3.81 has no &: grouped targets), hence the
+# "huf%" stem. huff/sources.cksum is the checksum of the inputs the committed
+# outputs were made from. When the inputs are only newer, not different (as
+# after a fresh checkout, whose timestamps are arbitrary), the outputs are just
+# touched, so huffpuff is only needed when strings.txt or font.tbl changes.
+HUFF_INPUTS = huff/strings.txt font.tbl
+
+HUFFPUFF = huffpuff --character-map=font.tbl --table-output=huff/huffpuff.tab \
+    --data-output=huff/strings.inc --table-label= --generate-string-table \
+    --string-table-label= huff/strings.txt
+
 huf%/huffpuff.tab huf%/strings.inc: huf%/strings.txt font.tbl
-	huffpuff --character-map=font.tbl --table-output=huff/huffpuff.tab --data-output=huff/strings.inc --table-label= --generate-string-table --string-table-label= huff/strings.txt
+	@if [ -f huff/huffpuff.tab ] && [ -f huff/strings.inc ] && \
+	    cat $(HUFF_INPUTS) | cksum | cmp -s - huff/sources.cksum; then \
+	    touch huff/huffpuff.tab huff/strings.inc; \
+	else \
+	    echo "$(HUFFPUFF)"; \
+	    $(HUFFPUFF) && cat $(HUFF_INPUTS) | cksum > huff/sources.cksum; \
+	fi
 
 data/dialog.dat: data/dialog.nam tools/comp
 	tools/comp $< 32 24 0x2082 $@
