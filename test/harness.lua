@@ -183,6 +183,15 @@ local function checkpoint(id)
     end
 end
 
+-- Power-cycles the console, as every scenario after the first starts. FCEUX
+-- restarts its frame counter at 0, so the sound hash's frame numbers start
+-- again too; otherwise the first checkpoint of a scenario would depend on how
+-- many frames the previous one ran.
+local function power_on()
+    emu.poweron()
+    apu_frame0 = 0
+end
+
 -- In record mode, writes the checkpoint hashes to test/expected_hashes.txt.
 -- Otherwise compares them with that file; a checkpoint listed there but never
 -- taken is a failure too. Ends with one PASS:/FAIL: line, which run_test.sh
@@ -452,7 +461,7 @@ checkpoint("npc6_dialog_done")
 -- ============================================================================
 -- Scenario 3: Power Cycle, Reload Slot 0 & Play Base Area
 -- ============================================================================
-emu.poweron()
+power_on()
 step(90)
 write_wram_slot(1, 0, 0, 0, 0)
 write_wram_slot(2, 4, 0, 0, 0)
@@ -480,7 +489,7 @@ checkpoint("base_sect1_action")
 -- ============================================================================
 -- Scenario 4: Load Slot 1 -> City Ruins & Replay 827-Frame Demo Input Stream
 -- ============================================================================
-emu.poweron()
+power_on()
 step(90)
 write_wram_slot(1, 0, 0, 0, 0)
 write_wram_slot(2, 4, 0, 0, 0)
@@ -497,7 +506,7 @@ replay_demo_file(DEMO_PATH)
 -- ============================================================================
 -- Scenario 5: Load Slot 2 -> Boss 0 (Area 4, Section 0)
 -- ============================================================================
-emu.poweron()
+power_on()
 step(90)
 write_wram_slot(1, 0, 0, 0, 0)
 write_wram_slot(2, 4, 0, 0, 0)
@@ -576,7 +585,7 @@ checkpoint("boss0_cleared")
 -- ============================================================================
 -- Scenario 6: Title Screen Attract-Mode Demo (PlayDemo & Second Loop)
 -- ============================================================================
-emu.poweron()
+power_on()
 -- TitleInit sets Timer = $40 (64 ticks * 12 frames = 768 frames);
 -- idle until PlayDemo starts and runs in City Ruins
 step(1150)
@@ -594,7 +603,7 @@ checkpoint("attract_demo_exit")
 -- ============================================================================
 -- Scenario 7: Power Plant (Area 1, Section 0 & Section 14)
 -- ============================================================================
-emu.poweron()
+power_on()
 step(90)
 write_wram_slot(0, 1, 0, 0, 0)
 
@@ -621,7 +630,7 @@ checkpoint("plant_sect14_warp")
 -- OT_WALLEYE object is placed in either Boss 1 section, and neither Boss 2
 -- section has any warp, so there is no defined place to spawn in Boss 2.
 -- This scenario covers loading and scrolling the Boss 1 area only.
-emu.poweron()
+power_on()
 step(90)
 write_wram_slot(1, 5, 1, 1, 0)
 
@@ -647,7 +656,7 @@ checkpoint("boss1_sect0_room2")
 -- ============================================================================
 -- Scenario 9: Level-Up Screen (Kill enemy at 100 XP -> AdvanceLevel)
 -- ============================================================================
-emu.poweron()
+power_on()
 step(90)
 -- Area 0 (Ruins), Section 0, Warp 18 (room 47, pos $8B; AcidZombie is in the same room at $80).
 -- Set weapon = 0 (straight energy bullet, 1 damage/shot), exp = 100, and flag 1 set ($02) so ZombieScript is skipped.
@@ -679,7 +688,7 @@ tap("start", 2, 80)
 -- ============================================================================
 -- Scenario 10: Game Over & Continue (Die at 1 HP -> GameOver -> Continue)
 -- ============================================================================
-emu.poweron()
+power_on()
 step(90)
 write_wram_slot(0, 0, 0, 18, 0, {health = 1, flags = {[0] = 0x02}})
 
@@ -704,7 +713,7 @@ checkpoint("gameover_continue")
 -- ============================================================================
 -- Scenario 11: Saving at a Save Point (building_save0 -> SaveScript -> Reload)
 -- ============================================================================
-emu.poweron()
+power_on()
 step(90)
 -- Area 3 (Building), Section 23 ($17 = building_save0), Warp 0 ($A5)
 write_wram_slot(0, 3, 23, 0, 0)
@@ -743,7 +752,7 @@ checkpoint("save_point_done")
 
 -- Power-cycle and reload Slot 0. The status screen shows the play time and
 -- stats that were read back from the save (the slot written above had 00:00:00).
-emu.poweron()
+power_on()
 step(90)
 tap("start", 2, 120)
 tap("start", 2, 30)
@@ -760,7 +769,7 @@ tap("start", 2, 80)
 -- normal play; the test enters them by writing MainRoutine directly.
 -- Enter Select Game first so Bank 0 (containing CreditsInit/CreditsMain) is mapped
 -- at $8000-$BFFF and IRQCount is 0.
-emu.poweron()
+power_on()
 step(90)
 tap("start", 2, 120)
 memory.writebyte(main_routine_zp, 18) -- mrCreditsInit
