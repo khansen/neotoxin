@@ -17,6 +17,9 @@
 .include "common/joypad.h"
 .include "common/timer.h"
 
+RUN_MAX_SPEED   EQU     $01E0   ; pixels per frame (8.8), running or in the air
+RUN_ACCEL       EQU     $0030   ; added per frame while the D-pad is held
+
 .dataseg zeropage
 
 AllowDblJmp         .byte
@@ -318,16 +321,9 @@ ProjectileCount     .byte
     lda     #btnLEFT
     and     JoyStat
     beq     @@StopRunningLeft ; player released left button
-    jsr     InvertXSpeed
-    cmp     #$01
+    jsr     LimitRunSpeed
     bcc     @@KeepRunningLeft
-    cpy     #$E0
-    bcc     @@KeepRunningLeft
-; reached max speed
-    lda     #$00
-    sta     OBJ_AccelX
-    sta     OBJ_AccelXFrac
-    rts
+    rts                     ; reached max speed
 
     @@KeepRunningLeft:
     lda     #$FF
@@ -382,17 +378,9 @@ ProjectileCount     .byte
     lda     #btnRIGHT
     and     JoyStat
     beq     @@StopRunningRight
-    lda     OBJ_SpeedX
-    cmp     #$01
+    jsr     LimitRunSpeed
     bcc     @@KeepRunningRight
-    lda     OBJ_SpeedXFrac
-    cmp     #$E0
-    bcc     @@KeepRunningRight
-; reached max speed
-    lda     #$00
-    sta     OBJ_AccelX
-    sta     OBJ_AccelXFrac
-    rts
+    rts                     ; reached max speed
 
     @@KeepRunningRight:
     lda     #$00
@@ -407,6 +395,41 @@ ProjectileCount     .byte
     sta     OBJ_AccelX
     lda     #$F0
     sta     OBJ_AccelXFrac
+    rts
+.endp
+
+; LimitRunSpeed
+; =============
+; Keeps the player's speed at most RUN_MAX_SPEED. Call while the player is
+; accelerating by RUN_ACCEL in the direction he is moving. If that would take
+; the speed to or past the limit, accelerates by just enough to end up at the
+; limit instead (MoveObject adds the acceleration after moving) and returns
+; CF=1; otherwise returns CF=0.
+
+.proc LimitRunSpeed
+    lda     OBJ_SpeedX
+    bpl     +
+    jsr     InvertXSpeed    ; A.Y = |speed|
+    jmp     ++
+  + ldy     OBJ_SpeedXFrac
+ ++ cpy     #<(RUN_MAX_SPEED-RUN_ACCEL)
+    sbc     #>(RUN_MAX_SPEED-RUN_ACCEL)
+    bcc     @@Done          ; |speed| < RUN_MAX_SPEED-RUN_ACCEL
+; acceleration = the limit, in the direction of movement, minus the speed
+    lda     #<RUN_MAX_SPEED
+    ldy     #>RUN_MAX_SPEED
+    bit     OBJ_SpeedX
+    bpl     +
+    lda     #<($10000-RUN_MAX_SPEED)
+    ldy     #>($10000-RUN_MAX_SPEED)
+  + sec
+    sbc     OBJ_SpeedXFrac
+    sta     OBJ_AccelXFrac
+    tya
+    sbc     OBJ_SpeedX
+    sta     OBJ_AccelX
+    sec
+    @@Done:
     rts
 .endp
 
@@ -486,7 +509,7 @@ ProjectileCount     .byte
     sta     OBJ_AccelX
     lda     #$D0
     sta     OBJ_AccelXFrac
-    bne     @@CheckJumpSpeed
+    jmp     LimitRunSpeed
 ; accelerate right
     @@JumpAccelRight:
     lda     OBJ_SpeedX
@@ -499,40 +522,13 @@ ProjectileCount     .byte
     sta     OBJ_AccelX
     lda     #$30
     sta     OBJ_AccelXFrac
+    jmp     LimitRunSpeed
 
-; CheckJumpSpeed
-; ==============
-
-    @@CheckJumpSpeed:
-    lda     OBJ_SpeedX
-    beq     +
-    bpl     @@MovingRight
-; moving to the left
-    jsr     InvertXSpeed
-    cmp     #$01
-    bcc     +
-    cpy     #$E0
-    bcc     +
-    lda     OBJ_AccelX
-    bpl     +
-; stop accelerating
     @@ResetXAccel:
     lda     #0
     sta     OBJ_AccelX
     sta     OBJ_AccelXFrac
-  + rts
-
-    @@MovingRight:
-; moving to the right
-    lda     OBJ_SpeedX
-    cmp     #$01
-    bcc     +
-    lda     OBJ_SpeedXFrac
-    cmp     #$E0
-    bcc     +
-    lda     OBJ_AccelX
-    bpl     @@ResetXAccel
-  + rts
+    rts
 .endp
 
 ;-----------------------------------------------------------------------------

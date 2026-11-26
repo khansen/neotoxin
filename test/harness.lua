@@ -523,7 +523,8 @@ checkpoint("boss0_spawn")
 -- sta OBJ_RangeY,x / lda #10 / sta OBJ_Health,x / lda #120 / sta
 -- OBJ_Var0,x"; find that code in the area's bank for the addresses of the
 -- object tables (OBJ_Action is 9 tables, 9 * MAX_OBJECTS bytes, before
--- OBJ_RangeX), and the boss's slot by those values.
+-- OBJ_RangeX, and OBJ_WorldXLo and OBJ_WorldXHi are 17 and 18 tables after
+-- it), and the boss's slot by those values. The player is slot 0.
 local OE_BOSS0MAIN = 22
 local OE_WAITANIMEND = 18
 local function find_boss0()
@@ -536,12 +537,17 @@ local function find_boss0()
             local range_x = rd(a + 3) + rd(a + 4) * 256
             local health = rd(a + 13) + rd(a + 14) * 256
             local action = range_x - 9 * 24
+            local function world_x(s)
+                return rd(action + 17 * 24 + s) + rd(action + 18 * 24 + s) * 256
+            end
             for slot = 1, 23 do
                 if rd(range_x + slot) == 12 and rd(range_x + 24 + slot) == 14
                    and rd(health + slot) == 10 then
                     return {
                         action = function() return rd(action + slot) end,
                         health = function() return rd(health + slot) end,
+                        x = function() return world_x(slot) end,
+                        player_x = function() return world_x(0) end,
                     }
                 end
             end
@@ -566,10 +572,14 @@ checkpoint("boss0_fight")
 check_state(boss0.action() == OE_BOSS0MAIN and boss0.health() == 10,
             "Boss 0 is not fighting after its intro")
 
--- The boss flies above the player's head, so turn around and fire in mid
--- jump; it takes 40 jumps (and some damage to the player) to defeat it
-for c = 1, 40 do
-    step(2, {[(c % 2 == 0) and "left" or "right"] = true})
+-- The boss flies above the player's head, bouncing between the walls. From
+-- the middle of the room, turn toward it and fire in mid jump until it is
+-- defeated; that takes about 40 jumps (and some damage to the player)
+step(15, {right = true})
+step(20)
+for c = 1, 80 do
+    if boss0.health() == 0 then break end
+    step(2, {[(boss0.x() < boss0.player_x()) and "left" or "right"] = true})
     step(12, {A = true})
     step(2, {A = true, B = true})
     step(8, {A = true})

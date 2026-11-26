@@ -32,7 +32,7 @@ base_sect0_spawn         7234a14d839a9544
 base_sect0_spawn.apu     6ccb001f296da983
 base_sect1_warp          c24c06b7cbdf48d8
 base_sect1_warp.apu      7f441a695b5e9813
-base_sect1_action        0777a6e000c24b3e
+base_sect1_action        cb4bbf6d294fd707
 base_sect1_action.apu    72edd111e836ca50
 select_game_slot1        9d2c7251413e6ba6
 select_game_slot1.apu    7ace37e874fe8608
@@ -50,12 +50,12 @@ boss0_spawn              f708fb4d44d27ef4
 boss0_spawn.apu          231a7488c5b11a13
 boss0_intro              87f6e26ea98a588c
 boss0_intro.apu          df02fe90480b3cd6
-boss0_fight              2fef9fbeef4ed8aa
+boss0_fight              57037fcff5e2d7c0
 boss0_fight.apu          37c584bbaee12502
-boss0_defeated           717e145451eee398
-boss0_defeated.apu       897368d40e022449
-boss0_cleared            1048c9d0bfc1fa2b
-boss0_cleared.apu        01ccb2d3ee50143b
+boss0_defeated           39f0ecb980574037
+boss0_defeated.apu       e29bc6630545f36d
+boss0_cleared            6275db7f6fa3711f
+boss0_cleared.apu        04b2b9ae0ea6a586
 attract_demo_mid         97a0b5c8b90fba6d
 attract_demo_mid.apu     007112b7031660a1
 attract_demo_late        40794ede8438d33a
